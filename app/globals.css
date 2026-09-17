@@ -4,6 +4,7 @@
    DESIGN TOKENS
    ============================================ */
 @theme {
+  /* Palette — inchangée */
   --color-cream: #FBF9F5;
   --color-cream-dark: #F5F2EB;
   --color-bordeaux: #4A1D1E;
@@ -13,8 +14,9 @@
   --color-sand: #E8E2D5;
   --color-taupe: #A89E8C;
 
-  --font-serif: var(--font-serif), "Cormorant Garamond", Georgia, serif;
-  --font-sans: var(--font-sans), "Inter", system-ui, sans-serif;
+  /* ✅ Typographies — chaînage correct (plus de boucle) */
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans:  var(--font-sora), "Sora", system-ui, sans-serif;
 
   --spacing-section: 8rem;
 }

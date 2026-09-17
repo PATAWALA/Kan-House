@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Sora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--font-cormorant",   // ✅ nom unique
   display: "swap",
   weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
 });
 
-const inter = Inter({
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-sora",        // ✅ nom unique
   display: "swap",
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: "Kan House — FF&E & Hospitality Sourcing",
   description:
-    "Sourcing d'exception entre la Chine, la France et l'international. Mobilier, matériaux et aménagement pour hôtels, restaurants et résidences de luxe.",
+    "Sourcing d'exception entre la Chine, la France et l'international.",
 };
 
 export default function RootLayout({
@@ -31,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${cormorant.variable} ${inter.variable}`}>
-      <body className="bg-[var(--color-cream)] text-[var(--color-espresso)] antialiased">
+    <html lang="fr" className={`${cormorant.variable} ${sora.variable}`}>
+      <body>
         <Navbar />
         <main>{children}</main>
         <Footer />
