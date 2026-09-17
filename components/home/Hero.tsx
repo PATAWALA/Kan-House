@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="relative h-screen min-h-[640px] w-full overflow-hidden">
+    <section className="relative w-full h-[calc(100vh-5rem)] min-h-[600px] overflow-hidden">
 
       {/* ============================================
           IMAGE DE FOND — salon avec fauteuils visibles
@@ -24,7 +24,6 @@ export default function Hero() {
       {/* ============================================
           DÉGRADÉ VERTICAL
           Transparent en haut → sombre en bas
-          Garantit la lisibilité du texte placé en bas à gauche
           ============================================ */}
       <div
         aria-hidden
@@ -32,7 +31,7 @@ export default function Hero() {
       />
 
       {/* ============================================
-          CONTENU — en bas à gauche, aligné
+          CONTENU — en bas à gauche
           ============================================ */}
       <div className="relative z-10 h-full flex flex-col justify-end">
         <div className="container-kan pb-16 md:pb-24 lg:pb-28">
@@ -72,14 +71,13 @@ export default function Hero() {
               à l'international.
             </motion.p>
 
-            {/* Boutons — fond bordeaux-deep, plus foncés */}
+            {/* Boutons */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-wrap items-center gap-4"
             >
-              {/* CTA principal — bordeaux-deep */}
               <Link
                 href="/start-project"
                 className="group inline-flex items-center gap-3 bg-[var(--color-bordeaux-deep)] text-[var(--color-cream)] px-7 py-4 rounded-full text-[0.72rem] font-semibold uppercase tracking-[0.22em] hover:bg-[var(--color-bordeaux)] transition-colors shadow-lg"
@@ -91,7 +89,6 @@ export default function Hero() {
                 />
               </Link>
 
-              {/* CTA secondaire — contour crème */}
               <Link
                 href="/collection"
                 className="inline-flex items-center gap-3 border border-[var(--color-cream)]/50 text-[var(--color-cream)] px-7 py-4 rounded-full text-[0.72rem] font-semibold uppercase tracking-[0.22em] hover:bg-[var(--color-cream)]/10 hover:border-[var(--color-cream)] transition-colors"

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Menu, X, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/cn";
@@ -16,40 +16,21 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [cartCount] = useState(0); // brancher sur Zustand/Context plus tard
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Ferme le drawer au changement de route
-  useEffect(() => setOpen(false), [pathname]);
+  const [cartCount] = useState(0);
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 inset-x-0 z-50 transition-all duration-500",
-        "bg-[var(--color-bordeaux)] text-[var(--color-cream)]",
-        scrolled
-          ? "py-3 shadow-[0_1px_0_rgba(255,255,255,0.06),0_8px_30px_-12px_rgba(0,0,0,0.25)]"
-          : "py-5"
-      )}
-    >
-      <nav className="container-kan flex items-center justify-between gap-6">
-        {/* ---------- Brand ---------- */}
+    <header className="sticky top-0 z-50 bg-[var(--color-bordeaux)] text-[var(--color-cream)]">
+      <nav className="container-kan flex items-center justify-between h-20">
+        {/* Brand */}
         <Link
           href="/"
-          className="font-serif text-2xl md:text-[1.7rem] leading-none tracking-tight text-[var(--color-cream)] hover:opacity-90 transition-opacity"
+          className="text-2xl leading-none tracking-tight font-medium"
         >
           Kan<span className="text-[var(--color-taupe)]">.</span>House
         </Link>
 
-        {/* ---------- Desktop links ---------- */}
+        {/* Desktop links */}
         <ul className="hidden lg:flex items-center gap-9">
           {NAV_LINKS.map((l) => {
             const active = pathname === l.href || pathname.startsWith(l.href + "/");
@@ -72,32 +53,23 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* ---------- Actions ---------- */}
-        <div className="flex items-center gap-2 md:gap-3">
-          {/* Panier */}
+        {/* Actions */}
+        <div className="flex items-center gap-3">
           <button
             aria-label="Panier"
             className="relative p-2.5 rounded-full text-[var(--color-cream)]/85 hover:text-[var(--color-cream)] hover:bg-[var(--color-cream)]/10 transition-colors"
           >
             <ShoppingBag size={18} strokeWidth={1.6} />
-            <AnimatePresence>
-              {cartCount > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  exit={{ scale: 0 }}
-                  className="absolute -top-0.5 -right-0.5 bg-[var(--color-cream)] text-[var(--color-bordeaux)] text-[10px] font-semibold w-[18px] h-[18px] rounded-full grid place-items-center"
-                >
-                  {cartCount}
-                </motion.span>
-              )}
-            </AnimatePresence>
+            {cartCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-[var(--color-cream)] text-[var(--color-bordeaux)] text-[10px] font-semibold w-[18px] h-[18px] rounded-full grid place-items-center">
+                {cartCount}
+              </span>
+            )}
           </button>
 
-          {/* CTA principal — inversé pour contraste maximal */}
           <Link
             href="/start-project"
-            className="hidden md:inline-flex items-center gap-2 bg-[var(--color-cream)] text-[var(--color-bordeaux)] px-5 py-3 rounded-full text-[0.7rem] font-semibold uppercase tracking-[0.22em] hover:bg-[var(--color-sand)] transition-colors group shadow-sm"
+            className="hidden md:inline-flex items-center gap-2 bg-[var(--color-cream)] text-[var(--color-bordeaux)] px-5 py-3 rounded-full text-[0.7rem] font-semibold uppercase tracking-[0.22em] hover:bg-[var(--color-sand)] transition-colors group"
           >
             Start a Project
             <ArrowUpRight
@@ -106,7 +78,6 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Toggle mobile */}
           <button
             aria-label="Menu"
             aria-expanded={open}
@@ -118,38 +89,32 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ---------- Drawer mobile ---------- */}
+      {/* Drawer mobile */}
       <AnimatePresence>
         {open && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="lg:hidden overflow-hidden bg-[var(--color-bordeaux-deep)] border-t border-[var(--color-cream)]/10"
           >
-            <ul className="container-kan py-7 space-y-5">
-              {NAV_LINKS.map((l) => {
-                const active = pathname === l.href;
-                return (
-                  <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      className={cn(
-                        "block font-serif text-3xl transition-colors",
-                        active
-                          ? "text-[var(--color-cream)]"
-                          : "text-[var(--color-cream)]/70 hover:text-[var(--color-cream)]"
-                      )}
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                );
-              })}
+            <ul className="container-kan py-6 space-y-4">
+              {NAV_LINKS.map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    className="block text-2xl text-[var(--color-cream)]/90 hover:text-[var(--color-cream)] transition-colors"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
               <li className="pt-3">
                 <Link
                   href="/start-project"
+                  onClick={() => setOpen(false)}
                   className="inline-flex items-center gap-2 bg-[var(--color-cream)] text-[var(--color-bordeaux)] px-6 py-3.5 rounded-full text-[0.7rem] font-semibold uppercase tracking-[0.22em]"
                 >
                   Start a Project
