@@ -7,11 +7,8 @@ import { PRODUCTS } from "@/lib/data";
 export default function CollectionGrid() {
   return (
     <Section size="lg">
-      {/* ============================================
-          EN-TÊTE — eyebrow + titre + lien, 2 colonnes
-          ============================================ */}
+      {/* En-tête */}
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 md:gap-12 mb-14 md:mb-20">
-
         <div className="max-w-xl">
           <p className="eyebrow-accent mb-5">La Collection</p>
           <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.1] font-medium tracking-[-0.02em] text-[var(--color-espresso)]">
@@ -23,21 +20,19 @@ export default function CollectionGrid() {
 
         <Link
           href="/collection"
-          className="group inline-flex items-center gap-2 self-start md:self-end text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--color-espresso)] hover:text-[var(--color-bordeaux)] transition-colors"
+          className="group inline-flex items-center gap-2 self-start md:self-end
+                     text-[0.72rem] font-semibold uppercase tracking-[0.22em]
+                     text-[var(--color-espresso)] hover:text-[var(--color-bordeaux)] transition-colors"
         >
           Voir tout
-          <ArrowRight
-            size={15}
-            className="transition-transform group-hover:translate-x-1"
-          />
+          <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
         </Link>
       </div>
 
       {/* ============================================
-          GRILLE PRODUITS
-          2 col mobile / 3 tablette / 4 desktop
+          GRILLE — 1 mobile / 2 tablette / 3 desktop
           ============================================ */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 md:gap-x-6 lg:gap-x-7 gap-y-12 md:gap-y-14">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-7">
         {PRODUCTS.map((p, i) => (
           <ProductCard key={p.id} product={p} index={i} />
         ))}
