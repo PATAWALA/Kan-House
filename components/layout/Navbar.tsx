@@ -6,6 +6,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Menu, X, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { useCartStore } from "@/lib/store/cart";
 
 const NAV_LINKS = [
   { label: "Collection", href: "/collection" },
@@ -17,7 +18,11 @@ const NAV_LINKS = [
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [cartCount] = useState(0);
+
+  // ✅ Compteur panier connecté au store — se met à jour automatiquement
+  const totalItems = useCartStore((s) =>
+    s.items.reduce((sum, item) => sum + item.quantity, 0)
+  );
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--color-bordeaux)] text-[var(--color-cream)]">
@@ -33,7 +38,8 @@ export default function Navbar() {
         {/* Desktop links */}
         <ul className="hidden lg:flex items-center gap-9">
           {NAV_LINKS.map((l) => {
-            const active = pathname === l.href || pathname.startsWith(l.href + "/");
+            const active =
+              pathname === l.href || pathname.startsWith(l.href + "/");
             return (
               <li key={l.href}>
                 <Link
@@ -55,18 +61,35 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <button
+          {/* Panier — lien + badge dynamique */}
+          <Link
+            href="/cart"
             aria-label="Panier"
             className="relative p-2.5 rounded-full text-[var(--color-cream)]/85 hover:text-[var(--color-cream)] hover:bg-[var(--color-cream)]/10 transition-colors"
           >
             <ShoppingBag size={18} strokeWidth={1.6} />
-            {cartCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-[var(--color-cream)] text-[var(--color-bordeaux)] text-[10px] font-semibold w-[18px] h-[18px] rounded-full grid place-items-center">
-                {cartCount}
-              </span>
-            )}
-          </button>
 
+            <AnimatePresence>
+              {totalItems > 0 && (
+                <motion.span
+                  key={totalItems}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 22 }}
+                  className="absolute -top-0.5 -right-0.5
+                             bg-[var(--color-cream)] text-[var(--color-bordeaux)]
+                             text-[10px] font-semibold
+                             min-w-[18px] h-[18px] px-1
+                             rounded-full grid place-items-center"
+                >
+                  {totalItems}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </Link>
+
+          {/* CTA Start a Project */}
           <Link
             href="/start-project"
             className="hidden md:inline-flex items-center gap-2 bg-[var(--color-cream)] text-[var(--color-bordeaux)] px-5 py-3 rounded-full text-[0.7rem] font-semibold uppercase tracking-[0.22em] hover:bg-[var(--color-sand)] transition-colors group"
@@ -78,6 +101,7 @@ export default function Navbar() {
             />
           </Link>
 
+          {/* Toggle mobile */}
           <button
             aria-label="Menu"
             aria-expanded={open}
