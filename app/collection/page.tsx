@@ -269,32 +269,84 @@ export default function CollectionPage() {
                 </p>
               </div>
 
-              {/* CTA — 5 colonnes, aligné à droite */}
-              <div className="lg:col-span-5 flex lg:justify-end">
-                <a
-                  href="/start-project"
-                  className="group inline-flex items-center gap-4
-                             bg-[var(--color-cream)] text-[var(--color-bordeaux)]
-                             pl-7 pr-2 py-2
-                             rounded-full
-                             text-[0.72rem] font-semibold uppercase tracking-[0.22em]
-                             hover:bg-[var(--color-sand)]
-                             transition-all duration-300
-                             shadow-[0_10px_40px_-10px_rgba(0,0,0,0.4)]"
-                >
-                  <span>Démarrer un projet</span>
+              {/* ============================================
+    CTA FINALE — grand bloc dégradé bordeaux
+    ============================================ */}
+<section className="relative overflow-hidden mt-16 md:mt-24">
+  {/* Dégradé principal — 3 tons bien distincts */}
+  <div
+    aria-hidden
+    className="absolute inset-0"
+    style={{
+      background:
+        "linear-gradient(135deg, #2A0E0F 0%, #5E2324 50%, #8B3536 100%)",
+    }}
+  />
 
-                  <span
-                    className="relative inline-flex items-center justify-center
-                               w-11 h-11 rounded-full
-                               bg-[var(--color-bordeaux)] text-[var(--color-cream)]
-                               transition-transform duration-300
-                               group-hover:translate-x-0.5"
-                  >
-                    <ArrowUpRight size={16} strokeWidth={2} />
-                  </span>
-                </a>
-              </div>
+  {/* Halo lumineux en haut à droite */}
+  <div
+    aria-hidden
+    className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full
+               bg-[#A03E3F]/40 blur-[120px] pointer-events-none"
+  />
+
+  {/* Halo lumineux en bas à gauche */}
+  <div
+    aria-hidden
+    className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full
+               bg-[#4A1D1E]/60 blur-[120px] pointer-events-none"
+  />
+
+  {/* Contenu — padding généreux pour que ce soit un VRAI bloc */}
+  <div className="relative container-kan py-20 md:py-28 lg:py-32">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+
+      {/* Texte — 7 colonnes */}
+      <div className="lg:col-span-7">
+        <p className="eyebrow-invert mb-5">Un projet sur-mesure ?</p>
+
+        <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.1] font-medium tracking-[-0.02em] text-[var(--color-cream)] mb-6">
+          Vous ne trouvez pas
+          <br />
+          la pièce qu'il vous faut ?
+        </h2>
+
+        <p className="text-[clamp(0.95rem,1.1vw,1.05rem)] leading-[1.7] text-[var(--color-cream)]/75 max-w-lg">
+          Nous développons chaque pièce sur-mesure, dans le respect de
+          vos volumes, vos matières et vos délais. Parlez-nous de votre
+          projet — nous revenons vers vous sous 48h.
+        </p>
+      </div>
+
+      {/* CTA — 5 colonnes, aligné à droite */}
+      <div className="lg:col-span-5 flex lg:justify-end">
+        <a
+          href="/start-project"
+          className="group inline-flex items-center gap-4
+                     bg-[var(--color-cream)] text-[var(--color-bordeaux)]
+                     pl-7 pr-2 py-2
+                     rounded-full
+                     text-[0.72rem] font-semibold uppercase tracking-[0.22em]
+                     hover:bg-[var(--color-sand)]
+                     transition-all duration-300
+                     shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+        >
+          <span>Démarrer un projet</span>
+
+          <span
+            className="relative inline-flex items-center justify-center
+                       w-11 h-11 rounded-full
+                       bg-[var(--color-bordeaux)] text-[var(--color-cream)]
+                       transition-transform duration-300
+                       group-hover:translate-x-0.5"
+          >
+            <ArrowUpRight size={16} strokeWidth={2} />
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
             </div>
           </div>
         </div>
