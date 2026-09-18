@@ -2,30 +2,28 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import ProductCard from "@/components/product/ProductCard";
 import Section from "@/components/ui/Section";
-import SectionHeading from "@/components/ui/SectionHeading";
 import { PRODUCTS } from "@/lib/data";
 
 export default function CollectionGrid() {
   return (
     <Section size="lg">
-      {/* En-tête */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16 lg:mb-20">
-        <SectionHeading
-          eyebrow="La Collection"
-          title={
-            <>
-              Des pièces choisies,
-              <br />
-              pensées pour durer.
-            </>
-          }
-          maxWidth="sm"
-          className="mb-0"
-        />
+      {/* ============================================
+          EN-TÊTE — eyebrow + titre + lien, 2 colonnes
+          ============================================ */}
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 md:gap-12 mb-14 md:mb-20">
+
+        <div className="max-w-xl">
+          <p className="eyebrow-accent mb-5">La Collection</p>
+          <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.1] font-medium tracking-[-0.02em] text-[var(--color-espresso)]">
+            Des pièces choisies,
+            <br />
+            pensées pour durer.
+          </h2>
+        </div>
 
         <Link
           href="/collection"
-          className="group inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--color-espresso)] hover:text-[var(--color-bordeaux)] transition-colors shrink-0"
+          className="group inline-flex items-center gap-2 self-start md:self-end text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--color-espresso)] hover:text-[var(--color-bordeaux)] transition-colors"
         >
           Voir tout
           <ArrowRight
@@ -35,8 +33,11 @@ export default function CollectionGrid() {
         </Link>
       </div>
 
-      {/* Grille produits — responsive cohérente */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-14">
+      {/* ============================================
+          GRILLE PRODUITS
+          2 col mobile / 3 tablette / 4 desktop
+          ============================================ */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 md:gap-x-6 lg:gap-x-7 gap-y-12 md:gap-y-14">
         {PRODUCTS.map((p, i) => (
           <ProductCard key={p.id} product={p} index={i} />
         ))}
