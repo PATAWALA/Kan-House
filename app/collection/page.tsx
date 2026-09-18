@@ -5,15 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, ArrowUpRight } from "lucide-react";
 import ProductCard from "@/components/product/ProductCard";
 import Section from "@/components/ui/Section";
-import {
-  PRODUCTS,
-  PRODUCT_CATEGORIES,
-  type ProductCategory,
-} from "@/lib/data";
+import { PRODUCTS, PRODUCT_CATEGORIES, type ProductCategory } from "@/lib/data";
 import { cn } from "@/lib/cn";
 
 type CategoryFilter = ProductCategory | "Tout";
-type SortOption = "newest" | "price-asc" | "price-desc" | "name-asc";
+type SortOption = "price-asc" | "price-desc" | "name-asc" | "newest";
 
 const CATEGORIES: CategoryFilter[] = ["Tout", ...PRODUCT_CATEGORIES];
 
@@ -29,11 +25,13 @@ export default function CollectionPage() {
   const [sort, setSort] = useState<SortOption>("newest");
 
   const filtered = useMemo(() => {
+    // 1. Filtrer par catégorie
     const list =
       activeCategory === "Tout"
         ? [...PRODUCTS]
         : PRODUCTS.filter((p) => p.category === activeCategory);
 
+    // 2. Trier
     const getPrice = (p: (typeof PRODUCTS)[number]) =>
       Number(p.price.replace(/[^\d]/g, ""));
 
@@ -50,6 +48,7 @@ export default function CollectionPage() {
     }
   }, [activeCategory, sort]);
 
+  // Comptes par catégorie pour afficher dans les filtres
   const counts = useMemo(() => {
     const map: Record<string, number> = { Tout: PRODUCTS.length };
     PRODUCT_CATEGORIES.forEach((cat) => {
@@ -84,6 +83,7 @@ export default function CollectionPage() {
           ============================================ */}
       <Section size="sm" className="pt-10 md:pt-14">
         <div className="flex flex-col gap-6 pb-6 border-b border-[var(--color-espresso)]/10">
+
           {/* Catégories */}
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((cat) => {
@@ -101,9 +101,7 @@ export default function CollectionPage() {
                     isActive
                       ? "bg-[var(--color-bordeaux)] text-[var(--color-cream)]"
                       : "text-[var(--color-espresso)]/65 hover:text-[var(--color-espresso)] border border-[var(--color-espresso)]/15 hover:border-[var(--color-espresso)]/40",
-                    count === 0 &&
-                      cat !== "Tout" &&
-                      "opacity-30 cursor-not-allowed"
+                    count === 0 && cat !== "Tout" && "opacity-30 cursor-not-allowed"
                   )}
                 >
                   {cat}
@@ -186,6 +184,7 @@ export default function CollectionPage() {
             </AnimatePresence>
           </div>
         ) : (
+          /* État vide */
           <div className="py-24 text-center max-w-md mx-auto">
             <p className="text-[clamp(1.25rem,2vw,1.5rem)] font-medium text-[var(--color-espresso)] mb-3">
               Aucune pièce dans cette catégorie.
@@ -209,148 +208,60 @@ export default function CollectionPage() {
       </Section>
 
       {/* ============================================
-          CTA FINALE — dégradé bordeaux profond
-          ============================================ */}
-      <section className="relative mt-16 md:mt-24 overflow-hidden">
-        {/* Dégradé principal — contraste fort entre les stops */}
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(135deg, #1F090A 0%, #4A1D1E 25%, #8B3536 50%, #4A1D1E 75%, #1F090A 100%)",
-          }}
-        />
-
-        {/* Halo lumineux en haut à droite */}
-        <div
-          aria-hidden
-          className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full
-                     bg-[#8B3536]/30 blur-[120px] pointer-events-none"
-        />
-
-        {/* Halo lumineux en bas à gauche */}
-        <div
-          aria-hidden
-          className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full
-                     bg-[#6B2829]/40 blur-[120px] pointer-events-none"
-        />
-
-        {/* Texture subtile — grain pour profondeur */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.08] mix-blend-overlay pointer-events-none"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&q=60')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-
-        {/* Contenu */}
-        <div className="relative">
-          <div className="container-kan py-[clamp(4rem,10vh,7rem)]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-              {/* Texte — 7 colonnes */}
-              <div className="lg:col-span-7">
-                <p className="eyebrow-invert mb-5">Un projet sur-mesure ?</p>
-
-                <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.1] font-medium tracking-[-0.02em] text-[var(--color-cream)] mb-6">
-                  Vous ne trouvez pas
-                  <br />
-                  la pièce qu'il vous faut ?
-                </h2>
-
-                <p className="text-[clamp(0.95rem,1.1vw,1.05rem)] leading-[1.7] text-[var(--color-cream)]/75 max-w-lg">
-                  Nous développons chaque pièce sur-mesure, dans le respect de
-                  vos volumes, vos matières et vos délais. Parlez-nous de votre
-                  projet — nous revenons vers vous sous 48h.
-                </p>
-              </div>
-
-              {/* ============================================
-    CTA FINALE — grand bloc dégradé bordeaux
+    BANDE CTA — fin de page
     ============================================ */}
-<section className="relative overflow-hidden mt-16 md:mt-24">
-  {/* Dégradé principal — 3 tons bien distincts */}
+<section className="relative mt-20 md:mt-28 overflow-hidden">
+  {/* Dégradé subtil mais visible — du crème vers un rosé chaud */}
   <div
     aria-hidden
     className="absolute inset-0"
     style={{
       background:
-        "linear-gradient(135deg, #2A0E0F 0%, #5E2324 50%, #8B3536 100%)",
+        "linear-gradient(180deg, #FBF9F5 0%, #FBF9F5 30%, #F7EFE9 60%, #EFDFD6 100%)",
     }}
   />
 
-  {/* Halo lumineux en haut à droite */}
-  <div
-    aria-hidden
-    className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full
-               bg-[#A03E3F]/40 blur-[120px] pointer-events-none"
-  />
+  <div className="relative container-kan py-16 md:py-20 lg:py-24">
+    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-12">
 
-  {/* Halo lumineux en bas à gauche */}
-  <div
-    aria-hidden
-    className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full
-               bg-[#4A1D1E]/60 blur-[120px] pointer-events-none"
-  />
-
-  {/* Contenu — padding généreux pour que ce soit un VRAI bloc */}
-  <div className="relative container-kan py-20 md:py-28 lg:py-32">
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-
-      {/* Texte — 7 colonnes */}
-      <div className="lg:col-span-7">
-        <p className="eyebrow-invert mb-5">Un projet sur-mesure ?</p>
-
-        <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.1] font-medium tracking-[-0.02em] text-[var(--color-cream)] mb-6">
-          Vous ne trouvez pas
-          <br />
-          la pièce qu'il vous faut ?
+      {/* Texte */}
+      <div className="max-w-xl">
+        <p className="eyebrow-accent mb-4">Un projet sur-mesure ?</p>
+        <h2 className="text-[clamp(1.5rem,2.5vw,2rem)] leading-tight font-medium text-[var(--color-espresso)] mb-3">
+          Vous ne trouvez pas la pièce qu'il vous faut ?
         </h2>
-
-        <p className="text-[clamp(0.95rem,1.1vw,1.05rem)] leading-[1.7] text-[var(--color-cream)]/75 max-w-lg">
-          Nous développons chaque pièce sur-mesure, dans le respect de
-          vos volumes, vos matières et vos délais. Parlez-nous de votre
-          projet — nous revenons vers vous sous 48h.
+        <p className="text-[0.92rem] leading-relaxed text-[var(--color-espresso)]/60">
+          Nous développons chaque pièce sur-mesure, dans le respect de vos
+          volumes, vos matières et vos délais.
         </p>
       </div>
 
-      {/* CTA — 5 colonnes, aligné à droite */}
-      <div className="lg:col-span-5 flex lg:justify-end">
-        <a
-          href="/start-project"
-          className="group inline-flex items-center gap-4
+      {/* Bouton pro avec vraie icône */}
+      <a
+        href="/start-project"
+        className="group inline-flex items-center gap-3 shrink-0
+                   bg-[var(--color-bordeaux)] text-[var(--color-cream)]
+                   pl-7 pr-3 py-2.5 rounded-full
+                   text-[0.72rem] font-semibold uppercase tracking-[0.22em]
+                   hover:bg-[var(--color-bordeaux-deep)]
+                   shadow-[0_8px_30px_-10px_rgba(74,29,30,0.5)]
+                   hover:shadow-[0_12px_40px_-10px_rgba(74,29,30,0.6)]
+                   transition-all duration-300"
+      >
+        <span>Start a Project</span>
+        <span
+          className="inline-flex items-center justify-center
+                     w-9 h-9 rounded-full
                      bg-[var(--color-cream)] text-[var(--color-bordeaux)]
-                     pl-7 pr-2 py-2
-                     rounded-full
-                     text-[0.72rem] font-semibold uppercase tracking-[0.22em]
-                     hover:bg-[var(--color-sand)]
-                     transition-all duration-300
-                     shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+                     transition-transform duration-300
+                     group-hover:translate-x-0.5"
         >
-          <span>Démarrer un projet</span>
-
-          <span
-            className="relative inline-flex items-center justify-center
-                       w-11 h-11 rounded-full
-                       bg-[var(--color-bordeaux)] text-[var(--color-cream)]
-                       transition-transform duration-300
-                       group-hover:translate-x-0.5"
-          >
-            <ArrowUpRight size={16} strokeWidth={2} />
-          </span>
-        </a>
-      </div>
+          <ArrowUpRight size={15} strokeWidth={2} />
+        </span>
+      </a>
     </div>
   </div>
 </section>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

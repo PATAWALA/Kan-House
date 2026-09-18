@@ -1,14 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight,Mail } from "lucide-react";
-import {
-  FaInstagram,
-  FaLinkedinIn,
-  FaFacebookF,
-  FaPinterestP,
-  FaYoutube,
-  FaWhatsapp,
-  FaWeixin,      // WeChat (Chine)
-} from "react-icons/fa";
+import { ArrowUpRight, Mail } from "lucide-react";
+import { FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
 const SECTIONS = [
   {
@@ -44,7 +36,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[var(--color-bordeaux-deep)] text-[var(--color-cream)] mt-32">
+    <footer className="bg-[var(--color-bordeaux-deep)] text-[var(--color-cream)]">
       {/* ---------- Bloc principal ---------- */}
       <div className="container-kan py-20 md:py-24 grid gap-14 lg:grid-cols-12">
         {/* Brand */}
@@ -74,7 +66,7 @@ export default function Footer() {
                 aria-label={label}
                 className="w-10 h-10 rounded-full border border-[var(--color-cream)]/20 grid place-items-center text-[var(--color-cream)]/75 hover:text-[var(--color-cream)] hover:border-[var(--color-cream)]/50 transition-all"
               >
-                <Icon size={16} strokeWidth={1.6} />
+                <Icon size={16} />
               </a>
             ))}
           </div>
