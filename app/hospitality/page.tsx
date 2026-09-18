@@ -244,9 +244,9 @@ export default function HospitalityPage() {
                           bg-[var(--color-bordeaux)] text-[var(--color-cream)]">
             <p className="eyebrow-invert mb-5">Prêt à démarrer ?</p>
             <h3 className="text-[clamp(1.35rem,2.5vw,1.75rem)] leading-[1.2]
-                           font-medium mb-5">
-              Recevez un devis structuré sous 48h.
-            </h3>
+               font-medium text-[var(--color-cream)] mb-5">
+                Recevez un devis structuré sous 48h.
+               </h3>
             <p className="text-[0.9rem] leading-[1.7] text-[var(--color-cream)]/70 mb-8">
               Quelques minutes suffisent pour nous transmettre les grandes
               lignes de votre projet. Notre équipe revient vers vous avec une

@@ -44,6 +44,80 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   "Textiles",
 ];
 
+export type DigitalCategory =
+  | "Fournisseurs"
+  | "Logistique"
+  | "Coaching"
+  | "Guides";
+
+export type DigitalProduct = {
+  id: string;
+  title: string;
+  category: DigitalCategory;
+  price: string;
+  description: string;
+  format: string;        // ex. "PDF · 45 pages", "Coaching 1h", "Liste · 120 contacts"
+  badge?: string;        // ex. "Bestseller", "Nouveau"
+  image: string;
+};
+
+export const DIGITAL_CATEGORIES: DigitalCategory[] = [
+  "Fournisseurs",
+  "Logistique",
+  "Coaching",
+  "Guides",
+];
+
+export const DIGITAL_PRODUCTS: DigitalProduct[] = [
+  {
+    id: "fournisseurs-articles",
+    title: "Fournisseurs Articles + Accessoires",
+    category: "Fournisseurs",
+    price: "89,99 €",
+    description:
+      "Liste vérifiée de fournisseurs chinois pour articles et accessoires. Contacts directs, prix indicatifs, conditions de commande.",
+    format: "PDF · 45 pages",
+    badge: "Bestseller",
+    image:
+      "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&q=85",
+  },
+  {
+    id: "fournisseurs-meches",
+    title: "Fournisseurs Mèches",
+    category: "Fournisseurs",
+    price: "89,99 €",
+    description:
+      "Sélection d'usines spécialisées en mèches naturelles, synthétiques et perruques. Contacts QC, délais, minimums de commande.",
+    format: "PDF · 32 pages",
+    image:
+      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&q=85",
+  },
+  {
+    id: "transitaire-guangzhou",
+    title: "Transitaires Guangzhou",
+    category: "Logistique",
+    price: "59,99 €",
+    description:
+      "Annuaire de transitaires fiables basés à Guangzhou. Tarifs indicatifs, zones couvertes, contacts directs et retours d'expérience.",
+    format: "PDF · 24 pages",
+    image:
+      "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1200&q=85",
+  },
+  {
+    id: "accompagnement-sourcing",
+    title: "Accompagnement Sourcing à Distance",
+    category: "Coaching",
+    price: "699 €",
+    description:
+      "Session individuelle de 2h avec un expert sourcing. Analyse de votre projet, identification des fournisseurs, méthode d'achat et contrôle qualité.",
+    format: "Coaching · 2h en visio",
+    badge: "Premium",
+    image:
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&q=85",
+  },
+];
+
+
 // ============================================
 // PRODUITS
 // ============================================
