@@ -53,6 +53,23 @@ export default function Footer() {
             résidences privées et clients exigeants.
           </p>
 
+          {/* CTA — Bouton Start a Project */}
+          <Link
+            href="/start-project"
+            className="group inline-flex items-center gap-2
+                       bg-[var(--color-cream)] text-[var(--color-bordeaux)]
+                       px-5 py-3 rounded-full
+                       text-[0.7rem] font-semibold uppercase tracking-[0.22em]
+                       hover:bg-[var(--color-sand)]
+                       transition-colors mb-8"
+          >
+            Start a Project
+            <ArrowUpRight
+              size={14}
+              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
+
           {/* Réseaux */}
           <div className="flex items-center gap-3">
             {[
@@ -90,26 +107,6 @@ export default function Footer() {
             </ul>
           </div>
         ))}
-
-        {/* CTA encart */}
-        <div className="lg:col-span-3 lg:col-start-10">
-          <p className="eyebrow text-[var(--color-cream)]/45 mb-5">
-            Prêt à démarrer ?
-          </p>
-          <p className="text-sm text-[var(--color-cream)]/70 leading-relaxed mb-6">
-            Recevez un devis structuré sous 48h pour votre projet Hospitality.
-          </p>
-          <Link
-            href="/start-project"
-            className="group inline-flex items-center gap-2 bg-[var(--color-cream)] text-[var(--color-bordeaux)] px-5 py-3 rounded-full text-[0.7rem] font-semibold uppercase tracking-[0.22em] hover:bg-[var(--color-sand)] transition-colors"
-          >
-            Start a Project
-            <ArrowUpRight
-              size={14}
-              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </Link>
-        </div>
       </div>
 
       {/* ---------- Barre inférieure ---------- */}
