@@ -15,7 +15,7 @@ export default function Hero() {
           ============================================ */}
       <div className="absolute inset-0">
         <Image
-          src="/logo.png"
+          src="/hero.png"
           alt="Intérieur signature — KAN HOUSE"
           fill
           priority
