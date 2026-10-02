@@ -5,7 +5,7 @@ const SERVICES = ["Private Residences", "Hospitality", "Commercial Spaces"];
 
 export default function BespokeSolutions() {
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[560px]">
+    <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
 
       {/* Bloc bordeaux */}
       <div className="bg-[var(--color-bordeaux)] text-[var(--color-cafe-light)]
@@ -24,9 +24,8 @@ export default function BespokeSolutions() {
 
           <p className="text-[0.88rem] leading-[1.75]
                         text-[var(--color-cafe-light)]/70 mb-10">
-            From private residences to international hospitality projects,
-            we curate, source and deliver furniture that responds to the
-            architecture, the rhythm and the story of each space.
+            We support private clients, interior designers and hospitality
+            projects with tailored sourcing solutions, from concept to delivery.
           </p>
 
           <Link
@@ -45,7 +44,7 @@ export default function BespokeSolutions() {
         </div>
       </div>
 
-      {/* Image + services */}
+      {/* Image + liste services */}
       <div className="relative min-h-[420px] lg:min-h-full overflow-hidden bg-[var(--color-cafe-dark)]">
         <Image
           src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1600&q=85"
@@ -60,7 +59,7 @@ export default function BespokeSolutions() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(26,26,26,0.4) 0%, transparent 45%)",
+              "linear-gradient(to bottom, rgba(26,26,26,0.45) 0%, transparent 40%)",
           }}
         />
 
