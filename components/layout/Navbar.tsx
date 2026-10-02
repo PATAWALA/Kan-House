@@ -28,18 +28,18 @@ export default function Navbar() {
     <header
       className="sticky top-0 z-50"
       style={{
-        backgroundColor: "var(--color-cafe-light)",
-        borderBottom: "1px solid var(--color-border-line)",
+        backgroundColor: "var(--color-bordeaux)",
+        borderBottom: "1px solid rgba(239, 236, 230, 0.12)",
       }}
     >
       <nav className="container-kan flex items-center justify-between h-20 relative">
 
         {/* Logo + sous-titre */}
         <Link href="/" className="flex flex-col leading-none">
-          <span className="text-[1.05rem] font-medium tracking-[0.16em] text-[var(--color-espresso)]">
+          <span className="text-[1.05rem] font-medium tracking-[0.16em] text-[var(--color-cafe-light)]">
             KAN HOUSE
           </span>
-          <span className="hidden sm:block text-[0.52rem] font-medium tracking-[0.28em] text-[var(--color-espresso)]/50 mt-1">
+          <span className="hidden sm:block text-[0.52rem] font-medium tracking-[0.28em] text-[var(--color-cafe-light)]/55 mt-1">
             FURNITURE • INTERIORS • SOURCING
           </span>
         </Link>
@@ -57,10 +57,10 @@ export default function Navbar() {
                   href={l.href}
                   className={cn(
                     "relative text-[0.68rem] font-medium uppercase tracking-[0.24em] transition-colors",
-                    "after:absolute after:-bottom-1 after:left-0 after:h-px after:bg-[var(--color-espresso)] after:transition-all after:duration-300",
+                    "after:absolute after:-bottom-1 after:left-0 after:h-px after:bg-[var(--color-cafe-light)] after:transition-all after:duration-300",
                     active
-                      ? "text-[var(--color-espresso)] after:w-full"
-                      : "text-[var(--color-espresso)]/55 hover:text-[var(--color-espresso)] after:w-0 hover:after:w-full"
+                      ? "text-[var(--color-cafe-light)] after:w-full"
+                      : "text-[var(--color-cafe-light)]/60 hover:text-[var(--color-cafe-light)] after:w-0 hover:after:w-full"
                   )}
                 >
                   {l.label}
@@ -74,7 +74,7 @@ export default function Navbar() {
         <div className="flex items-center gap-0.5">
           <button
             aria-label="Rechercher"
-            className="p-2.5 text-[var(--color-espresso)]/70 hover:text-[var(--color-espresso)] transition-colors"
+            className="p-2.5 text-[var(--color-cafe-light)]/75 hover:text-[var(--color-cafe-light)] transition-colors"
           >
             <Search size={17} strokeWidth={1.4} />
           </button>
@@ -82,12 +82,12 @@ export default function Navbar() {
           <Link
             href="/cart"
             aria-label="Panier"
-            className="relative p-2.5 text-[var(--color-espresso)]/70 hover:text-[var(--color-espresso)] transition-colors"
+            className="relative p-2.5 text-[var(--color-cafe-light)]/75 hover:text-[var(--color-cafe-light)] transition-colors"
           >
             <ShoppingBag size={17} strokeWidth={1.4} />
             <span
               className="absolute -top-0.5 -right-0.5
-                         bg-[var(--color-espresso)] text-[var(--color-cafe-light)]
+                         bg-[var(--color-cafe-light)] text-[var(--color-bordeaux)]
                          text-[9px] font-semibold
                          min-w-[15px] h-[15px] px-1
                          grid place-items-center tabular-nums"
@@ -99,7 +99,7 @@ export default function Navbar() {
           <button
             aria-label="Menu"
             aria-expanded={open}
-            className="p-2.5 text-[var(--color-espresso)]/70 hover:text-[var(--color-espresso)] transition-colors"
+            className="p-2.5 text-[var(--color-cafe-light)]/75 hover:text-[var(--color-cafe-light)] transition-colors"
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X size={18} /> : <Menu size={18} />}
@@ -117,8 +117,8 @@ export default function Navbar() {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="lg:hidden overflow-hidden"
             style={{
-              backgroundColor: "var(--color-cafe-light)",
-              borderTop: "1px solid var(--color-border-line)",
+              backgroundColor: "var(--color-bordeaux-deep)",
+              borderTop: "1px solid rgba(239, 236, 230, 0.15)",
             }}
           >
             <ul className="container-kan py-6 space-y-4">
@@ -128,8 +128,8 @@ export default function Navbar() {
                     href={l.href}
                     onClick={() => setOpen(false)}
                     className="block text-[1.05rem] uppercase tracking-[0.2em]
-                               text-[var(--color-espresso)]
-                               hover:text-[var(--color-bordeaux)] transition-colors"
+                               text-[var(--color-cafe-light)]
+                               hover:text-[var(--color-taupe)] transition-colors"
                   >
                     {l.label}
                   </Link>
