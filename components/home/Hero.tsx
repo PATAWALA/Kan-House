@@ -10,7 +10,9 @@ export default function Hero() {
   return (
     <section className="relative w-full h-[calc(100vh-5rem)] min-h-[620px] overflow-hidden">
 
-      {/* IMAGE DE FOND */}
+      {/* ============================================
+          IMAGE DE FOND
+          ============================================ */}
       <div className="absolute inset-0">
         <Image
           src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=2400&q=90"
@@ -20,27 +22,42 @@ export default function Hero() {
           sizes="100vw"
           className="object-cover"
         />
-        {/* Voile diagonal : plus dense à droite et en haut pour lisibilité */}
+
+        {/* Voile principal — dégradé horizontal
+            Transparent à GAUCHE → dense à DROITE (côté texte) */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(120deg, rgba(26,26,26,0.15) 0%, rgba(26,26,26,0.35) 55%, rgba(26,26,26,0.75) 100%)",
+              "linear-gradient(to right, rgba(26,26,26,0.05) 0%, rgba(26,26,26,0.15) 40%, rgba(26,26,26,0.55) 70%, rgba(26,26,26,0.80) 100%)",
           }}
         />
-        {/* Voile vertical secondaire pour le bas */}
+
+        {/* Voile secondaire en haut pour la tagline gauche */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-1/3"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(26,26,26,0.35) 0%, transparent 100%)",
+          }}
+        />
+
+        {/* Léger voile en bas pour l'indicateur 01/02/03 */}
         <div
           aria-hidden
           className="absolute inset-x-0 bottom-0 h-1/3"
           style={{
             background:
-              "linear-gradient(to top, rgba(26,26,26,0.55) 0%, transparent 100%)",
+              "linear-gradient(to top, rgba(26,26,26,0.25) 0%, transparent 100%)",
           }}
         />
       </div>
 
-      {/* TAGLINE — HAUT GAUCHE */}
+      {/* ============================================
+          TAGLINE — HAUT GAUCHE
+          ============================================ */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -62,7 +79,9 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* BLOC PRINCIPAL — HAUT DROITE */}
+      {/* ============================================
+          BLOC PRINCIPAL — HAUT DROITE (dans la zone sombre)
+          ============================================ */}
       <div className="relative z-10 h-full">
         <div className="container-kan h-full flex items-start pt-10 md:pt-14">
           <div className="ml-auto max-w-xl text-left pt-6 md:pt-8">
@@ -74,9 +93,7 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="text-[0.6rem] font-medium uppercase tracking-[0.28em]
                          text-[var(--color-cafe-light)] mb-5"
-              style={{
-                textShadow: "0 2px 10px rgba(0,0,0,0.55)",
-              }}
+              style={{ textShadow: "0 2px 10px rgba(0,0,0,0.55)" }}
             >
               Modern Living. Timeless Spaces.
             </motion.p>
@@ -90,7 +107,7 @@ export default function Hero() {
                          tracking-[-0.02em] font-normal
                          text-[var(--color-cafe-light)] mb-8"
               style={{
-                textShadow: "0 4px 24px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.4)",
+                textShadow: "0 4px 24px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.35)",
               }}
             >
               Furniture, curated
@@ -114,9 +131,6 @@ export default function Hero() {
                            hover:bg-[var(--color-cafe-light)] hover:text-[var(--color-espresso)]
                            transition-colors duration-300
                            backdrop-blur-[2px]"
-                style={{
-                  textShadow: "0 1px 4px rgba(0,0,0,0.3)",
-                }}
               >
                 Discover the Collection
                 <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -126,7 +140,9 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* INDICATEUR LATÉRAL DROIT */}
+      {/* ============================================
+          INDICATEUR — 01 / 02 / 03
+          ============================================ */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
