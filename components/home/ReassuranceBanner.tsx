@@ -1,43 +1,40 @@
 import { Package, Home, Globe2, Gem } from "lucide-react";
 
 const FEATURES = [
-  {
-    icon: Package,
-    label: "Carefully selected suppliers",
-  },
-  {
-    icon: Home,
-    label: "Tailored solutions for private & hospitality",
-  },
-  {
-    icon: Globe2,
-    label: "Worldwide sourcing",
-  },
-  {
-    icon: Gem,
-    label: "Aesthetics, quality and functionality",
-  },
+  { icon: Package, label: "Carefully selected suppliers" },
+  { icon: Home, label: "Tailored solutions for private & hospitality" },
+  { icon: Globe2, label: "Worldwide sourcing" },
+  { icon: Gem, label: "Aesthetics, quality and functionality" },
 ];
 
 export default function ReassuranceBanner() {
   return (
-    <section className="border-y border-[var(--color-espresso)]/10 bg-[var(--color-cream)]">
-      <div className="container-kan grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8 py-12 md:py-16">
-        {FEATURES.map(({ icon: Icon, label }) => (
+    <section
+      className="bg-[var(--color-cafe-light)]"
+      style={{
+        borderTop: "1px solid var(--color-border-line)",
+        borderBottom: "1px solid var(--color-border-line)",
+      }}
+    >
+      <div className="container-kan grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        {FEATURES.map(({ icon: Icon, label }, index) => (
           <div
             key={label}
-            className="flex flex-col items-start gap-4
-                       sm:items-center sm:text-center
-                       sm:border-r sm:border-[var(--color-espresso)]/10
-                       sm:last:border-r-0
-                       px-2"
+            className="flex flex-col items-center text-center gap-4 py-10 px-4"
+            style={{
+              borderRight:
+                index === FEATURES.length - 1
+                  ? "none"
+                  : "1px solid var(--color-border-line)",
+            }}
           >
             <Icon
               size={22}
               strokeWidth={1.2}
               className="text-[var(--color-espresso)]/70"
             />
-            <p className="text-[0.68rem] font-medium uppercase tracking-[0.22em] text-[var(--color-espresso)]/75 max-w-[16rem] leading-[1.7]">
+            <p className="text-[0.65rem] font-medium uppercase tracking-[0.22em]
+                          text-[var(--color-espresso)]/75 max-w-[15rem] leading-[1.7]">
               {label}
             </p>
           </div>

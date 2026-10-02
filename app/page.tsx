@@ -1,13 +1,17 @@
 import Hero from "@/components/home/Hero";
-import CollectionGrid from "@/components/home/CollectionGrid";
-import HospitalityBanner from "@/components/home/HospitalityBanner";
+import ReassuranceBanner from "@/components/home/ReassuranceBanner";
+import OurCollection from "@/components/home/OurCollection";
+import BespokeSolutions from "@/components/home/BespokeSolutions";
+import MoreThanFurniture from "@/components/home/MoreThanFurniture";
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <CollectionGrid />
-      <HospitalityBanner />
+      <ReassuranceBanner />
+      <OurCollection />
+      <BespokeSolutions />
+      <MoreThanFurniture />
     </>
   );
 }
