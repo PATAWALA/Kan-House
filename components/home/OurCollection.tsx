@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import Section from "@/components/ui/Section";
 
 const ITEMS = [
   {
@@ -23,16 +22,16 @@ const ITEMS = [
 
 export default function OurCollection() {
   return (
-    <section
-      className="bg-[var(--color-cafe-light)]"
-      style={{ borderBottom: "1px solid var(--color-border-line)" }}
-    >
+    <section className="bg-[var(--color-cafe-light)]">
       <div className="container-kan py-20 md:py-28">
+
         {/* En-tête */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-14 md:mb-20">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12 md:mb-16">
           <div className="max-w-xl">
             <p className="eyebrow mb-5">Our Collection</p>
-            <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.15] tracking-[-0.02em] font-normal text-[var(--color-espresso)]">
+            <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.15]
+                           tracking-[-0.02em] font-normal
+                           text-[var(--color-espresso)]">
               Iconic pieces for modern living.
             </h2>
           </div>
@@ -42,27 +41,19 @@ export default function OurCollection() {
           </Link>
         </div>
 
-        {/* Grille — 4 colonnes, séparations fines */}
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-          style={{
-            borderTop: "1px solid var(--color-border-line)",
-            borderBottom: "1px solid var(--color-border-line)",
-          }}
-        >
-          {ITEMS.map((item, index) => (
+        {/* Grille — 4 colonnes avec espacement et bordures fines */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+          {ITEMS.map((item) => (
             <Link
               key={item.title}
               href="/collection"
-              className="group flex flex-col p-5"
-              style={{
-                borderRight:
-                  index === ITEMS.length - 1
-                    ? "none"
-                    : "1px solid var(--color-border-line)",
-              }}
+              className="group flex flex-col"
             >
-              <div className="ratio-portrait w-full bg-[var(--color-cafe-dark)]">
+              {/* Image avec bordure fine */}
+              <div
+                className="ratio-portrait w-full bg-[var(--color-cafe-dark)] relative"
+                style={{ border: "1px solid var(--color-border-line)" }}
+              >
                 <Image
                   src={item.image}
                   alt={item.title}
@@ -73,7 +64,8 @@ export default function OurCollection() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 pt-5">
+              {/* Catégorie + Explore */}
+              <div className="flex flex-col gap-2 pt-4">
                 <span className="text-[0.68rem] font-medium uppercase tracking-[0.24em]
                                  text-[var(--color-espresso)]">
                   {item.title}
