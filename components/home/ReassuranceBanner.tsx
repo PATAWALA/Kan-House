@@ -16,32 +16,31 @@ export default function ReassuranceBanner() {
         borderBottom: "1px solid var(--color-border-line)",
       }}
     >
-      <div className="container-kan grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        {FEATURES.map(({ icon: Icon, label }, index) => (
-          <div
-            key={label}
-            className="flex flex-row items-center gap-4 py-8 px-4
-                       sm:flex-col sm:items-start sm:text-left sm:gap-3
-                       lg:justify-center"
-            style={{
-              borderRight:
-                index === FEATURES.length - 1
-                  ? "none"
-                  : "1px solid var(--color-border-line)",
-            }}
-          >
-            <Icon
-              size={20}
-              strokeWidth={1.2}
-              className="text-[var(--color-espresso)]/65 shrink-0"
-            />
-            <p className="text-[0.62rem] font-medium uppercase tracking-[0.2em]
-                          text-[var(--color-espresso)]/70 leading-[1.7]
-                          max-w-[15rem]">
-              {label}
-            </p>
-          </div>
-        ))}
+      <div className="container-kan">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4
+                        gap-x-8 lg:gap-x-12
+                        py-10 md:py-12">
+          {FEATURES.map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex items-center gap-4
+                         py-4 sm:py-2
+                         sm:justify-center
+                         lg:justify-start"
+            >
+              <Icon
+                size={20}
+                strokeWidth={1.3}
+                className="text-[var(--color-espresso)]/70 shrink-0"
+              />
+              <p className="text-[0.68rem] font-medium uppercase tracking-[0.18em]
+                            text-[var(--color-espresso)]/75 leading-[1.6]
+                            max-w-[14rem]">
+                {label}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
