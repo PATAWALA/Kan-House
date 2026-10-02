@@ -8,10 +8,10 @@ const SLIDES = ["01", "02", "03"];
 
 export default function Hero() {
   return (
-    <section className="relative w-full h-[calc(100vh-5rem)] min-h-[600px] overflow-hidden">
+    <section className="relative w-full h-[calc(100vh-5rem)] min-h-[620px] overflow-hidden">
 
       {/* ============================================
-          IMAGE DE FOND
+          IMAGE DE FOND — salon signature
           ============================================ */}
       <div className="absolute inset-0">
         <Image
@@ -22,30 +22,33 @@ export default function Hero() {
           sizes="100vw"
           className="object-cover"
         />
-        {/* Voile pour lisibilité */}
+        {/* Voile — plus dense en haut et en bas pour la lisibilité */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(26,26,26,0.20) 0%, rgba(26,26,26,0.30) 50%, rgba(26,26,26,0.60) 100%)",
+              "linear-gradient(to bottom, rgba(26,26,26,0.35) 0%, rgba(26,26,26,0.10) 35%, rgba(26,26,26,0.15) 70%, rgba(26,26,26,0.45) 100%)",
           }}
         />
       </div>
 
       {/* ============================================
-          TEXTE HAUT GAUCHE — tagline
+          TAGLINE — HAUT GAUCHE
           ============================================ */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}
-        className="absolute top-8 left-0 right-0 z-10"
+        className="absolute top-10 md:top-14 left-0 right-0 z-10"
       >
         <div className="container-kan">
-          <p className="text-[0.68rem] font-medium tracking-[0.24em] uppercase
-                        text-[var(--color-cafe-light)]/85">
-            Spaces that feel like you.
+          <p className="max-w-[12rem] text-[0.72rem] font-normal leading-[1.6]
+                        tracking-[0.02em]
+                        text-[var(--color-cafe-light)]/90">
+            Spaces
+            <br />
+            that feel like you.
           </p>
         </div>
       </motion.div>
@@ -54,16 +57,16 @@ export default function Hero() {
           BLOC PRINCIPAL — HAUT DROITE
           ============================================ */}
       <div className="relative z-10 h-full">
-        <div className="container-kan h-full flex items-start pt-24 md:pt-32">
-          <div className="ml-auto max-w-lg text-left">
+        <div className="container-kan h-full flex items-start pt-10 md:pt-14">
+          <div className="ml-auto max-w-xl text-left pt-6 md:pt-8">
 
             {/* Sur-titre */}
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="text-[0.62rem] font-medium uppercase tracking-[0.28em]
-                         text-[var(--color-cafe-light)]/70 mb-5"
+              className="text-[0.6rem] font-medium uppercase tracking-[0.28em]
+                         text-[var(--color-cafe-light)]/85 mb-5"
             >
               Modern Living. Timeless Spaces.
             </motion.p>
@@ -73,7 +76,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.15]
+              className="text-[clamp(1.9rem,4vw,3.25rem)] leading-[1.12]
                          tracking-[-0.02em] font-normal
                          text-[var(--color-cafe-light)] mb-8"
             >
@@ -82,7 +85,7 @@ export default function Hero() {
               for distinctive spaces.
             </motion.h1>
 
-            {/* CTA */}
+            {/* CTA — bouton bordure fine */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -91,10 +94,10 @@ export default function Hero() {
               <Link
                 href="/collection"
                 className="group inline-flex items-center gap-3
-                           border border-[var(--color-cafe-light)]/60
+                           border border-[var(--color-cafe-light)]/70
                            text-[var(--color-cafe-light)]
-                           px-6 py-3.5
-                           text-[0.68rem] font-medium uppercase tracking-[0.22em]
+                           px-5 py-3
+                           text-[0.65rem] font-medium uppercase tracking-[0.22em]
                            hover:bg-[var(--color-cafe-light)] hover:text-[var(--color-espresso)]
                            transition-colors duration-300"
               >
@@ -113,19 +116,19 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1 }}
-        className="hidden md:flex absolute right-6 lg:right-10 top-1/2 -translate-y-1/2 z-10
-                   flex-col items-end gap-4"
+        className="hidden md:flex absolute right-8 lg:right-12 top-1/2 -translate-y-1/2 z-10
+                   flex-col items-end gap-5"
       >
         {SLIDES.map((s, i) => (
           <button
             key={s}
-            className="group flex items-center gap-3 text-[0.7rem] tabular-nums tracking-[0.2em]"
+            className="group flex items-center gap-3 text-[0.65rem] tabular-nums tracking-[0.22em]"
           >
             <span
               className={
                 i === 0
                   ? "text-[var(--color-cafe-light)] font-medium"
-                  : "text-[var(--color-cafe-light)]/40 hover:text-[var(--color-cafe-light)]/70 transition-colors"
+                  : "text-[var(--color-cafe-light)]/45 hover:text-[var(--color-cafe-light)]/80 transition-colors"
               }
             >
               {s}
@@ -133,8 +136,8 @@ export default function Hero() {
             <span
               className={
                 i === 0
-                  ? "block w-6 h-px bg-[var(--color-cafe-light)]"
-                  : "block w-3 h-px bg-[var(--color-cafe-light)]/30 group-hover:w-6 transition-all"
+                  ? "block w-7 h-px bg-[var(--color-cafe-light)]"
+                  : "block w-3 h-px bg-[var(--color-cafe-light)]/35 group-hover:w-7 transition-all duration-300"
               }
             />
           </button>
