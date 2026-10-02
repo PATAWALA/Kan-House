@@ -13,7 +13,8 @@ export default function ReassuranceBanner() {
       className="bg-[var(--color-cafe-light)]"
       style={{
         borderTop: "1px solid var(--color-border-line)",
-        borderBottom: "1px solid var(--color-border-line)",
+        // ↑ garde uniquement la bordure du HAUT
+        // pas de borderBottom pour fondre dans la section Collection
       }}
     >
       <div className="container-kan">
