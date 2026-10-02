@@ -32,29 +32,36 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       viewport={{ once: true, margin: "-60px" }}
       transition={{
         duration: 0.5,
-        delay: (index % 3) * 0.06,
+        delay: (index % 4) * 0.06,
         ease: [0.22, 1, 0.36, 1],
       }}
       className="group flex flex-col"
     >
-      {/* IMAGE — zéro cadre */}
+      {/* IMAGE — ratio 4:5, fond café dark */}
       <Link href={`/collection/${product.id}`} className="block">
         <div className="ratio-portrait w-full bg-[var(--color-cafe-dark)]">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             className="object-cover transition-transform duration-[1.4s] ease-out
                        group-hover:scale-[1.04]"
           />
         </div>
       </Link>
 
-      {/* META — juste nom + prix */}
-      <div className="pt-4">
+      {/* META — catégorie, nom, prix, ajouter */}
+      <div className="pt-5 flex flex-col gap-2">
+        {/* Catégorie */}
+        <span className="text-[0.6rem] font-medium uppercase tracking-[0.24em]
+                         text-[var(--color-espresso)]/45">
+          {product.category}
+        </span>
+
+        {/* Nom */}
         <Link href={`/collection/${product.id}`}>
-          <h3 className="text-[0.92rem] md:text-[0.98rem] font-medium leading-[1.35]
+          <h3 className="text-[0.92rem] font-medium leading-[1.35]
                          text-[var(--color-espresso)]
                          group-hover:text-[var(--color-bordeaux)]
                          transition-colors duration-300">
@@ -62,33 +69,35 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           </h3>
         </Link>
 
-        <p className="text-[0.85rem] text-[var(--color-espresso)]/55 mt-1">
-          {product.price}
-        </p>
+        {/* Prix + Ajouter sur la même ligne */}
+        <div className="flex items-center justify-between gap-3 mt-1">
+          <p className="text-[0.85rem] text-[var(--color-espresso)]/60">
+            {product.price}
+          </p>
 
-        {/* Bouton Ajouter — discret, texte souligné */}
-        <button
-          onClick={handleAdd}
-          disabled={justAdded}
-          className="mt-3 inline-flex items-center gap-1.5
-                     text-[0.65rem] font-medium uppercase tracking-[0.2em]
-                     text-[var(--color-espresso)]/70
-                     underline underline-offset-[5px] decoration-[1px]
-                     hover:text-[var(--color-bordeaux)]
-                     transition-colors disabled:opacity-60"
-        >
-          {justAdded ? (
-            <>
-              <Check size={11} strokeWidth={2.2} />
-              Ajouté
-            </>
-          ) : (
-            <>
-              <Plus size={11} strokeWidth={2.2} />
-              Ajouter
-            </>
-          )}
-        </button>
+          <button
+            onClick={handleAdd}
+            disabled={justAdded}
+            className="inline-flex items-center gap-1
+                       text-[0.6rem] font-medium uppercase tracking-[0.2em]
+                       text-[var(--color-espresso)]/50
+                       underline underline-offset-[5px] decoration-[1px]
+                       hover:text-[var(--color-bordeaux)]
+                       transition-colors disabled:opacity-60"
+          >
+            {justAdded ? (
+              <>
+                <Check size={10} strokeWidth={2.2} />
+                Ajouté
+              </>
+            ) : (
+              <>
+                <Plus size={10} strokeWidth={2.2} />
+                Ajouter
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </motion.article>
   );

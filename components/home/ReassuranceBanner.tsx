@@ -20,7 +20,9 @@ export default function ReassuranceBanner() {
         {FEATURES.map(({ icon: Icon, label }, index) => (
           <div
             key={label}
-            className="flex flex-col items-center text-center gap-4 py-10 px-4"
+            className="flex flex-row items-center gap-4 py-8 px-4
+                       sm:flex-col sm:items-start sm:text-left sm:gap-3
+                       lg:justify-center"
             style={{
               borderRight:
                 index === FEATURES.length - 1
@@ -29,12 +31,13 @@ export default function ReassuranceBanner() {
             }}
           >
             <Icon
-              size={22}
+              size={20}
               strokeWidth={1.2}
-              className="text-[var(--color-espresso)]/70"
+              className="text-[var(--color-espresso)]/65 shrink-0"
             />
-            <p className="text-[0.65rem] font-medium uppercase tracking-[0.22em]
-                          text-[var(--color-espresso)]/75 max-w-[15rem] leading-[1.7]">
+            <p className="text-[0.62rem] font-medium uppercase tracking-[0.2em]
+                          text-[var(--color-espresso)]/70 leading-[1.7]
+                          max-w-[15rem]">
               {label}
             </p>
           </div>
