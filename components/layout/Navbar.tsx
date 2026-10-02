@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Menu, X, ArrowUpRight } from "lucide-react";
+import { Search, ShoppingBag, Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useCartStore } from "@/lib/store/cart";
 
 const NAV_LINKS = [
+  { label: "Home", href: "/" },
   { label: "Collection", href: "/collection" },
-  { label: "Ressources", href: "/ressources" },
   { label: "Projects", href: "/projects" },
   { label: "Hospitality", href: "/hospitality" },
   { label: "About", href: "/about" },
@@ -20,37 +20,41 @@ export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // ✅ Compteur panier connecté au store — se met à jour automatiquement
   const totalItems = useCartStore((s) =>
     s.items.reduce((sum, item) => sum + item.quantity, 0)
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-[var(--color-bordeaux)] text-[var(--color-cream)]">
+    <header className="sticky top-0 z-50 bg-[var(--color-cream)] border-b border-[var(--color-espresso)]/10">
       <nav className="container-kan flex items-center justify-between h-20">
-        {/* Brand */}
-        <Link
-          href="/"
-          className="text-2xl leading-none tracking-tight font-medium"
-        >
-          Kan<span className="text-[var(--color-taupe)]">.</span>House
+
+        {/* ---------- ZONE GAUCHE : Logo + sous-titre ---------- */}
+        <Link href="/" className="flex flex-col leading-none">
+          <span className="text-[1.15rem] font-medium tracking-[0.12em] text-[var(--color-espresso)]">
+            KAN HOUSE
+          </span>
+          <span className="text-[0.55rem] font-medium tracking-[0.28em] text-[var(--color-espresso)]/50 mt-1">
+            FURNITURE • INTERIORS • SOURCING
+          </span>
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden lg:flex items-center gap-9">
+        {/* ---------- ZONE CENTRE : Navigation ---------- */}
+        <ul className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
           {NAV_LINKS.map((l) => {
             const active =
-              pathname === l.href || pathname.startsWith(l.href + "/");
+              l.href === "/"
+                ? pathname === "/"
+                : pathname === l.href || pathname.startsWith(l.href + "/");
             return (
               <li key={l.href}>
                 <Link
                   href={l.href}
                   className={cn(
-                    "relative text-[0.72rem] font-medium uppercase tracking-[0.22em] transition-colors",
-                    "after:absolute after:-bottom-1.5 after:left-0 after:h-px after:bg-[var(--color-cream)] after:transition-all after:duration-300",
+                    "relative text-[0.7rem] font-medium uppercase tracking-[0.22em] transition-colors",
+                    "after:absolute after:-bottom-1 after:left-0 after:h-px after:bg-[var(--color-espresso)] after:transition-all after:duration-300",
                     active
-                      ? "text-[var(--color-cream)] after:w-full"
-                      : "text-[var(--color-cream)]/75 hover:text-[var(--color-cream)] after:w-0 hover:after:w-full"
+                      ? "text-[var(--color-espresso)] after:w-full"
+                      : "text-[var(--color-espresso)]/55 hover:text-[var(--color-espresso)] after:w-0 hover:after:w-full"
                   )}
                 >
                   {l.label}
@@ -60,61 +64,47 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* Actions */}
-        <div className="flex items-center gap-3">
-          {/* Panier — lien + badge dynamique */}
+        {/* ---------- ZONE DROITE : Actions ---------- */}
+        <div className="flex items-center gap-1">
+          {/* Recherche */}
+          <button
+            aria-label="Rechercher"
+            className="p-2.5 text-[var(--color-espresso)]/70 hover:text-[var(--color-espresso)] transition-colors"
+          >
+            <Search size={17} strokeWidth={1.5} />
+          </button>
+
+          {/* Panier avec compteur */}
           <Link
             href="/cart"
             aria-label="Panier"
-            className="relative p-2.5 rounded-full text-[var(--color-cream)]/85 hover:text-[var(--color-cream)] hover:bg-[var(--color-cream)]/10 transition-colors"
+            className="relative p-2.5 text-[var(--color-espresso)]/70 hover:text-[var(--color-espresso)] transition-colors"
           >
-            <ShoppingBag size={18} strokeWidth={1.6} />
-
-            <AnimatePresence>
-              {totalItems > 0 && (
-                <motion.span
-                  key={totalItems}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  exit={{ scale: 0 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 22 }}
-                  className="absolute -top-0.5 -right-0.5
-                             bg-[var(--color-cream)] text-[var(--color-bordeaux)]
-                             text-[10px] font-semibold
-                             min-w-[18px] h-[18px] px-1
-                             rounded-full grid place-items-center"
-                >
-                  {totalItems}
-                </motion.span>
-              )}
-            </AnimatePresence>
+            <ShoppingBag size={17} strokeWidth={1.5} />
+            <span
+              className="absolute -top-0.5 -right-0.5
+                         bg-[var(--color-espresso)] text-[var(--color-cream)]
+                         text-[9px] font-semibold
+                         min-w-[16px] h-[16px] px-1
+                         grid place-items-center tabular-nums"
+            >
+              {totalItems}
+            </span>
           </Link>
 
-          {/* CTA Start a Project */}
-          <Link
-            href="/start-project"
-            className="hidden md:inline-flex items-center gap-2 bg-[var(--color-cream)] text-[var(--color-bordeaux)] px-5 py-3 rounded-full text-[0.7rem] font-semibold uppercase tracking-[0.22em] hover:bg-[var(--color-sand)] transition-colors group"
-          >
-            Start a Project
-            <ArrowUpRight
-              size={14}
-              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </Link>
-
-          {/* Toggle mobile */}
+          {/* Burger */}
           <button
             aria-label="Menu"
             aria-expanded={open}
-            className="lg:hidden p-2.5 rounded-full text-[var(--color-cream)]/85 hover:text-[var(--color-cream)] hover:bg-[var(--color-cream)]/10 transition-colors"
+            className="p-2.5 text-[var(--color-espresso)]/70 hover:text-[var(--color-espresso)] transition-colors"
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <X size={20} /> : <Menu size={20} />}
+            {open ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </nav>
 
-      {/* Drawer mobile */}
+      {/* ---------- Drawer mobile ---------- */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -122,7 +112,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden overflow-hidden bg-[var(--color-bordeaux-deep)] border-t border-[var(--color-cream)]/10"
+            className="lg:hidden overflow-hidden bg-[var(--color-cream)] border-t border-[var(--color-espresso)]/10"
           >
             <ul className="container-kan py-6 space-y-4">
               {NAV_LINKS.map((l) => (
@@ -130,22 +120,12 @@ export default function Navbar() {
                   <Link
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    className="block text-2xl text-[var(--color-cream)]/90 hover:text-[var(--color-cream)] transition-colors"
+                    className="block text-[1.1rem] uppercase tracking-[0.18em] text-[var(--color-espresso)] hover:text-[var(--color-bordeaux)] transition-colors"
                   >
                     {l.label}
                   </Link>
                 </li>
               ))}
-              <li className="pt-3">
-                <Link
-                  href="/start-project"
-                  onClick={() => setOpen(false)}
-                  className="inline-flex items-center gap-2 bg-[var(--color-cream)] text-[var(--color-bordeaux)] px-6 py-3.5 rounded-full text-[0.7rem] font-semibold uppercase tracking-[0.22em]"
-                >
-                  Start a Project
-                  <ArrowUpRight size={14} />
-                </Link>
-              </li>
             </ul>
           </motion.div>
         )}

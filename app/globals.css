@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 /* ============================================
-   DESIGN TOKENS
+   DESIGN TOKENS — KAN HOUSE
    ============================================ */
 @theme {
-  /* Palette */
-  --color-cream: #FBF9F5;
-  --color-cream-dark: #F5F2EB;
-  --color-bordeaux: #4A1D1E;
+  /* Palette d'origine KAN HOUSE (Fond beige/crème chaud "Toulouse") */
+  --color-cream: #FBF9F5;         /* Couleur principale du fond (Navbar & Pages) */
+  --color-cream-dark: #F2EDE4;    /* Variation pour cartes / contrastes doux */
+  --color-bordeaux: #4A1D1E;      /* Accent bordeaux profond */
   --color-bordeaux-deep: #3B1415;
-  --color-espresso: #1A1A1A;
+  --color-espresso: #1A1A1A;      /* Textes et contrastes sombres */
   --color-espresso-soft: #2D2B2A;
   --color-sand: #E8E2D5;
   --color-taupe: #A89E8C;
 
-  /* ✅ SORA PARTOUT */
+  /* Typographie Sora */
   --font-serif: var(--font-sora), "Sora", system-ui, sans-serif;
   --font-sans:  var(--font-sora), "Sora", system-ui, sans-serif;
 
@@ -22,15 +22,26 @@
 }
 
 /* ============================================
-   BASE — reset & typographie globale
+   BASE — Fond Toulouse / Crème sur TOUT le site
    ============================================ */
 @layer base {
   :root {
     color-scheme: light;
   }
 
+  /* ZÉRO ARRONDISSEMENT SUR TOUT LE SITE */
+  *, *::before, *::after {
+    border-radius: 0 !important;
+  }
+
+  /* FOND GLOBAL : Aucune section en blanc pur (#FFF), tout passe en Cream/Toulouse */
   html,
-  body {
+  body,
+  main,
+  section,
+  header,
+  footer,
+  div {
     background-color: var(--color-cream);
     color: var(--color-espresso);
     font-family: var(--font-sans);
@@ -40,8 +51,6 @@
     letter-spacing: -0.005em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    font-feature-settings: "kern", "liga", "calt";
   }
 
   ::selection {
@@ -51,229 +60,94 @@
 
   h1, h2, h3, h4, h5 {
     font-family: var(--font-serif);
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    line-height: 1.08;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
     color: var(--color-espresso);
   }
 
-  h1 {
-    font-size: clamp(2.75rem, 6.5vw, 6rem);
-    line-height: 0.98;
-    letter-spacing: -0.02em;
-  }
-
-  h2 { font-size: clamp(2rem, 4.5vw, 3.5rem); line-height: 1.05; }
-  h3 { font-size: clamp(1.5rem, 2.5vw, 2rem); line-height: 1.15; }
-  h4 { font-size: 1.25rem; line-height: 1.25; }
+  h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.02; }
+  h2 { font-size: clamp(2rem, 3.5vw, 3rem); }
+  h3 { font-size: clamp(1.25rem, 2vw, 1.75rem); }
 
   p {
     font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.7;
+    font-size: 0.95rem;
+    line-height: 1.65;
     color: var(--color-espresso);
-  }
-
-  small, .text-sm {
-    font-size: 0.875rem;
-    line-height: 1.6;
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--color-bordeaux);
-    outline-offset: 3px;
-    border-radius: 2px;
   }
 }
 
 /* ============================================
-   COMPOSANTS — classes custom réutilisables
-   ⚠️ OBLIGATOIREMENT dans @layer components
+   COMPOSANTS — Strictement conformes
    ============================================ */
 @layer components {
 
-  /* ---------- Layout ---------- */
   .container-kan {
     width: 100%;
     max-width: 1440px;
     margin-inline: auto;
-    padding-inline: clamp(1.25rem, 4vw, 3rem);
+    padding-inline: clamp(1.5rem, 4vw, 3.5rem);
   }
 
-  .container-narrow {
-    width: 100%;
-    max-width: 900px;
-    margin-inline: auto;
-    padding-inline: clamp(1.25rem, 4vw, 3rem);
+  /* Boutons carrés à bordure fine */
+  .btn-outline-kan {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.75rem;
+    border: 1px solid currentColor;
+    background: transparent;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: all 250ms ease;
+    border-radius: 0 !important;
   }
 
-  .section-y    { padding-block: clamp(4rem, 10vw, 8rem); }
-  .section-y-sm { padding-block: clamp(3rem, 6vw, 5rem); }
-  .section-y-lg { padding-block: clamp(5rem, 12vw, 10rem); }
+  .btn-outline-kan:hover {
+    background: var(--color-espresso);
+    color: var(--color-cream) !important;
+  }
 
-  .pt-navbar { padding-top: clamp(7rem, 12vw, 10rem); }
+  /* Liens de collection (Soulignés uniquement) */
+  .link-explore {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    color: var(--color-espresso);
+  }
 
-  .grid-kan {
+  /* Grille Produits 4 colonnes desktop */
+  .grid-products-kan {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(1rem, 2vw, 2rem);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
   }
 
-  /* ---------- Ratios images ---------- */
-  .ratio-portrait,
-  .ratio-portrait-tall,
-  .ratio-square,
-  .ratio-landscape,
-  .ratio-wide,
-  .ratio-cinema {
+  @media (min-width: 640px) {
+    .grid-products-kan { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-products-kan { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  /* Cartes et Ratios sans arrondi */
+  .ratio-portrait, .ratio-square, .ratio-wide {
     position: relative;
     overflow: hidden;
-    border-radius: 2px;
+    border-radius: 0 !important;
     background-color: var(--color-cream-dark);
   }
 
-  .ratio-portrait      { aspect-ratio: 4 / 5; }
-  .ratio-portrait-tall { aspect-ratio: 3 / 4; }
-  .ratio-square        { aspect-ratio: 1 / 1; }
-  .ratio-landscape     { aspect-ratio: 4 / 3; }
-  .ratio-wide          { aspect-ratio: 16 / 9; }
-  .ratio-cinema        { aspect-ratio: 21 / 9; }
-
-  /* Forcer les Next Image à remplir leur parent ratio */
-  .ratio-portrait > img,
-  .ratio-portrait-tall > img,
-  .ratio-square > img,
-  .ratio-landscape > img,
-  .ratio-wide > img,
-  .ratio-cinema > img,
-  .ratio-portrait > span > img,
-  .ratio-portrait-tall > span > img,
-  .ratio-square > span > img,
-  .ratio-landscape > span > img,
-  .ratio-wide > span > img,
-  .ratio-cinema > span > img {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-
-  /* ---------- Typographie ---------- */
-  .eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.7rem;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--color-espresso) 65%, transparent);
-  }
-
-  .eyebrow-invert {
-    font-family: var(--font-sans);
-    font-size: 0.7rem;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--color-cream) 65%, transparent);
-  }
-
-  .eyebrow-accent {
-    font-family: var(--font-sans);
-    font-size: 0.7rem;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--color-bordeaux);
-  }
-
-  .lead {
-    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
-    line-height: 1.6;
-    color: color-mix(in srgb, var(--color-espresso) 75%, transparent);
-  }
-
-  /* ---------- Forms ---------- */
-  .input-kan {
-    width: 100%;
-    padding: 0.9rem 1rem;
-    background: transparent;
-    border: 1px solid rgba(26, 26, 26, 0.15);
-    border-radius: 2px;
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: var(--color-espresso);
-    transition: border-color 200ms ease;
-  }
-
-  .input-kan:focus {
-    outline: none;
-    border-color: var(--color-bordeaux);
-  }
-
-  .input-kan::placeholder {
-    color: rgba(26, 26, 26, 0.35);
-  }
-
-  /* ---------- Stack (marges verticales entre éléments) ---------- */
-  .stack-sm > * + * { margin-top: 0.75rem; }
-  .stack    > * + * { margin-top: 1.25rem; }
-  .stack-lg > * + * { margin-top: 2rem; }
-  .stack-xl > * + * { margin-top: 3rem; }
-}
-
-/* ============================================
-   ANIMATIONS (hors layer, utilisables partout)
-   ============================================ */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes spin-slow {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes pulse-soft {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%      { opacity: 0.5; transform: scale(0.85); }
-}
-
-@keyframes bounce-slow {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(4px); }
-}
-
-.animate-fade-up    { animation: fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-.animate-spin-slow  { animation: spin-slow 2.4s linear infinite; }
-.animate-pulse-soft { animation: pulse-soft 1.6s ease-in-out infinite; }
-.animate-bounce-slow { animation: bounce-slow 2.4s ease-in-out infinite; }
-
-/* ============================================
-   SCROLLBAR
-   ============================================ */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--color-cream-dark); }
-::-webkit-scrollbar-thumb {
-  background: var(--color-taupe);
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--color-bordeaux); }
-
-/* ============================================
-   RÉDUCTION DE MOUVEMENT
-   ============================================ */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  .ratio-portrait { aspect-ratio: 4 / 5; }
+  .ratio-square   { aspect-ratio: 1 / 1; }
+  .ratio-wide     { aspect-ratio: 16 / 9; }
 }
