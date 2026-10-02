@@ -23,125 +23,197 @@ export default function Hero() {
           className="object-cover"
         />
 
-        {/* Voile principal — dégradé horizontal
-            Transparent à GAUCHE → dense à DROITE (côté texte) */}
+        {/* Voile desktop — dégradé horizontal */}
         <div
           aria-hidden
-          className="absolute inset-0"
+          className="hidden md:block absolute inset-0"
           style={{
             background:
-              "linear-gradient(to right, rgba(26,26,26,0.05) 0%, rgba(26,26,26,0.15) 40%, rgba(26,26,26,0.55) 70%, rgba(26,26,26,0.80) 100%)",
+              "linear-gradient(to right, rgba(26,26,26,0.10) 0%, rgba(26,26,26,0.20) 40%, rgba(26,26,26,0.55) 70%, rgba(26,26,26,0.80) 100%)",
           }}
         />
 
-        {/* Voile secondaire en haut pour la tagline gauche */}
+        {/* Voile mobile — dégradé vertical uniforme */}
         <div
           aria-hidden
-          className="absolute inset-x-0 top-0 h-1/3"
+          className="md:hidden absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(26,26,26,0.35) 0%, transparent 100%)",
-          }}
-        />
-
-        {/* Léger voile en bas pour l'indicateur 01/02/03 */}
-        <div
-          aria-hidden
-          className="absolute inset-x-0 bottom-0 h-1/3"
-          style={{
-            background:
-              "linear-gradient(to top, rgba(26,26,26,0.25) 0%, transparent 100%)",
+              "linear-gradient(to bottom, rgba(26,26,26,0.65) 0%, rgba(26,26,26,0.45) 50%, rgba(26,26,26,0.80) 100%)",
           }}
         />
       </div>
 
       {/* ============================================
-          TAGLINE — HAUT GAUCHE
-          ============================================ */}
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.2 }}
-        className="absolute top-10 md:top-14 left-0 right-0 z-10"
-      >
-        <div className="container-kan">
-          <p
-            className="max-w-[12rem] text-[0.75rem] font-normal leading-[1.6]
-                       tracking-[0.02em] text-[var(--color-cafe-light)]"
-            style={{
-              textShadow: "0 2px 12px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)",
-            }}
-          >
-            Spaces
-            <br />
-            that feel like you.
-          </p>
-        </div>
-      </motion.div>
-
-      {/* ============================================
-          BLOC PRINCIPAL — HAUT DROITE (dans la zone sombre)
+          CONTENU
           ============================================ */}
       <div className="relative z-10 h-full">
-        <div className="container-kan h-full flex items-start pt-10 md:pt-14">
-          <div className="ml-auto max-w-xl text-left pt-6 md:pt-8">
+        <div className="container-kan h-full">
 
-            {/* Sur-titre */}
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
+          {/* ---------- DESKTOP : grille alignée verticalement ---------- */}
+          <div className="hidden md:grid grid-cols-2 gap-12 items-center h-full pt-14">
+
+            {/* Tagline — alignée verticalement avec le titre */}
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="text-[0.6rem] font-medium uppercase tracking-[0.28em]
-                         text-[var(--color-cafe-light)] mb-5"
-              style={{ textShadow: "0 2px 10px rgba(0,0,0,0.55)" }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="self-start pt-20"
             >
-              Modern Living. Timeless Spaces.
-            </motion.p>
+              <p
+                className="max-w-[14rem] text-[0.8rem] font-normal leading-[1.6]
+                           tracking-[0.02em] text-[var(--color-cafe-light)]"
+                style={{
+                  textShadow:
+                    "0 2px 12px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)",
+                }}
+              >
+                Spaces
+                <br />
+                that feel like you.
+              </p>
+            </motion.div>
 
-            {/* Titre */}
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(1.9rem,4vw,3.25rem)] leading-[1.12]
-                         tracking-[-0.02em] font-normal
-                         text-[var(--color-cafe-light)] mb-8"
-              style={{
-                textShadow: "0 4px 24px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.35)",
-              }}
-            >
-              Furniture, curated
-              <br />
-              for distinctive spaces.
-            </motion.h1>
-
-            {/* CTA */}
+            {/* Bloc principal — aligné à gauche de sa colonne */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.65 }}
+              transition={{ duration: 0.9, delay: 0.3 }}
+              className="self-start pt-20 max-w-xl"
             >
-              <Link
-                href="/collection"
-                className="group inline-flex items-center gap-3
-                           border border-[var(--color-cafe-light)]/80
-                           text-[var(--color-cafe-light)]
-                           px-5 py-3
-                           text-[0.65rem] font-medium uppercase tracking-[0.22em]
-                           hover:bg-[var(--color-cafe-light)] hover:text-[var(--color-espresso)]
-                           transition-colors duration-300
-                           backdrop-blur-[2px]"
+              {/* Sur-titre */}
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+                className="text-[0.6rem] font-medium uppercase tracking-[0.28em]
+                           text-[var(--color-cafe-light)] mb-5"
+                style={{ textShadow: "0 2px 10px rgba(0,0,0,0.55)" }}
               >
-                Discover the Collection
-                <span className="transition-transform group-hover:translate-x-1">→</span>
-              </Link>
+                Modern Living. Timeless Spaces.
+              </motion.p>
+
+              {/* Titre */}
+              <motion.h1
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[clamp(1.9rem,3.5vw,3rem)] leading-[1.12]
+                           tracking-[-0.02em] font-normal
+                           text-[var(--color-cafe-light)] mb-8"
+                style={{
+                  textShadow:
+                    "0 4px 24px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.35)",
+                }}
+              >
+                Furniture, curated
+                <br />
+                for distinctive spaces.
+              </motion.h1>
+
+              {/* CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.65 }}
+              >
+                <Link
+                  href="/collection"
+                  className="group inline-flex items-center gap-3
+                             border border-[var(--color-cafe-light)]/80
+                             text-[var(--color-cafe-light)]
+                             px-5 py-3
+                             text-[0.65rem] font-medium uppercase tracking-[0.22em]
+                             hover:bg-[var(--color-cafe-light)] hover:text-[var(--color-espresso)]
+                             transition-colors duration-300
+                             backdrop-blur-[2px]"
+                >
+                  Discover the Collection
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </Link>
+              </motion.div>
             </motion.div>
+          </div>
+
+          {/* ---------- MOBILE : empilement propre ---------- */}
+          <div className="md:hidden h-full flex flex-col justify-center gap-10 pt-6 pb-16">
+
+            {/* Tagline */}
+            <motion.p
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="max-w-[14rem] text-[0.85rem] font-normal leading-[1.55]
+                         tracking-[0.02em] text-[var(--color-cafe-light)]"
+              style={{
+                textShadow:
+                  "0 2px 12px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)",
+              }}
+            >
+              Spaces
+              <br />
+              that feel like you.
+            </motion.p>
+
+            {/* Bloc principal */}
+            <div>
+              {/* Sur-titre */}
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.35 }}
+                className="text-[0.62rem] font-medium uppercase tracking-[0.28em]
+                           text-[var(--color-cafe-light)] mb-5"
+                style={{ textShadow: "0 2px 10px rgba(0,0,0,0.55)" }}
+              >
+                Modern Living. Timeless Spaces.
+              </motion.p>
+
+              {/* Titre */}
+              <motion.h1
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[clamp(1.75rem,7vw,2.5rem)] leading-[1.15]
+                           tracking-[-0.02em] font-normal
+                           text-[var(--color-cafe-light)] mb-8"
+                style={{
+                  textShadow:
+                    "0 4px 24px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.35)",
+                }}
+              >
+                Furniture, curated
+                <br />
+                for distinctive spaces.
+              </motion.h1>
+
+              {/* CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.65 }}
+              >
+                <Link
+                  href="/collection"
+                  className="group inline-flex items-center gap-3
+                             border border-[var(--color-cafe-light)]/80
+                             text-[var(--color-cafe-light)]
+                             px-5 py-3
+                             text-[0.65rem] font-medium uppercase tracking-[0.22em]
+                             hover:bg-[var(--color-cafe-light)] hover:text-[var(--color-espresso)]
+                             transition-colors duration-300"
+                >
+                  Discover the Collection
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </Link>
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* ============================================
-          INDICATEUR — 01 / 02 / 03
+          INDICATEUR — 01 / 02 / 03 (desktop uniquement)
           ============================================ */}
       <motion.div
         initial={{ opacity: 0 }}
