@@ -4,8 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, SlidersHorizontal } from "lucide-react";
-import Section from "@/components/ui/Section";
+import { SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 type ProjectCategory = "Hôtel" | "Restaurant" | "Villa" | "Lounge";
@@ -117,7 +116,6 @@ export default function ProjectsPage() {
     [activeCategory]
   );
 
-  // Comptes par catégorie
   const counts = useMemo(() => {
     const map: Record<string, number> = { Tout: PROJECTS.length };
     (["Hôtel", "Restaurant", "Villa", "Lounge"] as ProjectCategory[]).forEach(
@@ -129,30 +127,35 @@ export default function ProjectsPage() {
   }, []);
 
   return (
-    <>
-      {/* ============================================
-          EN-TÊTE DE PAGE
-          ============================================ */}
-      <Section size="md" className="pt-[clamp(3rem,8vh,5rem)] pb-0">
-        <div className="max-w-3xl">
-          <p className="eyebrow-accent mb-5">Projects</p>
-          <h1 className="text-[clamp(1.9rem,4vw,3.25rem)] leading-[1.06] font-medium tracking-[-0.025em] text-[var(--color-espresso)] mb-5">
+    <section className="bg-[var(--color-cafe-light)]">
+      <div className="container-kan pt-16 md:pt-20 lg:pt-24 pb-20 md:pb-28">
+
+        {/* ============================================
+            EN-TÊTE
+            ============================================ */}
+        <div className="max-w-3xl mb-14 md:mb-20">
+          <p className="eyebrow mb-5">Projects</p>
+          <h1 className="text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.15]
+                         tracking-[-0.02em] font-normal
+                         text-[var(--color-espresso)] mb-5">
             Des lieux pensés
             <br />
             jusqu'au détail.
           </h1>
-          <p className="text-[clamp(0.95rem,1.1vw,1.05rem)] leading-[1.7] text-[var(--color-espresso)]/65 max-w-xl">
+          <p className="text-[0.95rem] leading-[1.75]
+                        text-[var(--color-espresso)]/65 max-w-xl">
             Une sélection de projets d'aménagement réalisés entre l'Europe
             et l'Asie — hôtels, restaurants, résidences et espaces de nuit.
           </p>
         </div>
-      </Section>
 
-      {/* ============================================
-          FILTRES
-          ============================================ */}
-      <Section size="sm" className="pt-10 md:pt-14">
-        <div className="flex flex-col gap-6 pb-6 border-b border-[var(--color-espresso)]/10">
+        {/* ============================================
+            FILTRES + COMPTEUR
+            ============================================ */}
+        <div
+          className="flex flex-col gap-6 pb-6 mb-12 md:mb-16"
+          style={{ borderBottom: "1px solid var(--color-border-line)" }}
+        >
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat;
@@ -163,12 +166,14 @@ export default function ProjectsPage() {
                   onClick={() => setActiveCategory(cat)}
                   disabled={count === 0 && cat !== "Tout"}
                   className={cn(
-                    "inline-flex items-center gap-2 px-4 py-2.5 rounded-full",
-                    "text-[0.7rem] font-semibold uppercase tracking-[0.16em]",
-                    "transition-all duration-200",
+                    "inline-flex items-center gap-2 px-4 py-2.5",
+                    "text-[0.68rem] font-medium uppercase tracking-[0.18em]",
+                    "transition-colors duration-200",
                     isActive
-                      ? "bg-[var(--color-bordeaux)] text-[var(--color-cream)]"
-                      : "text-[var(--color-espresso)]/65 hover:text-[var(--color-espresso)] border border-[var(--color-espresso)]/15 hover:border-[var(--color-espresso)]/40",
+                      ? "bg-[var(--color-espresso)] text-[var(--color-cafe-light)]"
+                      : "text-[var(--color-espresso)]/60 hover:text-[var(--color-espresso)]",
+                    !isActive &&
+                      "border border-[var(--color-border-line)] hover:border-[var(--color-espresso)]/30",
                     count === 0 &&
                       cat !== "Tout" &&
                       "opacity-30 cursor-not-allowed"
@@ -177,9 +182,9 @@ export default function ProjectsPage() {
                   {cat}
                   <span
                     className={cn(
-                      "text-[0.62rem] font-medium tracking-normal tabular-nums",
+                      "text-[0.6rem] tabular-nums",
                       isActive
-                        ? "text-[var(--color-cream)]/60"
+                        ? "text-[var(--color-cafe-light)]/60"
                         : "text-[var(--color-espresso)]/40"
                     )}
                   >
@@ -191,7 +196,7 @@ export default function ProjectsPage() {
           </div>
 
           <p className="text-[0.78rem] text-[var(--color-espresso)]/55">
-            <span className="font-semibold text-[var(--color-espresso)]">
+            <span className="font-medium text-[var(--color-espresso)]">
               {filtered.length}
             </span>{" "}
             {filtered.length > 1 ? "projets" : "projet"}
@@ -200,13 +205,11 @@ export default function ProjectsPage() {
             )}
           </p>
         </div>
-      </Section>
 
-      {/* ============================================
-          GRILLE PROJETS
-          ============================================ */}
-      <Section size="md" className="pt-12 md:pt-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-12">
+        {/* ============================================
+            GRILLE PROJETS — 2 colonnes desktop
+            ============================================ */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-14 lg:gap-x-8 lg:gap-y-16">
           <AnimatePresence mode="popLayout">
             {filtered.map((p, i) => (
               <motion.article
@@ -220,13 +223,14 @@ export default function ProjectsPage() {
                   delay: (i % 2) * 0.08,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="group cursor-pointer"
+                className="group"
               >
                 <Link href={`/projects/${p.id}`} className="block">
                   {/* Image */}
-                  <div className="relative aspect-[4/3] w-full
-                                  overflow-hidden rounded-md
-                                  bg-[var(--color-cream-dark)]">
+                  <div
+                    className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--color-cafe-dark)]"
+                    style={{ border: "1px solid var(--color-border-line)" }}
+                  >
                     <Image
                       src={p.image}
                       alt={p.title}
@@ -235,53 +239,33 @@ export default function ProjectsPage() {
                       className="object-cover transition-transform duration-[1.4s] ease-out
                                  group-hover:scale-[1.04]"
                     />
-
-                    {/* Badge catégorie */}
-                    <div className="absolute top-4 left-4">
-                      <span className="inline-block
-                                       bg-[var(--color-cream)]/95 backdrop-blur-sm
-                                       text-[var(--color-espresso)]
-                                       px-3 py-1.5 rounded-full
-                                       text-[0.62rem] font-semibold uppercase tracking-[0.16em]
-                                       border border-[var(--color-espresso)]/5">
-                        {p.category}
-                      </span>
-                    </div>
-
-                    {/* Flèche hover */}
-                    <div className="absolute bottom-4 right-4
-                                    opacity-0 group-hover:opacity-100
-                                    transition-opacity duration-300">
-                      <span className="inline-flex items-center justify-center
-                                       w-11 h-11 rounded-full
-                                       bg-[var(--color-cream)] text-[var(--color-espresso)]">
-                        <ArrowUpRight size={16} strokeWidth={2} />
-                      </span>
-                    </div>
                   </div>
 
                   {/* Meta */}
-                  <div className="mt-6 flex items-start justify-between gap-6">
-                    <div>
-                      <h3 className="text-[1.15rem] md:text-[1.35rem] font-medium
-                                     leading-tight text-[var(--color-espresso)]
-                                     group-hover:text-[var(--color-bordeaux)]
-                                     transition-colors duration-300 mb-1.5">
-                        {p.title}
-                      </h3>
-                      <p className="text-[0.85rem] text-[var(--color-espresso)]/55">
-                        {p.location}
-                      </p>
-                    </div>
+                  <div className="mt-5">
+                    {/* Catégorie */}
+                    <p className="text-[0.6rem] font-medium uppercase tracking-[0.24em]
+                                  text-[var(--color-espresso)]/45 mb-2">
+                      {p.category}
+                    </p>
 
-                    <div className="text-right shrink-0">
-                      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em]
-                                    text-[var(--color-espresso)]/40 mb-1">
-                        {p.year}
-                      </p>
-                      <p className="text-[0.78rem] text-[var(--color-espresso)]/55">
-                        {p.surface}
-                      </p>
+                    {/* Titre */}
+                    <h3 className="text-[1.15rem] md:text-[1.35rem] font-normal
+                                   leading-[1.25] tracking-[-0.01em]
+                                   text-[var(--color-espresso)]
+                                   group-hover:text-[var(--color-bordeaux)]
+                                   transition-colors duration-300 mb-2">
+                      {p.title}
+                    </h3>
+
+                    {/* Lieu + Année + Surface sur la même ligne */}
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1
+                                    text-[0.8rem] text-[var(--color-espresso)]/55">
+                      <span>{p.location}</span>
+                      <span className="opacity-40">·</span>
+                      <span>{p.year}</span>
+                      <span className="opacity-40">·</span>
+                      <span>{p.surface}</span>
                     </div>
                   </div>
                 </Link>
@@ -293,7 +277,8 @@ export default function ProjectsPage() {
         {/* État vide */}
         {filtered.length === 0 && (
           <div className="py-24 text-center max-w-md mx-auto">
-            <p className="text-[clamp(1.25rem,2vw,1.5rem)] font-medium text-[var(--color-espresso)] mb-3">
+            <p className="text-[1.15rem] font-normal
+                          text-[var(--color-espresso)] mb-3">
               Aucun projet dans cette catégorie.
             </p>
             <p className="text-sm text-[var(--color-espresso)]/55 leading-relaxed mb-8">
@@ -301,63 +286,52 @@ export default function ProjectsPage() {
             </p>
             <button
               onClick={() => setActiveCategory("Tout")}
-              className="inline-flex items-center gap-2
-                         bg-[var(--color-bordeaux)] text-[var(--color-cream)]
-                         px-6 py-3 rounded-full
-                         text-[0.7rem] font-semibold uppercase tracking-[0.2em]
-                         hover:bg-[var(--color-bordeaux-deep)]
-                         transition-colors"
+              className="link-text"
             >
-              Voir tous les projets
+              Voir tous les projets →
             </button>
           </div>
         )}
-      </Section>
+      </div>
 
       {/* ============================================
-          CTA FINALE
+          CTA FINALE — Bloc bordeaux
           ============================================ */}
-      <section className="relative mt-16 md:mt-24 overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(135deg, #2A0E0F 0%, #5E2324 50%, #8B3536 100%)",
-          }}
-        />
-
-        <div className="relative container-kan py-16 md:py-20 lg:py-24">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-12">
-            <div className="max-w-xl">
-              <p className="eyebrow-invert mb-4">Votre projet, le prochain ?</p>
-              <h2 className="text-[clamp(1.5rem,3vw,2.25rem)] leading-tight font-medium text-[var(--color-cream)] mb-3">
+      <div className="bg-[var(--color-bordeaux)] text-[var(--color-cafe-light)]">
+        <div className="container-kan py-16 md:py-20 lg:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            <div className="lg:col-span-7">
+              <p className="eyebrow-invert mb-5">Votre projet, le prochain ?</p>
+              <h2 className="text-[clamp(1.5rem,3vw,2.25rem)] leading-[1.15]
+                             font-normal tracking-[-0.02em]
+                             text-[var(--color-cafe-light)] mb-5">
                 Parlons de votre lieu.
               </h2>
-              <p className="text-[0.92rem] leading-relaxed text-[var(--color-cream)]/70">
+              <p className="text-[0.92rem] leading-[1.75]
+                            text-[var(--color-cafe-light)]/70 max-w-lg">
                 Nous développons chaque projet sur-mesure, du sourcing à
                 l'installation finale.
               </p>
             </div>
 
-            <Link
-              href="/start-project"
-              className="group inline-flex items-center gap-3 shrink-0
-                         bg-[var(--color-cream)] text-[var(--color-bordeaux)]
-                         px-7 py-4 rounded-full
-                         text-[0.72rem] font-semibold uppercase tracking-[0.22em]
-                         hover:bg-[var(--color-sand)]
-                         transition-colors"
-            >
-              Start a Project
-              <ArrowUpRight
-                size={15}
-                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </Link>
+            <div className="lg:col-span-5 flex lg:justify-end">
+              <Link
+                href="/start-project"
+                className="group inline-flex items-center gap-3
+                           border border-[var(--color-cafe-light)]/70
+                           text-[var(--color-cafe-light)]
+                           px-6 py-3.5
+                           text-[0.68rem] font-medium uppercase tracking-[0.22em]
+                           hover:bg-[var(--color-cafe-light)] hover:text-[var(--color-bordeaux)]
+                           transition-colors duration-300"
+              >
+                Start a Project
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </Link>
+            </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
