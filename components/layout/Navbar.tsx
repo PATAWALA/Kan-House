@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingBag, Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useCartStore } from "@/lib/store/cart";
+import { useState } from "react";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -32,19 +32,19 @@ export default function Navbar() {
         borderBottom: "1px solid rgba(239, 236, 230, 0.12)",
       }}
     >
-      <nav className="container-kan flex items-center justify-between h-20 relative">
+      <nav className="container-kan flex items-center justify-between h-16 lg:h-20 relative">
 
         {/* Logo + sous-titre */}
         <Link href="/" className="flex flex-col leading-none">
-          <span className="text-[1.05rem] font-medium tracking-[0.16em] text-[var(--color-cafe-light)]">
+          <span className="text-[0.98rem] lg:text-[1.05rem] font-medium tracking-[0.16em] text-[var(--color-cafe-light)]">
             KAN HOUSE
           </span>
-          <span className="hidden sm:block text-[0.52rem] font-medium tracking-[0.28em] text-[var(--color-cafe-light)]/55 mt-1">
+          <span className="hidden sm:block text-[0.5rem] lg:text-[0.52rem] font-medium tracking-[0.28em] text-[var(--color-cafe-light)]/55 mt-1">
             FURNITURE • INTERIORS • SOURCING
           </span>
         </Link>
 
-        {/* Navigation centrée */}
+        {/* Navigation centrée — DESKTOP uniquement */}
         <ul className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
           {NAV_LINKS.map((l) => {
             const active =
@@ -70,7 +70,7 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* Icônes */}
+        {/* Icônes — panier + recherche toujours visibles, burger desktop */}
         <div className="flex items-center gap-0.5">
           <button
             aria-label="Rechercher"
@@ -85,21 +85,24 @@ export default function Navbar() {
             className="relative p-2.5 text-[var(--color-cafe-light)]/75 hover:text-[var(--color-cafe-light)] transition-colors"
           >
             <ShoppingBag size={17} strokeWidth={1.4} />
-            <span
-              className="absolute -top-0.5 -right-0.5
-                         bg-[var(--color-cafe-light)] text-[var(--color-bordeaux)]
-                         text-[9px] font-semibold
-                         min-w-[15px] h-[15px] px-1
-                         grid place-items-center tabular-nums"
-            >
-              {totalItems}
-            </span>
+            {totalItems > 0 && (
+              <span
+                className="absolute -top-0.5 -right-0.5
+                           bg-[var(--color-cafe-light)] text-[var(--color-bordeaux)]
+                           text-[9px] font-semibold
+                           min-w-[15px] h-[15px] px-1
+                           grid place-items-center tabular-nums"
+              >
+                {totalItems}
+              </span>
+            )}
           </Link>
 
+          {/* Burger — DESKTOP uniquement */}
           <button
             aria-label="Menu"
             aria-expanded={open}
-            className="p-2.5 text-[var(--color-cafe-light)]/75 hover:text-[var(--color-cafe-light)] transition-colors"
+            className="hidden lg:block p-2.5 text-[var(--color-cafe-light)]/75 hover:text-[var(--color-cafe-light)] transition-colors"
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X size={18} /> : <Menu size={18} />}
@@ -107,7 +110,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Drawer mobile */}
+      {/* Drawer desktop */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -115,13 +118,13 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden overflow-hidden"
+            className="hidden lg:block overflow-hidden"
             style={{
               backgroundColor: "var(--color-bordeaux-deep)",
               borderTop: "1px solid rgba(239, 236, 230, 0.15)",
             }}
           >
-            <ul className="container-kan py-6 space-y-4">
+            <ul className="container-kan py-8 space-y-4">
               {NAV_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link
