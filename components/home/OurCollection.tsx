@@ -1,86 +1,180 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
-const ITEMS = [
-  {
-    title: "Sofas",
-    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=85",
-  },
-  {
-    title: "Coffee Tables",
-    image: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=1200&q=85",
-  },
-  {
-    title: "Armchairs",
-    image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=1200&q=85",
-  },
-  {
-    title: "Lighting",
-    image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=1200&q=85",
-  },
-];
+const SLIDES = ["01", "02", "03"];
 
-export default function OurCollection() {
+export default function Hero() {
   return (
-    <section className="bg-[var(--color-cafe-light)]">
-      <div className="container-kan py-20 md:py-28">
+    <section className="relative w-full h-[calc(100vh-5rem)] min-h-[620px] overflow-hidden">
 
-        {/* En-tête */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12 md:mb-16">
-          <div className="max-w-xl">
-            <p className="eyebrow mb-5">Our Collection</p>
-            <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.15]
-                           tracking-[-0.02em] font-normal
-                           text-[var(--color-espresso)]">
-              Iconic pieces for modern living.
-            </h2>
-          </div>
+      {/* ============================================
+          IMAGE DE FOND
+          ============================================ */}
+      <div className="absolute inset-0">
+        <Image
+          src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=2400&q=90"
+          alt="Intérieur signature — KAN HOUSE"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
 
-          <Link href="/collection" className="link-text self-start md:self-end">
-            View All Products →
-          </Link>
+        {/* Voile principal — dégradé horizontal
+            Transparent à GAUCHE → dense à DROITE (côté texte) */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(26,26,26,0.05) 0%, rgba(26,26,26,0.15) 40%, rgba(26,26,26,0.55) 70%, rgba(26,26,26,0.80) 100%)",
+          }}
+        />
+
+        {/* Voile secondaire en haut pour la tagline gauche */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-1/3"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(26,26,26,0.35) 0%, transparent 100%)",
+          }}
+        />
+
+        {/* Léger voile en bas pour l'indicateur 01/02/03 */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-1/3"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(26,26,26,0.25) 0%, transparent 100%)",
+          }}
+        />
+      </div>
+
+      {/* ============================================
+          TAGLINE — HAUT GAUCHE
+          ============================================ */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.2 }}
+        className="absolute top-10 md:top-14 left-0 right-0 z-10"
+      >
+        <div className="container-kan">
+          <p
+            className="max-w-[12rem] text-[0.75rem] font-normal leading-[1.6]
+                       tracking-[0.02em] text-[var(--color-cafe-light)]"
+            style={{
+              textShadow: "0 2px 12px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)",
+            }}
+          >
+            Spaces
+            <br />
+            that feel like you.
+          </p>
         </div>
+      </motion.div>
 
-        {/* Grille — 4 colonnes avec espacement et bordures fines */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-          {ITEMS.map((item) => (
-            <Link
-              key={item.title}
-              href="/collection"
-              className="group flex flex-col"
+      {/* ============================================
+          BLOC PRINCIPAL — HAUT DROITE (dans la zone sombre)
+          ============================================ */}
+      <div className="relative z-10 h-full">
+        <div className="container-kan h-full flex items-start pt-10 md:pt-14">
+          <div className="ml-auto max-w-xl text-left pt-6 md:pt-8">
+
+            {/* Sur-titre */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="text-[0.6rem] font-medium uppercase tracking-[0.28em]
+                         text-[var(--color-cafe-light)] mb-5"
+              style={{ textShadow: "0 2px 10px rgba(0,0,0,0.55)" }}
             >
-              {/* Image avec bordure fine */}
-              <div
-                className="ratio-portrait w-full bg-[var(--color-cafe-dark)] relative"
-                style={{ border: "1px solid var(--color-border-line)" }}
-              >
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-[1.4s] ease-out
-                             group-hover:scale-[1.04]"
-                />
-              </div>
+              Modern Living. Timeless Spaces.
+            </motion.p>
 
-              {/* Catégorie + Explore */}
-              <div className="flex flex-col gap-2 pt-4">
-                <span className="text-[0.68rem] font-medium uppercase tracking-[0.24em]
-                                 text-[var(--color-espresso)]">
-                  {item.title}
-                </span>
-                <span className="text-[0.72rem] text-[var(--color-espresso)]/55
-                                 underline underline-offset-[5px] decoration-[1px]
-                                 group-hover:text-[var(--color-espresso)]
-                                 transition-colors">
-                  Explore →
-                </span>
-              </div>
-            </Link>
-          ))}
+            {/* Titre */}
+            <motion.h1
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[clamp(1.9rem,4vw,3.25rem)] leading-[1.12]
+                         tracking-[-0.02em] font-normal
+                         text-[var(--color-cafe-light)] mb-8"
+              style={{
+                textShadow: "0 4px 24px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.35)",
+              }}
+            >
+              Furniture, curated
+              <br />
+              for distinctive spaces.
+            </motion.h1>
+
+            {/* CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.65 }}
+            >
+              <Link
+                href="/collection"
+                className="group inline-flex items-center gap-3
+                           border border-[var(--color-cafe-light)]/80
+                           text-[var(--color-cafe-light)]
+                           px-5 py-3
+                           text-[0.65rem] font-medium uppercase tracking-[0.22em]
+                           hover:bg-[var(--color-cafe-light)] hover:text-[var(--color-espresso)]
+                           transition-colors duration-300
+                           backdrop-blur-[2px]"
+              >
+                Discover the Collection
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </div>
+
+      {/* ============================================
+          INDICATEUR — 01 / 02 / 03
+          ============================================ */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1 }}
+        className="hidden md:flex absolute right-8 lg:right-12 top-1/2 -translate-y-1/2 z-10
+                   flex-col items-end gap-5"
+      >
+        {SLIDES.map((s, i) => (
+          <button
+            key={s}
+            className="group flex items-center gap-3 text-[0.65rem] tabular-nums tracking-[0.22em]"
+          >
+            <span
+              className={
+                i === 0
+                  ? "text-[var(--color-cafe-light)] font-medium"
+                  : "text-[var(--color-cafe-light)]/45 hover:text-[var(--color-cafe-light)]/80 transition-colors"
+              }
+              style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
+            >
+              {s}
+            </span>
+            <span
+              className={
+                i === 0
+                  ? "block w-7 h-px bg-[var(--color-cafe-light)]"
+                  : "block w-3 h-px bg-[var(--color-cafe-light)]/35 group-hover:w-7 transition-all duration-300"
+              }
+            />
+          </button>
+        ))}
+      </motion.div>
     </section>
   );
 }
