@@ -38,7 +38,7 @@ export default function MoreThanFurniture() {
 
             <div className="col-span-7 relative aspect-[4/5] overflow-hidden bg-[var(--color-cafe-dark)]">
               <Image
-                src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=1200&q=85"
+                src="/more1.png"
                 alt="Catalogue KAN HOUSE"
                 fill
                 sizes="(max-width: 1024px) 50vw, 35vw"
@@ -48,7 +48,7 @@ export default function MoreThanFurniture() {
 
             <div className="col-span-5 relative aspect-[3/5] overflow-hidden bg-[var(--color-cafe-dark)] self-end">
               <Image
-                src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200&q=85"
+                src="more2.png"
                 alt="Vase et composition florale"
                 fill
                 sizes="(max-width: 1024px) 30vw, 25vw"
