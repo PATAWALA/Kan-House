@@ -1,7 +1,4 @@
-import Sidebar from "@/components/admin/Sidebar";
-import AdminHeader from "@/components/admin/AdminHeader";
-import MobileTabBar from "@/components/admin/MobileTabBar";
-import MobileMenuDrawer from "@/components/admin/MobileMenuDrawer";
+import AdminShell from "@/components/admin/AdminShell";
 
 export const metadata = {
   title: "Admin — Kan House",
@@ -13,15 +10,5 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="min-h-screen bg-[var(--color-cafe-light)] flex">
-      <Sidebar />
-      <div className="flex-1 flex flex-col lg:pl-64">
-        <AdminHeader />
-        <main className="flex-1 p-5 lg:p-8 pb-24 lg:pb-8">{children}</main>
-      </div>
-      <MobileTabBar />
-      <MobileMenuDrawer />
-    </div>
-  );
+  return <AdminShell>{children}</AdminShell>;
 }

@@ -25,10 +25,9 @@ export default function MobileTabBar() {
 
   return (
     <nav
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-40"
+      className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white"
       style={{
-        backgroundColor: "var(--color-espresso)",
-        borderTop: "1px solid rgba(239, 236, 230, 0.10)",
+        borderTop: "1px solid var(--color-border-line)",
         paddingBottom: "env(safe-area-inset-bottom)",
       }}
     >
@@ -48,15 +47,14 @@ export default function MobileTabBar() {
                   "text-[0.55rem] font-medium uppercase tracking-[0.1em]",
                   "transition-colors",
                   active
-                    ? "text-[var(--color-cafe-light)]"
-                    : "text-[var(--color-cafe-light)]/45 hover:text-[var(--color-cafe-light)]/75"
+                    ? "text-[var(--color-espresso)]"
+                    : "text-[var(--color-espresso)]/45 hover:text-[var(--color-espresso)]/75"
                 )}
               >
-                {/* Filet indicateur en haut de l'onglet actif */}
                 {active && (
                   <span
                     className="absolute top-0 left-1/2 -translate-x-1/2
-                               w-6 h-[2px] bg-[var(--color-cafe-light)]"
+                               w-6 h-[2px] bg-[var(--color-bordeaux)]"
                   />
                 )}
                 <Icon size={18} strokeWidth={active ? 1.8 : 1.4} />
@@ -66,14 +64,13 @@ export default function MobileTabBar() {
           );
         })}
 
-        {/* 5ème onglet — ouvre le menu complet */}
         <li className="relative">
           <button
             onClick={openMenu}
             className="flex flex-col items-center justify-center gap-1 h-full w-full
                        text-[0.55rem] font-medium uppercase tracking-[0.1em]
-                       text-[var(--color-cafe-light)]/45
-                       hover:text-[var(--color-cafe-light)]/75
+                       text-[var(--color-espresso)]/45
+                       hover:text-[var(--color-espresso)]/75
                        transition-colors"
           >
             <Menu size={18} strokeWidth={1.4} />

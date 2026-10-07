@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
 import {
   LayoutDashboard,
   Package,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { createClient } from "@/lib/supabase/client";
+import { useAdminUIStore } from "@/lib/store/admin-ui";
 
 const SECTIONS = [
   {
@@ -53,7 +53,10 @@ const SECTIONS = [
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [collapsed, setCollapsed] = useState(false);
+
+  // État partagé avec le layout
+  const collapsed = useAdminUIStore((s) => s.sidebarCollapsed);
+  const toggleSidebar = useAdminUIStore((s) => s.toggleSidebar);
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -66,12 +69,11 @@ export default function Sidebar() {
     <aside
       className={cn(
         "hidden lg:flex fixed left-0 top-0 bottom-0 z-40 flex-col",
-        "transition-all duration-300",
+        "bg-white transition-all duration-300",
         collapsed ? "w-[72px]" : "w-64"
       )}
       style={{
-        backgroundColor: "var(--color-espresso)",
-        color: "var(--color-cafe-light)",
+        borderRight: "1px solid var(--color-border-line)",
       }}
     >
       {/* ============================================
@@ -79,26 +81,27 @@ export default function Sidebar() {
           ============================================ */}
       <div
         className="flex items-center justify-between h-16 px-5 shrink-0"
-        style={{ borderBottom: "1px solid rgba(239, 236, 230, 0.08)" }}
+        style={{ borderBottom: "1px solid var(--color-border-line)" }}
       >
         {!collapsed && (
           <Link href="/admin" className="flex flex-col leading-none">
             <span className="text-[0.9rem] font-medium tracking-[0.14em]
-                             text-[var(--color-cafe-light)]">
+                             text-[var(--color-espresso)]">
               KAN HOUSE
             </span>
             <span className="text-[0.48rem] tracking-[0.28em]
-                             text-[var(--color-cafe-light)]/40 mt-1">
+                             text-[var(--color-espresso)]/40 mt-1">
               ADMINISTRATION
             </span>
           </Link>
         )}
+
         <button
-          onClick={() => setCollapsed((v) => !v)}
-          aria-label={collapsed ? "Ouvrir" : "Réduire"}
+          onClick={toggleSidebar}
+          aria-label={collapsed ? "Ouvrir la sidebar" : "Réduire la sidebar"}
           className={cn(
-            "p-1.5 text-[var(--color-cafe-light)]/45",
-            "hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/8",
+            "p-1.5 text-[var(--color-espresso)]/45",
+            "hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]",
             "transition-colors",
             collapsed && "mx-auto"
           )}
@@ -115,7 +118,7 @@ export default function Sidebar() {
           <div key={section.label} className={cn(sIdx > 0 && "mt-6")}>
             {!collapsed && (
               <p className="px-3 mb-2 text-[0.56rem] font-medium uppercase
-                            tracking-[0.26em] text-[var(--color-cafe-light)]/30">
+                            tracking-[0.26em] text-[var(--color-espresso)]/35">
                 {section.label}
               </p>
             )}
@@ -137,7 +140,7 @@ export default function Sidebar() {
                         collapsed && "justify-center",
                         active
                           ? "bg-[var(--color-cafe-light)] text-[var(--color-espresso)] font-medium"
-                          : "text-[var(--color-cafe-light)]/65 hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/8"
+                          : "text-[var(--color-espresso)]/60 hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]/60"
                       )}
                     >
                       <Icon
@@ -160,7 +163,7 @@ export default function Sidebar() {
           ============================================ */}
       <div
         className="p-3 space-y-1 shrink-0"
-        style={{ borderTop: "1px solid rgba(239, 236, 230, 0.08)" }}
+        style={{ borderTop: "1px solid var(--color-border-line)" }}
       >
         <Link
           href="/"
@@ -168,8 +171,8 @@ export default function Sidebar() {
           title={collapsed ? "Voir le site" : undefined}
           className={cn(
             "flex items-center gap-3 px-3 py-2.5 text-[0.78rem]",
-            "text-[var(--color-cafe-light)]/50",
-            "hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/8",
+            "text-[var(--color-espresso)]/50",
+            "hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]/60",
             "transition-colors",
             collapsed && "justify-center"
           )}
@@ -183,8 +186,8 @@ export default function Sidebar() {
           title={collapsed ? "Déconnexion" : undefined}
           className={cn(
             "w-full flex items-center gap-3 px-3 py-2.5 text-[0.78rem]",
-            "text-[var(--color-cafe-light)]/50",
-            "hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/8",
+            "text-[var(--color-espresso)]/50",
+            "hover:text-[var(--color-bordeaux)] hover:bg-[var(--color-cafe-light)]/60",
             "transition-colors text-left",
             collapsed && "justify-center"
           )}
