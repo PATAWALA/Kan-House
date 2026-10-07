@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowUpRight, ArrowDownRight, type LucideIcon } from "lucide-react";
 
@@ -96,11 +98,11 @@ export default function KpiCard({
         transition: "background 400ms ease",
       }}
       onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
-  if (href) e.currentTarget.style.background = s.hoverBg;
-}}
-onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
-  if (href) e.currentTarget.style.background = s.background;
-}}
+        if (href) e.currentTarget.style.background = s.hoverBg;
+      }}
+      onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
+        if (href) e.currentTarget.style.background = s.background;
+      }}
     >
       {/* Halo lumineux pour les cartes sombres */}
       {s.isDark && (
