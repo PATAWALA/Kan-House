@@ -1,0 +1,421 @@
+"use server";
+
+import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import type { OrderStatus, QuoteStatus } from "@/lib/supabase/types";
+
+// ============================================
+// AUTH GUARD
+// ============================================
+async function assertAuth() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+  return supabase;
+}
+
+// ============================================
+// HELPERS
+// ============================================
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function generateReference(prefix: string): string {
+  const year = new Date().getFullYear();
+  const random = Math.floor(10000 + Math.random() * 90000);
+  return `KH-${prefix}-${year}-${random}`;
+}
+
+// ============================================
+// PRODUITS
+// ============================================
+
+export async function createOrUpdateProduct(formData: FormData) {
+  try {
+    const supabase = await assertAuth();
+
+    const id = formData.get("id") as string | null;
+    const name = formData.get("name") as string;
+    const category = formData.get("category") as string;
+    const price = formData.get("price") as string;
+    const description = (formData.get("description") as string) || null;
+    const long_description =
+      (formData.get("long_description") as string) || null;
+    const image = (formData.get("image") as string) || null;
+    const featured = formData.get("featured") === "on";
+
+    if (!name || !category || !price) {
+      return { success: false, error: "Champs obligatoires manquants." };
+    }
+
+    const payload = {
+      name,
+      slug: slugify(name),
+      category,
+      price,
+      description,
+      long_description,
+      image,
+      featured,
+    };
+
+    let error;
+    if (id) {
+      ({ error } = await supabase.from("products").update(payload).eq("id", id));
+    } else {
+      ({ error } = await supabase.from("products").insert(payload));
+    }
+
+    if (error) {
+      console.error("createOrUpdateProduct:", error);
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath("/admin/produits");
+    revalidatePath("/collection");
+    revalidatePath("/");
+
+    return { success: true };
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+export async function deleteProduct(id: string) {
+  try {
+    const supabase = await assertAuth();
+    const { error } = await supabase.from("products").delete().eq("id", id);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath("/admin/produits");
+    revalidatePath("/collection");
+    revalidatePath("/");
+
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+// ============================================
+// CATÉGORIES
+// ============================================
+
+export async function createOrUpdateCategory(formData: FormData) {
+  try {
+    const supabase = await assertAuth();
+
+    const id = formData.get("id") as string | null;
+    const name = formData.get("name") as string;
+    const description = (formData.get("description") as string) || null;
+    const position = Number(formData.get("position") || 0);
+
+    if (!name) {
+      return { success: false, error: "Nom obligatoire." };
+    }
+
+    const payload = {
+      name,
+      slug: slugify(name),
+      description,
+      position,
+    };
+
+    let error;
+    if (id) {
+      ({ error } = await supabase
+        .from("categories")
+        .update(payload)
+        .eq("id", id));
+    } else {
+      ({ error } = await supabase.from("categories").insert(payload));
+    }
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/categories");
+    revalidatePath("/collection");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+export async function deleteCategory(id: string) {
+  try {
+    const supabase = await assertAuth();
+    const { error } = await supabase.from("categories").delete().eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/categories");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+// ============================================
+// DEVIS B2B
+// ============================================
+
+export async function updateQuoteStatus(id: string, status: QuoteStatus) {
+  try {
+    const supabase = await assertAuth();
+    const { error } = await supabase
+      .from("quotes")
+      .update({ status })
+      .eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/devis");
+    revalidatePath(`/admin/devis/${id}`);
+    revalidatePath("/admin");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+export async function deleteQuote(id: string) {
+  try {
+    const supabase = await assertAuth();
+    const { error } = await supabase.from("quotes").delete().eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/devis");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+// ============================================
+// COMMANDES B2C
+// ============================================
+
+export async function updateOrderStatus(id: string, status: OrderStatus) {
+  try {
+    const supabase = await assertAuth();
+    const { error } = await supabase
+      .from("orders")
+      .update({ status })
+      .eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/commandes");
+    revalidatePath(`/admin/commandes/${id}`);
+    revalidatePath("/admin");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+export async function deleteOrder(id: string) {
+  try {
+    const supabase = await assertAuth();
+    const { error } = await supabase.from("orders").delete().eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/commandes");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+// ============================================
+// PROJETS
+// ============================================
+
+export async function createOrUpdateProject(formData: FormData) {
+  try {
+    const supabase = await assertAuth();
+
+    const id = formData.get("id") as string | null;
+    const title = formData.get("title") as string;
+    const category = (formData.get("category") as string) || null;
+    const location = (formData.get("location") as string) || null;
+    const year = (formData.get("year") as string) || null;
+    const surface = (formData.get("surface") as string) || null;
+    const description = (formData.get("description") as string) || null;
+    const image = (formData.get("image") as string) || null;
+    const featured = formData.get("featured") === "on";
+
+    if (!title) {
+      return { success: false, error: "Titre obligatoire." };
+    }
+
+    const payload = {
+      title,
+      slug: slugify(title),
+      category,
+      location,
+      year,
+      surface,
+      description,
+      image,
+      featured,
+    };
+
+    let error;
+    if (id) {
+      ({ error } = await supabase.from("projects").update(payload).eq("id", id));
+    } else {
+      ({ error } = await supabase.from("projects").insert(payload));
+    }
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/projets");
+    revalidatePath("/projects");
+    revalidatePath("/");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+export async function deleteProject(id: string) {
+  try {
+    const supabase = await assertAuth();
+    const { error } = await supabase.from("projects").delete().eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/projets");
+    revalidatePath("/projects");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+// ============================================
+// RESSOURCES DIGITALES
+// ============================================
+
+export async function createOrUpdateResource(formData: FormData) {
+  try {
+    const supabase = await assertAuth();
+
+    const id = formData.get("id") as string | null;
+    const title = formData.get("title") as string;
+    const category = (formData.get("category") as string) || null;
+    const price = formData.get("price") as string;
+    const description = (formData.get("description") as string) || null;
+    const format = (formData.get("format") as string) || null;
+    const badge = (formData.get("badge") as string) || null;
+    const image = (formData.get("image") as string) || null;
+    const file_url = (formData.get("file_url") as string) || null;
+
+    if (!title || !price) {
+      return { success: false, error: "Titre et prix obligatoires." };
+    }
+
+    const payload = {
+      title,
+      slug: slugify(title),
+      category,
+      price,
+      description,
+      format,
+      badge,
+      image,
+      file_url,
+    };
+
+    let error;
+    if (id) {
+      ({ error } = await supabase
+        .from("resources")
+        .update(payload)
+        .eq("id", id));
+    } else {
+      ({ error } = await supabase.from("resources").insert(payload));
+    }
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/ressources");
+    revalidatePath("/ressources");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+export async function deleteResource(id: string) {
+  try {
+    const supabase = await assertAuth();
+    const { error } = await supabase.from("resources").delete().eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/ressources");
+    revalidatePath("/ressources");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+// ============================================
+// PARAMÈTRES
+// ============================================
+
+export async function updateSettings(formData: FormData) {
+  try {
+    const supabase = await assertAuth();
+
+    const key = formData.get("key") as string;
+    const value = formData.get("value") as string;
+
+    if (!key) return { success: false, error: "Clé manquante." };
+
+    const { error } = await supabase
+      .from("settings")
+      .upsert({
+        key,
+        value: { text: value },
+        updated_at: new Date().toISOString(),
+      });
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/parametres");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erreur serveur." };
+  }
+}
+
+// ============================================
+// AUTH — LOGOUT
+// ============================================
+
+export async function signOutAction() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  redirect("/admin/login");
+}
