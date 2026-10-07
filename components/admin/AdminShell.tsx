@@ -6,6 +6,7 @@ import Sidebar from "@/components/admin/Sidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
 import MobileTabBar from "@/components/admin/MobileTabBar";
 import MobileMenuDrawer from "@/components/admin/MobileMenuDrawer";
+import ToastProvider from "@/components/ui/ToastProvider";
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const collapsed = useAdminUIStore((s) => s.sidebarCollapsed);
@@ -26,6 +27,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
       <MobileTabBar />
       <MobileMenuDrawer />
+      <ToastProvider />
     </div>
   );
 }
