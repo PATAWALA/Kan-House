@@ -110,10 +110,10 @@ export default function AdminHeader() {
   return (
     <>
       <header
-        className="sticky top-0 z-30 bg-[var(--color-cafe-light)]/95 backdrop-blur-md"
+        className="sticky top-0 z-30 h-16 bg-[var(--color-cafe-light)]/95 backdrop-blur-md"
         style={{ borderBottom: "1px solid var(--color-border-line)" }}
       >
-        <div className="flex items-center justify-between gap-3 h-16 px-4 lg:px-8">
+        <div className="flex items-center justify-between gap-3 h-full px-4 lg:px-8">
 
           {/* Titre dynamique */}
           <h1 className="text-[0.95rem] lg:text-[1.05rem] font-medium
@@ -124,7 +124,7 @@ export default function AdminHeader() {
           {/* Actions */}
           <div className="flex items-center gap-1.5 ml-auto">
 
-            {/* Recherche desktop — PLUS LARGE */}
+            {/* Recherche desktop */}
             <button
               onClick={() => setSearchOpen(true)}
               className="hidden md:inline-flex items-center gap-3
