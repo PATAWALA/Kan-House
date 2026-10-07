@@ -4,8 +4,17 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import {
-  LayoutDashboard, Package, Tag, ShoppingBag, FileText,
-  Briefcase, Settings, LogOut, ExternalLink, ChevronLeft, ChevronRight,
+  LayoutDashboard,
+  Package,
+  Tag,
+  ShoppingBag,
+  FileText,
+  Briefcase,
+  Settings,
+  LogOut,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { createClient } from "@/lib/supabase/client";
@@ -56,25 +65,30 @@ export default function Sidebar() {
   return (
     <aside
       className={cn(
-        "hidden lg:flex fixed left-0 top-0 bottom-0 z-40 flex-col transition-all duration-300",
+        "hidden lg:flex fixed left-0 top-0 bottom-0 z-40 flex-col",
+        "transition-all duration-300",
         collapsed ? "w-[72px]" : "w-64"
       )}
       style={{
-        backgroundColor: "var(--color-bordeaux)",
+        backgroundColor: "var(--color-espresso)",
         color: "var(--color-cafe-light)",
       }}
     >
-      {/* Header */}
+      {/* ============================================
+          HEADER — Logo + toggle
+          ============================================ */}
       <div
         className="flex items-center justify-between h-16 px-5 shrink-0"
-        style={{ borderBottom: "1px solid rgba(239, 236, 230, 0.10)" }}
+        style={{ borderBottom: "1px solid rgba(239, 236, 230, 0.08)" }}
       >
         {!collapsed && (
           <Link href="/admin" className="flex flex-col leading-none">
-            <span className="text-[0.9rem] font-medium tracking-[0.14em]">
+            <span className="text-[0.9rem] font-medium tracking-[0.14em]
+                             text-[var(--color-cafe-light)]">
               KAN HOUSE
             </span>
-            <span className="text-[0.48rem] tracking-[0.28em] opacity-55 mt-1">
+            <span className="text-[0.48rem] tracking-[0.28em]
+                             text-[var(--color-cafe-light)]/40 mt-1">
               ADMINISTRATION
             </span>
           </Link>
@@ -83,8 +97,9 @@ export default function Sidebar() {
           onClick={() => setCollapsed((v) => !v)}
           aria-label={collapsed ? "Ouvrir" : "Réduire"}
           className={cn(
-            "p-1.5 text-[var(--color-cafe-light)]/55",
-            "hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/8 transition-colors",
+            "p-1.5 text-[var(--color-cafe-light)]/45",
+            "hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/8",
+            "transition-colors",
             collapsed && "mx-auto"
           )}
         >
@@ -92,39 +107,44 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-4 px-3">
+      {/* ============================================
+          NAVIGATION
+          ============================================ */}
+      <nav className="flex-1 overflow-y-auto py-5 px-3">
         {SECTIONS.map((section, sIdx) => (
           <div key={section.label} className={cn(sIdx > 0 && "mt-6")}>
             {!collapsed && (
-              <p className="px-3 mb-2 text-[0.58rem] font-medium uppercase tracking-[0.24em]
-                            text-[var(--color-cafe-light)]/35">
+              <p className="px-3 mb-2 text-[0.56rem] font-medium uppercase
+                            tracking-[0.26em] text-[var(--color-cafe-light)]/30">
                 {section.label}
               </p>
             )}
-            <ul className="space-y-0.5">
+
+            <ul className="space-y-1">
               {section.items.map(({ label, href, icon: Icon }) => {
-                const active = href === "/admin"
-                  ? pathname === "/admin"
-                  : pathname === href || pathname.startsWith(href + "/");
+                const active =
+                  href === "/admin"
+                    ? pathname === "/admin"
+                    : pathname === href || pathname.startsWith(href + "/");
+
                 return (
                   <li key={href}>
                     <Link
                       href={href}
                       title={collapsed ? label : undefined}
                       className={cn(
-                        "relative flex items-center gap-3 px-3 py-2.5 text-[0.82rem] transition-colors",
+                        "flex items-center gap-3 px-3 py-2.5 text-[0.82rem] transition-colors",
                         collapsed && "justify-center",
                         active
-                          ? "bg-[var(--color-cafe-light)]/12 text-[var(--color-cafe-light)]"
-                          : "text-[var(--color-cafe-light)]/60 hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/6"
+                          ? "bg-[var(--color-cafe-light)] text-[var(--color-espresso)] font-medium"
+                          : "text-[var(--color-cafe-light)]/65 hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/8"
                       )}
                     >
-                      {active && (
-                        <span className="absolute left-0 top-1/2 -translate-y-1/2
-                                         w-[2px] h-4 bg-[var(--color-cafe-light)]" />
-                      )}
-                      <Icon size={16} strokeWidth={1.5} className="shrink-0" />
+                      <Icon
+                        size={16}
+                        strokeWidth={active ? 1.8 : 1.5}
+                        className="shrink-0"
+                      />
                       {!collapsed && <span>{label}</span>}
                     </Link>
                   </li>
@@ -135,30 +155,37 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Footer */}
+      {/* ============================================
+          FOOTER — Voir site + Déconnexion
+          ============================================ */}
       <div
-        className="p-3 space-y-0.5 shrink-0"
-        style={{ borderTop: "1px solid rgba(239, 236, 230, 0.10)" }}
+        className="p-3 space-y-1 shrink-0"
+        style={{ borderTop: "1px solid rgba(239, 236, 230, 0.08)" }}
       >
         <Link
           href="/"
           target="_blank"
           title={collapsed ? "Voir le site" : undefined}
           className={cn(
-            "flex items-center gap-3 px-3 py-2.5 text-[0.78rem] text-[var(--color-cafe-light)]/55",
-            "hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/6 transition-colors",
+            "flex items-center gap-3 px-3 py-2.5 text-[0.78rem]",
+            "text-[var(--color-cafe-light)]/50",
+            "hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/8",
+            "transition-colors",
             collapsed && "justify-center"
           )}
         >
           <ExternalLink size={15} strokeWidth={1.5} className="shrink-0" />
           {!collapsed && <span>Voir le site</span>}
         </Link>
+
         <button
           onClick={handleLogout}
           title={collapsed ? "Déconnexion" : undefined}
           className={cn(
-            "w-full flex items-center gap-3 px-3 py-2.5 text-[0.78rem] text-[var(--color-cafe-light)]/55",
-            "hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/6 transition-colors text-left",
+            "w-full flex items-center gap-3 px-3 py-2.5 text-[0.78rem]",
+            "text-[var(--color-cafe-light)]/50",
+            "hover:text-[var(--color-cafe-light)] hover:bg-[var(--color-cafe-light)]/8",
+            "transition-colors text-left",
             collapsed && "justify-center"
           )}
         >

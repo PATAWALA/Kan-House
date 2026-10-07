@@ -27,8 +27,8 @@ export default function MobileTabBar() {
     <nav
       className="lg:hidden fixed bottom-0 left-0 right-0 z-40"
       style={{
-        backgroundColor: "var(--color-bordeaux)",
-        borderTop: "1px solid rgba(239, 236, 230, 0.12)",
+        backgroundColor: "var(--color-espresso)",
+        borderTop: "1px solid rgba(239, 236, 230, 0.10)",
         paddingBottom: "env(safe-area-inset-bottom)",
       }}
     >
@@ -49,13 +49,14 @@ export default function MobileTabBar() {
                   "transition-colors",
                   active
                     ? "text-[var(--color-cafe-light)]"
-                    : "text-[var(--color-cafe-light)]/55 hover:text-[var(--color-cafe-light)]/85"
+                    : "text-[var(--color-cafe-light)]/45 hover:text-[var(--color-cafe-light)]/75"
                 )}
               >
+                {/* Filet indicateur en haut de l'onglet actif */}
                 {active && (
                   <span
                     className="absolute top-0 left-1/2 -translate-x-1/2
-                               w-6 h-px bg-[var(--color-cafe-light)]"
+                               w-6 h-[2px] bg-[var(--color-cafe-light)]"
                   />
                 )}
                 <Icon size={18} strokeWidth={active ? 1.8 : 1.4} />
@@ -71,8 +72,8 @@ export default function MobileTabBar() {
             onClick={openMenu}
             className="flex flex-col items-center justify-center gap-1 h-full w-full
                        text-[0.55rem] font-medium uppercase tracking-[0.1em]
-                       text-[var(--color-cafe-light)]/55
-                       hover:text-[var(--color-cafe-light)]/85
+                       text-[var(--color-cafe-light)]/45
+                       hover:text-[var(--color-cafe-light)]/75
                        transition-colors"
           >
             <Menu size={18} strokeWidth={1.4} />
