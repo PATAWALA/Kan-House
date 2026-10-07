@@ -10,13 +10,11 @@ import {
   FileText,
   Briefcase,
   Settings,
-  LogOut,
   ExternalLink,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { createClient } from "@/lib/supabase/client";
 import { useAdminUIStore } from "@/lib/store/admin-ui";
 
 const SECTIONS = [
@@ -52,18 +50,9 @@ const SECTIONS = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const router = useRouter();
 
-  // État partagé avec le layout
   const collapsed = useAdminUIStore((s) => s.sidebarCollapsed);
   const toggleSidebar = useAdminUIStore((s) => s.toggleSidebar);
-
-  const handleLogout = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/admin/login");
-    router.refresh();
-  };
 
   return (
     <aside
@@ -76,9 +65,7 @@ export default function Sidebar() {
         borderRight: "1px solid var(--color-border-line)",
       }}
     >
-      {/* ============================================
-          HEADER — Logo + toggle
-          ============================================ */}
+      {/* HEADER — Logo + toggle */}
       <div
         className="flex items-center justify-between h-16 px-5 shrink-0"
         style={{ borderBottom: "1px solid var(--color-border-line)" }}
@@ -110,9 +97,7 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* ============================================
-          NAVIGATION
-          ============================================ */}
+      {/* NAVIGATION */}
       <nav className="flex-1 overflow-y-auto py-5 px-3">
         {SECTIONS.map((section, sIdx) => (
           <div key={section.label} className={cn(sIdx > 0 && "mt-6")}>
@@ -140,7 +125,7 @@ export default function Sidebar() {
                         collapsed && "justify-center",
                         active
                           ? "bg-[var(--color-cafe-light)] text-[var(--color-espresso)] font-medium"
-                          : "text-[var(--color-espresso)]/60 hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]/60"
+                          : "text-[var(--color-espresso)]/60 hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]/50"
                       )}
                     >
                       <Icon
@@ -158,11 +143,9 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* ============================================
-          FOOTER — Voir site + Déconnexion
-          ============================================ */}
+      {/* FOOTER — uniquement "Voir le site" */}
       <div
-        className="p-3 space-y-1 shrink-0"
+        className="p-3 shrink-0"
         style={{ borderTop: "1px solid var(--color-border-line)" }}
       >
         <Link
@@ -172,7 +155,7 @@ export default function Sidebar() {
           className={cn(
             "flex items-center gap-3 px-3 py-2.5 text-[0.78rem]",
             "text-[var(--color-espresso)]/50",
-            "hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]/60",
+            "hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]/50",
             "transition-colors",
             collapsed && "justify-center"
           )}
@@ -180,21 +163,6 @@ export default function Sidebar() {
           <ExternalLink size={15} strokeWidth={1.5} className="shrink-0" />
           {!collapsed && <span>Voir le site</span>}
         </Link>
-
-        <button
-          onClick={handleLogout}
-          title={collapsed ? "Déconnexion" : undefined}
-          className={cn(
-            "w-full flex items-center gap-3 px-3 py-2.5 text-[0.78rem]",
-            "text-[var(--color-espresso)]/50",
-            "hover:text-[var(--color-bordeaux)] hover:bg-[var(--color-cafe-light)]/60",
-            "transition-colors text-left",
-            collapsed && "justify-center"
-          )}
-        >
-          <LogOut size={15} strokeWidth={1.5} className="shrink-0" />
-          {!collapsed && <span>Déconnexion</span>}
-        </button>
       </div>
     </aside>
   );

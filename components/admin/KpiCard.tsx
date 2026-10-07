@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, ArrowDownRight, type LucideIcon } from "lucide-react";
-import { cn } from "@/lib/cn";
+
+type Variant = "default" | "bordeaux" | "espresso" | "sand";
 
 interface KpiCardProps {
   label: string;
@@ -8,51 +9,144 @@ interface KpiCardProps {
   icon: LucideIcon;
   href?: string;
   trend?: { value: number; direction: "up" | "down"; label?: string };
-  accent?: boolean;
+  variant?: Variant;
 }
 
+const VARIANTS: Record<
+  Variant,
+  {
+    background: string;
+    color: string;
+    colorMuted: string;
+    border: string;
+    iconBg: string;
+    iconColor: string;
+    hoverBg: string;
+    isDark: boolean;
+  }
+> = {
+  default: {
+    background: "var(--color-cafe-light)",
+    color: "var(--color-espresso)",
+    colorMuted: "rgba(26, 26, 26, 0.5)",
+    border: "var(--color-border-line)",
+    iconBg: "var(--color-cafe-dark)",
+    iconColor: "rgba(26, 26, 26, 0.65)",
+    hoverBg: "var(--color-cafe-dark)",
+    isDark: false,
+  },
+  sand: {
+    background:
+      "linear-gradient(135deg, #F2EDE4 0%, #E8E2D5 55%, #D8D0C2 100%)",
+    color: "var(--color-espresso)",
+    colorMuted: "rgba(26, 26, 26, 0.55)",
+    border: "#D8D0C2",
+    iconBg: "rgba(26, 26, 26, 0.06)",
+    iconColor: "rgba(26, 26, 26, 0.7)",
+    hoverBg:
+      "linear-gradient(135deg, #E8E2D5 0%, #D8D0C2 55%, #CBC1B1 100%)",
+    isDark: false,
+  },
+  bordeaux: {
+    background:
+      "linear-gradient(135deg, #3B1415 0%, #4A1D1E 50%, #5E2324 100%)",
+    color: "var(--color-cafe-light)",
+    colorMuted: "rgba(239, 236, 230, 0.6)",
+    border: "#4A1D1E",
+    iconBg: "rgba(239, 236, 230, 0.12)",
+    iconColor: "var(--color-cafe-light)",
+    hoverBg:
+      "linear-gradient(135deg, #2A0E0F 0%, #3B1415 50%, #4A1D1E 100%)",
+    isDark: true,
+  },
+  espresso: {
+    background:
+      "linear-gradient(135deg, #1A1A1A 0%, #2D2B2A 50%, #1A1A1A 100%)",
+    color: "var(--color-cafe-light)",
+    colorMuted: "rgba(239, 236, 230, 0.55)",
+    border: "#2D2B2A",
+    iconBg: "rgba(239, 236, 230, 0.1)",
+    iconColor: "var(--color-cafe-light)",
+    hoverBg:
+      "linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 50%, #0F0F0F 100%)",
+    isDark: true,
+  },
+};
+
 export default function KpiCard({
-  label, value, icon: Icon, href, trend, accent = false,
+  label,
+  value,
+  icon: Icon,
+  href,
+  trend,
+  variant = "default",
 }: KpiCardProps) {
+  const s = VARIANTS[variant];
+
   const Wrapper: any = href ? Link : "div";
   const wrapperProps = href ? { href } : {};
 
   return (
     <Wrapper
       {...wrapperProps}
-      className={cn(
-        "group relative flex flex-col p-5 lg:p-6 transition-colors duration-200",
-        href && "hover:bg-[var(--color-cafe-dark)]/40",
-        accent && "bg-[var(--color-espresso)] text-[var(--color-cafe-light)]"
-      )}
+      className="group relative flex flex-col p-5 lg:p-6 overflow-hidden"
       style={{
-        border: `1px solid ${accent ? "var(--color-espresso)" : "var(--color-border-line)"}`,
+        background: s.background,
+        border: `1px solid ${s.border}`,
+        transition: "background 400ms ease",
       }}
+      onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
+  if (href) e.currentTarget.style.background = s.hoverBg;
+}}
+onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
+  if (href) e.currentTarget.style.background = s.background;
+}}
     >
-      <div className="flex items-start justify-between mb-6">
+      {/* Halo lumineux pour les cartes sombres */}
+      {s.isDark && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-16 -right-16
+                     w-40 h-40 rounded-full opacity-40 blur-3xl"
+          style={{
+            background:
+              variant === "bordeaux"
+                ? "radial-gradient(circle, rgba(139, 53, 54, 0.9) 0%, transparent 70%)"
+                : "radial-gradient(circle, rgba(80, 80, 80, 0.5) 0%, transparent 70%)",
+          }}
+        />
+      )}
+
+      {/* Header : icône + tendance */}
+      <div className="relative flex items-start justify-between mb-6">
         <span
-          className={cn(
-            "w-9 h-9 grid place-items-center",
-            accent
-              ? "bg-[var(--color-cafe-light)]/10 text-[var(--color-cafe-light)]"
-              : "bg-[var(--color-cafe-dark)] text-[var(--color-espresso)]/65"
-          )}
+          className="w-9 h-9 grid place-items-center"
+          style={{ backgroundColor: s.iconBg, color: s.iconColor }}
         >
           <Icon size={16} strokeWidth={1.5} />
         </span>
 
         {trend && (
           <span
-            className={cn(
-              "inline-flex items-center gap-1 text-[0.65rem] font-medium px-2 py-0.5",
-              trend.direction === "up"
-                ? accent
-                  ? "bg-emerald-500/20 text-emerald-200"
-                  : "bg-emerald-500/10 text-emerald-700"
-                : accent
-                ? "bg-red-500/20 text-red-200"
-                : "bg-red-500/10 text-red-700"
-            )}
+            className="inline-flex items-center gap-1 text-[0.65rem] font-medium px-2 py-0.5"
+            style={{
+              backgroundColor:
+                trend.direction === "up"
+                  ? s.isDark
+                    ? "rgba(16, 185, 129, 0.2)"
+                    : "rgba(16, 185, 129, 0.12)"
+                  : s.isDark
+                  ? "rgba(239, 68, 68, 0.2)"
+                  : "rgba(239, 68, 68, 0.12)",
+              color:
+                trend.direction === "up"
+                  ? s.isDark
+                    ? "#6EE7B7"
+                    : "#047857"
+                  : s.isDark
+                  ? "#FCA5A5"
+                  : "#B91C1C",
+            }}
           >
             {trend.direction === "up" ? (
               <ArrowUpRight size={11} strokeWidth={2.5} />
@@ -64,34 +158,32 @@ export default function KpiCard({
         )}
       </div>
 
+      {/* Valeur */}
       <p
-        className={cn(
-          "text-[1.75rem] lg:text-[2rem] leading-none font-normal tabular-nums mb-2",
-          accent ? "text-[var(--color-cafe-light)]" : "text-[var(--color-espresso)]"
-        )}
+        className="relative text-[1.75rem] lg:text-[2rem] leading-none
+                   font-normal tabular-nums mb-2"
+        style={{ color: s.color }}
       >
         {value}
       </p>
 
+      {/* Label */}
       <p
-        className={cn(
-          "text-[0.65rem] font-medium uppercase tracking-[0.2em]",
-          accent
-            ? "text-[var(--color-cafe-light)]/55"
-            : "text-[var(--color-espresso)]/50"
-        )}
+        className="relative text-[0.65rem] font-medium uppercase tracking-[0.2em]"
+        style={{ color: s.colorMuted }}
       >
         {label}
       </p>
 
+      {/* Sous-label */}
       {trend?.label && (
         <p
-          className={cn(
-            "text-[0.68rem] mt-1",
-            accent
-              ? "text-[var(--color-cafe-light)]/45"
-              : "text-[var(--color-espresso)]/40"
-          )}
+          className="relative text-[0.68rem] mt-1"
+          style={{
+            color: s.isDark
+              ? "rgba(239, 236, 230, 0.45)"
+              : "rgba(26, 26, 26, 0.4)",
+          }}
         >
           {trend.label}
         </p>

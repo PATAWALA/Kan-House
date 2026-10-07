@@ -1,15 +1,29 @@
 import Link from "next/link";
 import {
-  Package, ShoppingBag, FileText, Briefcase,
-  ArrowUpRight, Plus, TrendingUp, Clock, Eye,
+  Package,
+  ShoppingBag,
+  FileText,
+  Briefcase,
+  ArrowUpRight,
+  Plus,
+  TrendingUp,
+  Clock,
+  Eye,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import KpiCard from "@/components/admin/KpiCard";
 
 const STATUS_LABELS: Record<string, string> = {
-  new: "Nouveau", contacted: "Contacté", quoted: "Devis envoyé",
-  won: "Gagné", lost: "Perdu", pending: "En attente", paid: "Payée",
-  shipped: "Expédiée", delivered: "Livrée", cancelled: "Annulée",
+  new: "Nouveau",
+  contacted: "Contacté",
+  quoted: "Devis envoyé",
+  won: "Gagné",
+  lost: "Perdu",
+  pending: "En attente",
+  paid: "Payée",
+  shipped: "Expédiée",
+  delivered: "Livrée",
+  cancelled: "Annulée",
 };
 
 async function getStats() {
@@ -17,7 +31,10 @@ async function getStats() {
   const [products, orders, quotes, projects] = await Promise.all([
     supabase.from("products").select("*", { count: "exact", head: true }),
     supabase.from("orders").select("*", { count: "exact", head: true }),
-    supabase.from("quotes").select("*", { count: "exact", head: true }).eq("status", "new"),
+    supabase
+      .from("quotes")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "new"),
     supabase.from("projects").select("*", { count: "exact", head: true }),
   ]);
   return {
@@ -66,6 +83,7 @@ export default async function AdminHomePage() {
 
   return (
     <div className="max-w-[1400px]">
+
       {/* En-tête */}
       <div className="mb-8">
         <p className="text-[0.62rem] font-medium uppercase tracking-[0.24em]
@@ -88,7 +106,7 @@ export default async function AdminHomePage() {
           value={stats.quotesNew}
           icon={FileText}
           href="/admin/devis"
-          accent
+          variant="bordeaux"
           trend={{ value: 24, direction: "up", label: "vs semaine dernière" }}
         />
         <KpiCard
@@ -96,10 +114,23 @@ export default async function AdminHomePage() {
           value={stats.orders}
           icon={ShoppingBag}
           href="/admin/commandes"
+          variant="sand"
           trend={{ value: 8, direction: "up", label: "vs mois dernier" }}
         />
-        <KpiCard label="Produits" value={stats.products} icon={Package} href="/admin/produits" />
-        <KpiCard label="Projets" value={stats.projects} icon={Briefcase} href="/admin/projets" />
+        <KpiCard
+          label="Produits"
+          value={stats.products}
+          icon={Package}
+          href="/admin/produits"
+          variant="default"
+        />
+        <KpiCard
+          label="Projets"
+          value={stats.projects}
+          icon={Briefcase}
+          href="/admin/projets"
+          variant="espresso"
+        />
       </div>
 
       {/* Actions rapides */}
@@ -108,6 +139,7 @@ export default async function AdminHomePage() {
                       text-[var(--color-espresso)]/45 mb-4">
           Actions rapides
         </p>
+
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { label: "Nouveau produit", href: "/admin/produits/nouveau", icon: Plus },
@@ -138,6 +170,7 @@ export default async function AdminHomePage() {
 
       {/* Activité récente */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
         {/* Devis récents */}
         <section style={{ border: "1px solid var(--color-border-line)" }}>
           <header
@@ -145,7 +178,8 @@ export default async function AdminHomePage() {
             style={{ borderBottom: "1px solid var(--color-border-line)" }}
           >
             <div className="flex items-center gap-2.5">
-              <TrendingUp size={14} strokeWidth={1.5} className="text-[var(--color-bordeaux)]" />
+              <TrendingUp size={14} strokeWidth={1.5}
+                          className="text-[var(--color-bordeaux)]" />
               <p className="text-[0.72rem] font-medium uppercase tracking-[0.2em]
                             text-[var(--color-espresso)]/75">
                 Devis récents
@@ -157,7 +191,8 @@ export default async function AdminHomePage() {
                          uppercase tracking-[0.18em] text-[var(--color-espresso)]/55
                          hover:text-[var(--color-espresso)] transition-colors"
             >
-              Voir tout <ArrowUpRight size={11} />
+              Voir tout
+              <ArrowUpRight size={11} />
             </Link>
           </header>
 
@@ -210,7 +245,8 @@ export default async function AdminHomePage() {
             style={{ borderBottom: "1px solid var(--color-border-line)" }}
           >
             <div className="flex items-center gap-2.5">
-              <ShoppingBag size={14} strokeWidth={1.5} className="text-[var(--color-bordeaux)]" />
+              <ShoppingBag size={14} strokeWidth={1.5}
+                           className="text-[var(--color-bordeaux)]" />
               <p className="text-[0.72rem] font-medium uppercase tracking-[0.2em]
                             text-[var(--color-espresso)]/75">
                 Commandes récentes
@@ -222,7 +258,8 @@ export default async function AdminHomePage() {
                          uppercase tracking-[0.18em] text-[var(--color-espresso)]/55
                          hover:text-[var(--color-espresso)] transition-colors"
             >
-              Voir tout <ArrowUpRight size={11} />
+              Voir tout
+              <ArrowUpRight size={11} />
             </Link>
           </header>
 
