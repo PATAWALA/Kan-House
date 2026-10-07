@@ -7,31 +7,21 @@ interface KpiCardProps {
   value: string | number;
   icon: LucideIcon;
   href?: string;
-  trend?: {
-    value: number;    // ex: 12 pour +12%
-    direction: "up" | "down";
-    label?: string;   // ex: "vs mois dernier"
-  };
+  trend?: { value: number; direction: "up" | "down"; label?: string };
   accent?: boolean;
 }
 
 export default function KpiCard({
-  label,
-  value,
-  icon: Icon,
-  href,
-  trend,
-  accent = false,
+  label, value, icon: Icon, href, trend, accent = false,
 }: KpiCardProps) {
-  const Wrapper = href ? Link : "div";
+  const Wrapper: any = href ? Link : "div";
   const wrapperProps = href ? { href } : {};
 
   return (
     <Wrapper
-      {...(wrapperProps as any)}
+      {...wrapperProps}
       className={cn(
-        "group relative flex flex-col p-5 lg:p-6",
-        "transition-colors duration-200",
+        "group relative flex flex-col p-5 lg:p-6 transition-colors duration-200",
         href && "hover:bg-[var(--color-cafe-dark)]/40",
         accent && "bg-[var(--color-espresso)] text-[var(--color-cafe-light)]"
       )}
@@ -39,11 +29,10 @@ export default function KpiCard({
         border: `1px solid ${accent ? "var(--color-espresso)" : "var(--color-border-line)"}`,
       }}
     >
-      {/* Header : icône + tendance */}
       <div className="flex items-start justify-between mb-6">
         <span
           className={cn(
-            "w-9 h-9 grid place-items-center rounded-sm",
+            "w-9 h-9 grid place-items-center",
             accent
               ? "bg-[var(--color-cafe-light)]/10 text-[var(--color-cafe-light)]"
               : "bg-[var(--color-cafe-dark)] text-[var(--color-espresso)]/65"
@@ -55,7 +44,7 @@ export default function KpiCard({
         {trend && (
           <span
             className={cn(
-              "inline-flex items-center gap-1 text-[0.65rem] font-medium px-2 py-0.5 rounded-sm",
+              "inline-flex items-center gap-1 text-[0.65rem] font-medium px-2 py-0.5",
               trend.direction === "up"
                 ? accent
                   ? "bg-emerald-500/20 text-emerald-200"
@@ -75,7 +64,6 @@ export default function KpiCard({
         )}
       </div>
 
-      {/* Valeur */}
       <p
         className={cn(
           "text-[1.75rem] lg:text-[2rem] leading-none font-normal tabular-nums mb-2",
@@ -85,7 +73,6 @@ export default function KpiCard({
         {value}
       </p>
 
-      {/* Label */}
       <p
         className={cn(
           "text-[0.65rem] font-medium uppercase tracking-[0.2em]",
@@ -97,7 +84,6 @@ export default function KpiCard({
         {label}
       </p>
 
-      {/* Sous-label tendance */}
       {trend?.label && (
         <p
           className={cn(

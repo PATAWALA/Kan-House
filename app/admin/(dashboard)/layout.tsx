@@ -16,15 +16,10 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-[var(--color-cafe-light)] flex">
       <Sidebar />
-
-      {/* Le padding gauche reste fixe à 72px (sidebar collapsed) sur lg */}
-      <div className="flex-1 flex flex-col lg:pl-[72px]">
+      <div className="flex-1 flex flex-col lg:pl-64">
         <AdminHeader />
-        <main className="flex-1 p-5 lg:p-8 pb-24 lg:pb-8">
-          {children}
-        </main>
+        <main className="flex-1 p-5 lg:p-8 pb-24 lg:pb-8">{children}</main>
       </div>
-
       <MobileTabBar />
       <MobileMenuDrawer />
     </div>
