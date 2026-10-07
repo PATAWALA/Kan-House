@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Package,
@@ -9,7 +9,6 @@ import {
   ShoppingBag,
   FileText,
   Briefcase,
-  Settings,
   ExternalLink,
   ChevronLeft,
   ChevronRight,
@@ -42,10 +41,6 @@ const SECTIONS = [
     label: "Contenu",
     items: [{ label: "Projets", href: "/admin/projets", icon: Briefcase }],
   },
-  {
-    label: "Système",
-    items: [{ label: "Paramètres", href: "/admin/parametres", icon: Settings }],
-  },
 ];
 
 export default function Sidebar() {
@@ -65,7 +60,9 @@ export default function Sidebar() {
         borderRight: "1px solid var(--color-border-line)",
       }}
     >
-      {/* HEADER — Logo + toggle */}
+      {/* ============================================
+          HEADER — Logo + toggle
+          ============================================ */}
       <div
         className="flex items-center justify-between h-16 px-5 shrink-0"
         style={{ borderBottom: "1px solid var(--color-border-line)" }}
@@ -97,7 +94,9 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* NAVIGATION */}
+      {/* ============================================
+          NAVIGATION
+          ============================================ */}
       <nav className="flex-1 overflow-y-auto py-5 px-3">
         {SECTIONS.map((section, sIdx) => (
           <div key={section.label} className={cn(sIdx > 0 && "mt-6")}>
@@ -121,12 +120,20 @@ export default function Sidebar() {
                       href={href}
                       title={collapsed ? label : undefined}
                       className={cn(
-                        "flex items-center gap-3 px-3 py-2.5 text-[0.82rem] transition-colors",
+                        "flex items-center gap-3 px-3 py-2.5 text-[0.82rem] transition-all duration-200",
                         collapsed && "justify-center",
                         active
-                          ? "bg-[var(--color-cafe-light)] text-[var(--color-espresso)] font-medium"
-                          : "text-[var(--color-espresso)]/60 hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]/50"
+                          ? "text-[var(--color-cafe-light)] font-medium shadow-sm"
+                          : "text-[var(--color-espresso)]/60 hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]"
                       )}
+                      style={
+                        active
+                          ? {
+                              background:
+                                "linear-gradient(135deg, #3B1415 0%, #4A1D1E 50%, #5E2324 100%)",
+                            }
+                          : undefined
+                      }
                     >
                       <Icon
                         size={16}
@@ -143,7 +150,9 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* FOOTER — uniquement "Voir le site" */}
+      {/* ============================================
+          FOOTER — Voir le site
+          ============================================ */}
       <div
         className="p-3 shrink-0"
         style={{ borderTop: "1px solid var(--color-border-line)" }}
@@ -155,7 +164,7 @@ export default function Sidebar() {
           className={cn(
             "flex items-center gap-3 px-3 py-2.5 text-[0.78rem]",
             "text-[var(--color-espresso)]/50",
-            "hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]/50",
+            "hover:text-[var(--color-espresso)] hover:bg-[var(--color-cafe-light)]",
             "transition-colors",
             collapsed && "justify-center"
           )}
