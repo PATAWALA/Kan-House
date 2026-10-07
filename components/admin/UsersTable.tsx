@@ -348,9 +348,7 @@ export default function UsersTable({
                       onClick={() => handleDeleteClick(user)}
                       disabled={isCurrent}
                       className={cn(
-                        "w-full inline-flex items-center justify-center gap-2
-                         px-3 py-2.5 text-[0.72rem] font-medium uppercase
-                         tracking-[0.16em] transition-colors",
+                        "w-full inline-flex items-center justify-center gap-2px-3 py-2.5 text-[0.72rem] font-medium uppercase tracking-[0.16em] transition-colors",
                         isCurrent
                           ? "text-[var(--color-espresso)]/20 cursor-not-allowed"
                           : "text-red-700 hover:bg-red-500/10"
