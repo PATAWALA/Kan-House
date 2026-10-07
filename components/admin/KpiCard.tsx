@@ -1,14 +1,37 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, ArrowDownRight, type LucideIcon } from "lucide-react";
+import {
+  Package,
+  ShoppingBag,
+  FileText,
+  Briefcase,
+  ArrowUpRight,
+  ArrowDownRight,
+  Eye,
+  Users,
+  TrendingUp,
+  type LucideIcon,
+} from "lucide-react";
 
 type Variant = "default" | "bordeaux" | "espresso" | "sand";
+
+type IconName = "package" | "shopping-bag" | "file-text" | "briefcase" | "eye" | "users" | "trending-up";
+
+const ICONS: Record<IconName, LucideIcon> = {
+  "package":       Package,
+  "shopping-bag":  ShoppingBag,
+  "file-text":     FileText,
+  "briefcase":     Briefcase,
+  "eye":           Eye,
+  "users":         Users,
+  "trending-up":   TrendingUp,
+};
 
 interface KpiCardProps {
   label: string;
   value: string | number;
-  icon: LucideIcon;
+  iconName: IconName;
   href?: string;
   trend?: { value: number; direction: "up" | "down"; label?: string };
   variant?: Variant;
@@ -38,39 +61,33 @@ const VARIANTS: Record<
     isDark: false,
   },
   sand: {
-    background:
-      "linear-gradient(135deg, #F2EDE4 0%, #E8E2D5 55%, #D8D0C2 100%)",
+    background: "linear-gradient(135deg, #F2EDE4 0%, #E8E2D5 55%, #D8D0C2 100%)",
     color: "var(--color-espresso)",
     colorMuted: "rgba(26, 26, 26, 0.55)",
     border: "#D8D0C2",
     iconBg: "rgba(26, 26, 26, 0.06)",
     iconColor: "rgba(26, 26, 26, 0.7)",
-    hoverBg:
-      "linear-gradient(135deg, #E8E2D5 0%, #D8D0C2 55%, #CBC1B1 100%)",
+    hoverBg: "linear-gradient(135deg, #E8E2D5 0%, #D8D0C2 55%, #CBC1B1 100%)",
     isDark: false,
   },
   bordeaux: {
-    background:
-      "linear-gradient(135deg, #3B1415 0%, #4A1D1E 50%, #5E2324 100%)",
+    background: "linear-gradient(135deg, #3B1415 0%, #4A1D1E 50%, #5E2324 100%)",
     color: "var(--color-cafe-light)",
     colorMuted: "rgba(239, 236, 230, 0.6)",
     border: "#4A1D1E",
     iconBg: "rgba(239, 236, 230, 0.12)",
     iconColor: "var(--color-cafe-light)",
-    hoverBg:
-      "linear-gradient(135deg, #2A0E0F 0%, #3B1415 50%, #4A1D1E 100%)",
+    hoverBg: "linear-gradient(135deg, #2A0E0F 0%, #3B1415 50%, #4A1D1E 100%)",
     isDark: true,
   },
   espresso: {
-    background:
-      "linear-gradient(135deg, #1A1A1A 0%, #2D2B2A 50%, #1A1A1A 100%)",
+    background: "linear-gradient(135deg, #1A1A1A 0%, #2D2B2A 50%, #1A1A1A 100%)",
     color: "var(--color-cafe-light)",
     colorMuted: "rgba(239, 236, 230, 0.55)",
     border: "#2D2B2A",
     iconBg: "rgba(239, 236, 230, 0.1)",
     iconColor: "var(--color-cafe-light)",
-    hoverBg:
-      "linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 50%, #0F0F0F 100%)",
+    hoverBg: "linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 50%, #0F0F0F 100%)",
     isDark: true,
   },
 };
@@ -78,12 +95,13 @@ const VARIANTS: Record<
 export default function KpiCard({
   label,
   value,
-  icon: Icon,
+  iconName,
   href,
   trend,
   variant = "default",
 }: KpiCardProps) {
   const s = VARIANTS[variant];
+  const Icon = ICONS[iconName];
 
   const Wrapper: any = href ? Link : "div";
   const wrapperProps = href ? { href } : {};
@@ -104,7 +122,6 @@ export default function KpiCard({
         if (href) e.currentTarget.style.background = s.background;
       }}
     >
-      {/* Halo lumineux pour les cartes sombres */}
       {s.isDark && (
         <div
           aria-hidden
@@ -119,7 +136,6 @@ export default function KpiCard({
         />
       )}
 
-      {/* Header : icône + tendance */}
       <div className="relative flex items-start justify-between mb-6">
         <span
           className="w-9 h-9 grid place-items-center"
@@ -160,7 +176,6 @@ export default function KpiCard({
         )}
       </div>
 
-      {/* Valeur */}
       <p
         className="relative text-[1.75rem] lg:text-[2rem] leading-none
                    font-normal tabular-nums mb-2"
@@ -169,7 +184,6 @@ export default function KpiCard({
         {value}
       </p>
 
-      {/* Label */}
       <p
         className="relative text-[0.65rem] font-medium uppercase tracking-[0.2em]"
         style={{ color: s.colorMuted }}
@@ -177,7 +191,6 @@ export default function KpiCard({
         {label}
       </p>
 
-      {/* Sous-label */}
       {trend?.label && (
         <p
           className="relative text-[0.68rem] mt-1"
