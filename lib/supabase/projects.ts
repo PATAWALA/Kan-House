@@ -1,10 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { ProjectRow, ProjectInsert } from "./types";
 
-// ============================================
-// LECTURE
-// ============================================
-
 export async function getProjects(): Promise<ProjectRow[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -30,10 +26,6 @@ export async function getProjectById(id: string): Promise<ProjectRow | null> {
   if (error) return null;
   return data as ProjectRow;
 }
-
-// ============================================
-// ÉCRITURE
-// ============================================
 
 export async function createProject(
   project: ProjectInsert
@@ -74,10 +66,5 @@ export async function updateProject(
 export async function deleteProject(id: string): Promise<boolean> {
   const supabase = await createClient();
   const { error } = await supabase.from("projects").delete().eq("id", id);
-
-  if (error) {
-    console.error("deleteProject:", error);
-    return false;
-  }
-  return true;
+  return !error;
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createOrUpdateProject, deleteProject } from "@/app/admin/actions";
+import ImageUploader from "@/components/admin/ImageUploader";
 import type { ProjectRow } from "@/lib/supabase/types";
 
 const CATEGORIES = ["Hôtel", "Restaurant", "Villa", "Lounge"];
@@ -18,6 +19,7 @@ export default function ProjectForm({
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
+  const [image, setImage] = useState(initialData?.image ?? "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,6 +28,7 @@ export default function ProjectForm({
 
     const formData = new FormData(e.currentTarget);
     if (initialData?.id) formData.append("id", initialData.id);
+    formData.append("image", image);
 
     const result = await createOrUpdateProject(formData);
 
@@ -62,7 +65,7 @@ export default function ProjectForm({
             name="title"
             required
             defaultValue={initialData?.title ?? ""}
-            className="w-full px-4 py-3 bg-transparent text-[0.95rem] outline-none"
+            className="w-full px-4 py-3 bg-transparent text-[0.95rem] outline-none focus:border-[var(--color-espresso)]/60 transition-colors"
             style={{ border: "1px solid var(--color-border-line)" }}
           />
         </Field>
@@ -75,9 +78,7 @@ export default function ProjectForm({
               className="w-full px-4 py-3 bg-transparent text-[0.95rem] outline-none cursor-pointer"
               style={{ border: "1px solid var(--color-border-line)" }}
             >
-              {CATEGORIES.map((c) => (
-                <option key={c}>{c}</option>
-              ))}
+              {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
             </select>
           </Field>
 
@@ -127,16 +128,13 @@ export default function ProjectForm({
           />
         </Field>
 
-        <Field label="URL de l'image">
-          <input
-            type="url"
-            name="image"
-            defaultValue={initialData?.image ?? ""}
-            placeholder="https://..."
-            className="w-full px-4 py-3 bg-transparent text-[0.95rem] outline-none"
-            style={{ border: "1px solid var(--color-border-line)" }}
-          />
-        </Field>
+        <ImageUploader
+          value={image}
+          onChange={setImage}
+          folder="projects"
+          label="Image du projet"
+          aspect="landscape"
+        />
 
         <label className="flex items-center gap-3 cursor-pointer">
           <input
@@ -151,25 +149,15 @@ export default function ProjectForm({
         </label>
       </div>
 
-      {error && (
-        <p className="text-[0.82rem] text-[var(--color-bordeaux)] mt-6">{error}</p>
-      )}
+      {error && <p className="text-[0.82rem] text-[var(--color-bordeaux)] mt-6">{error}</p>}
 
       <div className="flex flex-wrap items-center gap-4 mt-10">
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex items-center gap-2
-                     bg-[var(--color-espresso)] text-[var(--color-cafe-light)]
-                     px-6 py-3 text-[0.68rem] font-medium uppercase tracking-[0.22em]
-                     hover:bg-[var(--color-bordeaux)] transition-colors
-                     disabled:opacity-50"
+          className="inline-flex items-center gap-2 bg-[var(--color-espresso)] text-[var(--color-cafe-light)] px-6 py-3 text-[0.68rem] font-medium uppercase tracking-[0.22em] hover:bg-[var(--color-bordeaux)] transition-colors disabled:opacity-50"
         >
-          {loading
-            ? "Enregistrement…"
-            : mode === "create"
-            ? "Créer le projet"
-            : "Enregistrer"}
+          {loading ? "Enregistrement…" : mode === "create" ? "Créer le projet" : "Enregistrer"}
         </button>
 
         {mode === "edit" && (
@@ -177,10 +165,7 @@ export default function ProjectForm({
             type="button"
             onClick={handleDelete}
             disabled={deleting}
-            className="text-[0.68rem] uppercase tracking-[0.2em]
-                       text-[var(--color-bordeaux)]
-                       underline underline-offset-[5px]
-                       disabled:opacity-50"
+            className="text-[0.68rem] uppercase tracking-[0.2em] text-[var(--color-bordeaux)] underline underline-offset-[5px] disabled:opacity-50"
           >
             {deleting ? "Suppression…" : "Supprimer"}
           </button>
@@ -189,9 +174,7 @@ export default function ProjectForm({
         <button
           type="button"
           onClick={() => router.push("/admin/projets")}
-          className="text-[0.68rem] uppercase tracking-[0.2em]
-                     text-[var(--color-espresso)]/55
-                     underline underline-offset-[5px] ml-auto"
+          className="text-[0.68rem] uppercase tracking-[0.2em] text-[var(--color-espresso)]/55 underline underline-offset-[5px] ml-auto"
         >
           Annuler
         </button>
@@ -200,17 +183,10 @@ export default function ProjectForm({
   );
 }
 
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-[0.65rem] uppercase tracking-[0.22em]
-                        text-[var(--color-espresso)]/55 mb-2">
+      <label className="block text-[0.65rem] uppercase tracking-[0.22em] text-[var(--color-espresso)]/55 mb-2">
         {label}
       </label>
       {children}

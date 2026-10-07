@@ -26,7 +26,6 @@ export default function OrderStatusSelect({
 
   const handleChange = (newStatus: OrderStatus) => {
     setStatus(newStatus);
-
     startTransition(async () => {
       const result = await updateOrderStatus(orderId, newStatus);
       if (!result.success) {
@@ -40,29 +39,22 @@ export default function OrderStatusSelect({
 
   return (
     <div className="flex items-center gap-3">
-      <label className="text-[0.65rem] uppercase tracking-[0.22em]
-                        text-[var(--color-espresso)]/55">
+      <label className="text-[0.65rem] uppercase tracking-[0.22em] text-[var(--color-espresso)]/55">
         Statut
       </label>
       <select
         value={status}
         disabled={isPending}
         onChange={(e) => handleChange(e.target.value as OrderStatus)}
-        className="px-4 py-2.5 bg-transparent text-[0.85rem]
-                   text-[var(--color-espresso)] outline-none cursor-pointer
-                   disabled:opacity-50"
+        className="px-4 py-2.5 bg-transparent text-[0.85rem] text-[var(--color-espresso)] outline-none cursor-pointer disabled:opacity-50"
         style={{ border: "1px solid var(--color-border-line)" }}
       >
         {STATUSES.map((s) => (
-          <option key={s.value} value={s.value}>
-            {s.label}
-          </option>
+          <option key={s.value} value={s.value}>{s.label}</option>
         ))}
       </select>
       {isPending && (
-        <span className="text-[0.7rem] text-[var(--color-espresso)]/45">
-          Enregistrement…
-        </span>
+        <span className="text-[0.7rem] text-[var(--color-espresso)]/45">Enregistrement…</span>
       )}
     </div>
   );
