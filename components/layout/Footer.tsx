@@ -20,15 +20,31 @@ export default function Footer() {
       <div className="container-kan py-10 md:py-12
                       flex flex-col md:flex-row items-center justify-between gap-8">
 
-        {/* Logo */}
-        <Link href="/" className="flex flex-col leading-none shrink-0">
-          <span className="text-[1rem] font-medium tracking-[0.16em]">
+        {/* Logo — SOURCING mène à l'admin */}
+        <div className="flex flex-col leading-none shrink-0">
+          <Link
+            href="/"
+            className="text-[1rem] font-medium tracking-[0.16em]
+                       hover:opacity-90 transition-opacity"
+          >
             KAN HOUSE
+          </Link>
+
+          <span className="hidden sm:flex items-center gap-1.5 text-[0.5rem] font-medium tracking-[0.28em] opacity-50 mt-1">
+            <span>FURNITURE</span>
+            <span>•</span>
+            <span>INTERIORS</span>
+            <span>•</span>
+            {/* Lien caché vers l'admin — discret, pas de visuel distinct */}
+            <Link
+              href="/admin/login"
+              aria-label="Accès administration"
+              className="hover:opacity-80 transition-opacity cursor-default"
+            >
+              SOURCING
+            </Link>
           </span>
-          <span className="hidden sm:block text-[0.5rem] font-medium tracking-[0.28em] opacity-50 mt-1">
-            FURNITURE • INTERIORS • SOURCING
-          </span>
-        </Link>
+        </div>
 
         {/* Liens du centre */}
         <ul className="flex flex-wrap items-center justify-center gap-8 text-[0.68rem] font-medium uppercase tracking-[0.22em]">
