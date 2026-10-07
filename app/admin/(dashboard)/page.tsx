@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import KpiCard from "@/components/admin/KpiCard";
+import DashboardGreeting from "@/components/admin/DashboardGreeting";
 
 const STATUS_LABELS: Record<string, string> = {
   new: "Nouveau",
@@ -84,20 +85,8 @@ export default async function AdminHomePage() {
   return (
     <div className="max-w-[1400px]">
 
-      {/* En-tête */}
-      <div className="mb-8">
-        <p className="text-[0.62rem] font-medium uppercase tracking-[0.24em]
-                      text-[var(--color-espresso)]/45 mb-2">
-          Tableau de bord
-        </p>
-        <h1 className="text-[1.5rem] lg:text-[1.75rem] font-normal
-                       text-[var(--color-espresso)]">
-          Bonjour 👋
-        </h1>
-        <p className="text-[0.88rem] text-[var(--color-espresso)]/55 mt-1">
-          Voici l'activité de Kan House aujourd'hui.
-        </p>
-      </div>
+      {/* En-tête personnalisé */}
+      <DashboardGreeting />
 
       {/* KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

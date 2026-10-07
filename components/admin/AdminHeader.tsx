@@ -11,7 +11,6 @@ import {
   ExternalLink,
   X,
   Settings,
-  User,
 } from "lucide-react";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { cn } from "@/lib/cn";
@@ -27,25 +26,34 @@ const LABELS: Record<string, string> = {
   "/admin/parametres": "Paramètres",
 };
 
-function getBreadcrumbs(pathname: string) {
+function getPageTitle(pathname: string): string {
   const parts = pathname.split("/").filter(Boolean);
-  const crumbs: { label: string; href: string }[] = [
-    { label: "Admin", href: "/admin" },
-  ];
-
-  if (parts.length >= 2) {
-    const section = `/${parts.slice(0, 2).join("/")}`;
-    crumbs.push({ label: LABELS[section] || parts[1], href: section });
-  }
+  if (parts.length === 0) return "Admin";
+  const base = `/${parts.slice(0, 2).join("/")}`;
+  const baseLabel = LABELS[base] ?? "Admin";
 
   if (parts.length >= 3) {
-    crumbs.push({
-      label: parts[2] === "nouveau" ? "Nouveau" : "Détail",
-      href: pathname,
-    });
+    const sub = parts[2] === "nouveau" ? "Nouveau" : "Détail";
+    return `${baseLabel} · ${sub}`;
   }
+  return baseLabel;
+}
 
-  return crumbs;
+function getUserName(user: SupabaseUser | null): string {
+  if (!user) return "Admin";
+  const meta = user.user_metadata || {};
+  return (
+    meta.full_name ||
+    meta.name ||
+    meta.display_name ||
+    user.email?.split("@")[0] ||
+    "Admin"
+  );
+}
+
+function getUserInitial(user: SupabaseUser | null): string {
+  const name = getUserName(user);
+  return name[0]?.toUpperCase() ?? "A";
 }
 
 export default function AdminHeader() {
@@ -56,9 +64,11 @@ export default function AdminHeader() {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const crumbs = getBreadcrumbs(pathname);
+  const pageTitle = getPageTitle(pathname);
+  const userName = getUserName(user);
+  const userInitial = getUserInitial(user);
+  const userEmail = user?.email ?? "Chargement…";
 
-  // Récupère l'utilisateur connecté
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
@@ -66,7 +76,6 @@ export default function AdminHeader() {
     });
   }, []);
 
-  // Ferme le menu au clic extérieur
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -77,7 +86,6 @@ export default function AdminHeader() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // Raccourci Cmd+K pour la recherche
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -100,9 +108,6 @@ export default function AdminHeader() {
     router.refresh();
   };
 
-  const userInitial = user?.email?.[0]?.toUpperCase() ?? "A";
-  const userEmail = user?.email ?? "Chargement…";
-
   return (
     <>
       <header
@@ -111,39 +116,16 @@ export default function AdminHeader() {
       >
         <div className="flex items-center justify-between gap-3 h-16 px-4 lg:px-8">
 
-          {/* ============================================
-              Fil d'Ariane
-              ============================================ */}
-          <nav className="flex items-center gap-2 min-w-0 shrink-0">
-            {crumbs.map((c, i) => (
-              <div key={c.href} className="flex items-center gap-2 min-w-0">
-                {i > 0 && (
-                  <span className="text-[var(--color-espresso)]/25 shrink-0 hidden sm:inline">
-                    /
-                  </span>
-                )}
-                <Link
-                  href={c.href}
-                  className={cn(
-                    "text-[0.8rem] truncate transition-colors",
-                    i === crumbs.length - 1
-                      ? "text-[var(--color-espresso)] font-medium"
-                      : "text-[var(--color-espresso)]/55 hover:text-[var(--color-espresso)]",
-                    i < crumbs.length - 1 && "hidden sm:inline"
-                  )}
-                >
-                  {c.label}
-                </Link>
-              </div>
-            ))}
-          </nav>
+          {/* Titre dynamique */}
+          <h1 className="text-[0.95rem] lg:text-[1.05rem] font-medium
+                         text-[var(--color-espresso)] truncate shrink-0">
+            {pageTitle}
+          </h1>
 
-          {/* ============================================
-              Actions
-              ============================================ */}
+          {/* Actions */}
           <div className="flex items-center gap-1.5 ml-auto">
 
-            {/* Recherche — large sur desktop */}
+            {/* Recherche desktop */}
             <button
               onClick={() => setSearchOpen(true)}
               className="hidden md:inline-flex items-center gap-3
@@ -163,7 +145,7 @@ export default function AdminHeader() {
               </kbd>
             </button>
 
-            {/* Recherche — icône seule sur mobile */}
+            {/* Recherche mobile */}
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Rechercher"
@@ -190,9 +172,7 @@ export default function AdminHeader() {
                                bg-[var(--color-bordeaux)]" />
             </button>
 
-            {/* ============================================
-                Menu profil — Paramètres + Déconnexion
-                ============================================ */}
+            {/* Menu profil */}
             <div ref={menuRef} className="relative">
               <button
                 onClick={() => setUserMenuOpen((v) => !v)}
@@ -207,6 +187,10 @@ export default function AdminHeader() {
                              text-[0.72rem] font-medium uppercase"
                 >
                   {userInitial}
+                </span>
+                <span className="hidden md:block text-[0.82rem] font-medium
+                                 text-[var(--color-espresso)] max-w-[120px] truncate">
+                  {userName}
                 </span>
                 <ChevronDown
                   size={14}
@@ -224,32 +208,30 @@ export default function AdminHeader() {
                              bg-white shadow-xl z-50"
                   style={{ border: "1px solid var(--color-border-line)" }}
                 >
-                  {/* En-tête profil */}
                   <div
                     className="px-4 py-3"
                     style={{ borderBottom: "1px solid var(--color-border-line)" }}
                   >
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center gap-3">
                       <span
-                        className="w-9 h-9 grid place-items-center rounded-full
+                        className="w-10 h-10 grid place-items-center rounded-full
                                    bg-[var(--color-bordeaux)] text-[var(--color-cafe-light)]
-                                   text-[0.78rem] font-medium uppercase shrink-0"
+                                   text-[0.85rem] font-medium uppercase shrink-0"
                       >
                         {userInitial}
                       </span>
                       <div className="min-w-0">
-                        <p className="text-[0.72rem] text-[var(--color-espresso)]/45">
-                          Connecté en tant que
-                        </p>
-                        <p className="text-[0.82rem] text-[var(--color-espresso)]
+                        <p className="text-[0.85rem] text-[var(--color-espresso)]
                                       font-medium truncate">
+                          {userName}
+                        </p>
+                        <p className="text-[0.72rem] text-[var(--color-espresso)]/50 truncate">
                           {userEmail}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Actions */}
                   <Link
                     href="/admin/parametres"
                     onClick={() => setUserMenuOpen(false)}
@@ -275,10 +257,6 @@ export default function AdminHeader() {
                   >
                     <ExternalLink size={15} strokeWidth={1.5} />
                     Voir le site
-                    <span className="ml-auto text-[0.6rem] uppercase tracking-[0.14em]
-                                     text-[var(--color-espresso)]/35">
-                      ↗
-                    </span>
                   </Link>
 
                   <div style={{ borderTop: "1px solid var(--color-border-line)" }}>
@@ -300,9 +278,7 @@ export default function AdminHeader() {
         </div>
       </header>
 
-      {/* ============================================
-          Modal de recherche globale
-          ============================================ */}
+      {/* Modal de recherche */}
       {searchOpen && (
         <div
           className="fixed inset-0 z-50 flex items-start justify-center
@@ -313,7 +289,6 @@ export default function AdminHeader() {
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-2xl bg-[var(--color-cafe-light)] shadow-2xl"
           >
-            {/* Barre de recherche */}
             <div
               className="flex items-center gap-3 px-5 py-4"
               style={{ borderBottom: "1px solid var(--color-border-line)" }}
@@ -336,14 +311,9 @@ export default function AdminHeader() {
                 <X size={18} />
               </button>
             </div>
-
-            {/* État vide */}
             <div className="px-5 py-12 text-center">
               <p className="text-[0.85rem] text-[var(--color-espresso)]/45 italic">
                 Tapez pour rechercher dans produits, devis et projets.
-              </p>
-              <p className="text-[0.72rem] text-[var(--color-espresso)]/35 mt-3">
-                La recherche globale sera disponible prochainement.
               </p>
             </div>
           </div>
