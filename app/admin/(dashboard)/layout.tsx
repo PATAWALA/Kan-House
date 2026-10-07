@@ -15,21 +15,14 @@ export default function AdminLayout({
 }) {
   return (
     <div className="min-h-screen bg-[var(--color-cafe-light)] flex">
-      {/* Sidebar desktop */}
       <Sidebar />
-
-      {/* Contenu principal */}
       <div className="flex-1 flex flex-col lg:ml-64">
         <AdminHeader />
         <main className="flex-1 p-5 lg:p-10 pb-24 lg:pb-10">
           {children}
         </main>
       </div>
-
-      {/* Tab bar mobile fixe en bas */}
       <MobileTabBar />
-
-      {/* Menu complet mobile (ouvert depuis "Plus") */}
       <MobileMenuDrawer />
     </div>
   );

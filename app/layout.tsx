@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Sora } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import MobileTabBar from "@/components/layout/MobileTabBar";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -41,7 +38,7 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: dark)", color: "#3B1415" },
   ],
   colorScheme: "light",
-  viewportFit: "cover", // ← nécessaire pour env(safe-area-inset-bottom)
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -51,14 +48,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={`${cormorant.variable} ${sora.variable}`}>
-      <body>
-        <Navbar />
-        {/* padding bottom mobile pour ne pas cacher le contenu derrière la tab bar */}
-        <main className="lg:pb-0 pb-16">{children}</main>
-        <Footer />
-        <MobileTabBar />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
-
