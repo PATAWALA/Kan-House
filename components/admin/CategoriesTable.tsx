@@ -4,14 +4,11 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Search,
-  ChevronLeft,
-  ChevronRight,
   Pencil,
   Trash2,
   ArrowUpDown,
   X,
   Tag,
-  Plus,
   Package,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
@@ -84,9 +81,6 @@ export default function CategoriesTable({
     return list;
   }, [categories, search, sortKey, sortDir]);
 
-  // ============================================
-  // TRI
-  // ============================================
   const handleSort = (key: SortKey) => {
     if (sortKey === key) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
     else {
@@ -98,11 +92,7 @@ export default function CategoriesTable({
   // ============================================
   // SUPPRESSION
   // ============================================
-  const handleDeleteClick = (
-    id: string,
-    name: string,
-    count: number
-  ) => {
+  const handleDeleteClick = (id: string, name: string, count: number) => {
     setDeleteDialog({ open: true, id, name, count });
   };
 
@@ -127,9 +117,12 @@ export default function CategoriesTable({
     }
   };
 
-  // ============================================
-  // RENDER
-  // ============================================
+  const handleEditClick = (cat: CategoryRow) => {
+    window.dispatchEvent(
+      new CustomEvent("open-category-edit", { detail: cat })
+    );
+  };
+
   return (
     <>
       {/* Barre d'outils */}
@@ -176,7 +169,7 @@ export default function CategoriesTable({
         </p>
       </div>
 
-      {/* Tableau */}
+      {/* État vide */}
       {filtered.length === 0 ? (
         <div
           className="py-20 text-center"
@@ -207,140 +200,222 @@ export default function CategoriesTable({
           )}
         </div>
       ) : (
-        <div
-          className="overflow-x-auto"
-          style={{
-            border: "1px solid var(--color-border-line)",
-            borderTop: "none",
-          }}
-        >
-          <table className="w-full min-w-[700px]">
-            <thead>
-              <tr style={{ backgroundColor: "var(--color-cafe-dark)" }}>
-                <SortHeader
-                  label="Nom"
-                  active={sortKey === "name"}
-                  dir={sortDir}
-                  onClick={() => handleSort("name")}
-                  className="text-left w-[30%]"
-                />
-
-                <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
-                               text-[var(--color-espresso)]/55 font-medium px-4 py-3">
-                  Slug
-                </th>
-
-                <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
-                               text-[var(--color-espresso)]/55 font-medium px-4 py-3">
-                  Description
-                </th>
-
-                <SortHeader
-                  label="Position"
-                  active={sortKey === "position"}
-                  dir={sortDir}
-                  onClick={() => handleSort("position")}
-                  className="text-center w-[100px]"
-                />
-
-                <th className="text-center text-[0.65rem] uppercase tracking-[0.2em]
-                               text-[var(--color-espresso)]/55 font-medium px-4 py-3">
-                  Produits
-                </th>
-
-                <th className="text-right text-[0.65rem] uppercase tracking-[0.2em]
-                               text-[var(--color-espresso)]/55 font-medium px-4 py-3">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((cat) => (
-                <tr
-                  key={cat.id}
-                  className="hover:bg-[var(--color-cafe-dark)]/30 transition-colors"
-                  style={{ borderTop: "1px solid var(--color-border-line)" }}
-                >
-                  <td className="px-4 py-3">
-                    <p className="text-[0.9rem] font-medium
-                                  text-[var(--color-espresso)]">
-                      {cat.name}
-                    </p>
-                  </td>
-
-                  <td className="px-4 py-3">
-                    <span className="text-[0.78rem] font-mono
-                                     text-[var(--color-espresso)]/50">
-                      {cat.slug}
-                    </span>
-                  </td>
-
-                  <td className="px-4 py-3 text-[0.82rem]
-                                 text-[var(--color-espresso)]/60 truncate max-w-[300px]">
-                    {cat.description || "—"}
-                  </td>
-
-                  <td className="px-4 py-3 text-center">
-                    <span className="inline-flex items-center justify-center
-                                     min-w-[32px] h-7 px-2 text-[0.78rem]
-                                     font-medium tabular-nums
-                                     bg-[var(--color-cafe-dark)]
-                                     text-[var(--color-espresso)]">
-                      {cat.position}
-                    </span>
-                  </td>
-
-                  <td className="px-4 py-3 text-center">
-                    {cat.productsCount > 0 ? (
-                      <span className="inline-flex items-center gap-1.5
-                                       text-[0.82rem] text-[var(--color-espresso)]/70">
-                        <Package size={12} strokeWidth={1.5} />
-                        {cat.productsCount}
-                      </span>
-                    ) : (
-                      <span className="text-[0.82rem] text-[var(--color-espresso)]/35">
-                        0
-                      </span>
-                    )}
-                  </td>
-
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-1">
-                      <button
-                        onClick={() => {
-                          // Ouvre la modale d'édition
-                          window.dispatchEvent(
-                            new CustomEvent("open-category-edit", {
-                              detail: cat,
-                            })
-                          );
-                        }}
-                        aria-label="Éditer"
-                        className="p-2 text-[var(--color-espresso)]/45
-                                   hover:text-[var(--color-espresso)]
-                                   hover:bg-[var(--color-cafe-dark)]
-                                   transition-colors"
-                      >
-                        <Pencil size={14} strokeWidth={1.5} />
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleDeleteClick(cat.id, cat.name, cat.productsCount)
-                        }
-                        aria-label="Supprimer"
-                        className="p-2 text-[var(--color-espresso)]/45
-                                   hover:text-red-600 hover:bg-red-500/10
-                                   transition-colors"
-                      >
-                        <Trash2 size={14} strokeWidth={1.5} />
-                      </button>
-                    </div>
-                  </td>
+        <>
+          {/* ============================================
+              DESKTOP : Table classique
+              ============================================ */}
+          <div
+            className="hidden md:block overflow-x-auto"
+            style={{
+              border: "1px solid var(--color-border-line)",
+              borderTop: "none",
+            }}
+          >
+            <table className="w-full min-w-[700px]">
+              <thead>
+                <tr style={{ backgroundColor: "var(--color-cafe-dark)" }}>
+                  <SortHeader
+                    label="Nom"
+                    active={sortKey === "name"}
+                    dir={sortDir}
+                    onClick={() => handleSort("name")}
+                    className="text-left w-[25%]"
+                  />
+                  <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
+                                 text-[var(--color-espresso)]/55 font-medium px-4 py-3">
+                    Slug
+                  </th>
+                  <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
+                                 text-[var(--color-espresso)]/55 font-medium px-4 py-3">
+                    Description
+                  </th>
+                  <SortHeader
+                    label="Position"
+                    active={sortKey === "position"}
+                    dir={sortDir}
+                    onClick={() => handleSort("position")}
+                    className="text-center w-[100px]"
+                  />
+                  <th className="text-center text-[0.65rem] uppercase tracking-[0.2em]
+                                 text-[var(--color-espresso)]/55 font-medium px-4 py-3">
+                    Produits
+                  </th>
+                  <th className="text-right text-[0.65rem] uppercase tracking-[0.2em]
+                                 text-[var(--color-espresso)]/55 font-medium px-4 py-3">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map((cat) => (
+                  <tr
+                    key={cat.id}
+                    className="hover:bg-[var(--color-cafe-dark)]/30 transition-colors"
+                    style={{ borderTop: "1px solid var(--color-border-line)" }}
+                  >
+                    <td className="px-4 py-3">
+                      <p className="text-[0.9rem] font-medium
+                                    text-[var(--color-espresso)]">
+                        {cat.name}
+                      </p>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <span className="text-[0.78rem] font-mono
+                                       text-[var(--color-espresso)]/50">
+                        {cat.slug}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3 text-[0.82rem]
+                                   text-[var(--color-espresso)]/60 truncate max-w-[300px]">
+                      {cat.description || "—"}
+                    </td>
+
+                    <td className="px-4 py-3 text-center">
+                      <span className="inline-flex items-center justify-center
+                                       min-w-[32px] h-7 px-2 text-[0.78rem]
+                                       font-medium tabular-nums
+                                       bg-[var(--color-cafe-dark)]
+                                       text-[var(--color-espresso)]">
+                        {cat.position}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3 text-center">
+                      {cat.productsCount > 0 ? (
+                        <span className="inline-flex items-center gap-1.5
+                                         text-[0.82rem] text-[var(--color-espresso)]/70">
+                          <Package size={12} strokeWidth={1.5} />
+                          {cat.productsCount}
+                        </span>
+                      ) : (
+                        <span className="text-[0.82rem] text-[var(--color-espresso)]/35">
+                          0
+                        </span>
+                      )}
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => handleEditClick(cat)}
+                          aria-label="Éditer"
+                          className="p-2 text-[var(--color-espresso)]/45
+                                     hover:text-[var(--color-espresso)]
+                                     hover:bg-[var(--color-cafe-dark)]
+                                     transition-colors"
+                        >
+                          <Pencil size={14} strokeWidth={1.5} />
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleDeleteClick(cat.id, cat.name, cat.productsCount)
+                          }
+                          aria-label="Supprimer"
+                          className="p-2 text-[var(--color-espresso)]/45
+                                     hover:text-red-600 hover:bg-red-500/10
+                                     transition-colors"
+                        >
+                          <Trash2 size={14} strokeWidth={1.5} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* ============================================
+              MOBILE : Cartes empilées
+              ============================================ */}
+          <ul
+            className="md:hidden"
+            style={{
+              border: "1px solid var(--color-border-line)",
+              borderTop: "none",
+            }}
+          >
+            {filtered.map((cat) => (
+              <li
+                key={cat.id}
+                className="p-4 space-y-3"
+                style={{ borderTop: "1px solid var(--color-border-line)" }}
+              >
+                {/* Ligne 1 : Nom + Position */}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-[0.95rem] font-medium
+                                   text-[var(--color-espresso)]">
+                      {cat.name}
+                    </h3>
+                    <p className="text-[0.72rem] font-mono
+                                  text-[var(--color-espresso)]/50 mt-0.5">
+                      {cat.slug}
+                    </p>
+                  </div>
+
+                  <span className="inline-flex items-center justify-center
+                                   min-w-[32px] h-7 px-2 text-[0.75rem]
+                                   font-medium tabular-nums shrink-0
+                                   bg-[var(--color-cafe-dark)]
+                                   text-[var(--color-espresso)]">
+                    #{cat.position}
+                  </span>
+                </div>
+
+                {/* Ligne 2 : Description */}
+                {cat.description && (
+                  <p className="text-[0.82rem] leading-[1.55]
+                                text-[var(--color-espresso)]/60">
+                    {cat.description}
+                  </p>
+                )}
+
+                {/* Ligne 3 : Compteur produits */}
+                <div className="flex items-center gap-2 text-[0.78rem]
+                                text-[var(--color-espresso)]/55">
+                  <Package size={12} strokeWidth={1.5} />
+                  {cat.productsCount > 0
+                    ? `${cat.productsCount} produit${cat.productsCount > 1 ? "s" : ""}`
+                    : "Aucun produit"}
+                </div>
+
+                {/* Ligne 4 : Actions empilées */}
+                <div className="flex flex-col gap-2 pt-1">
+                  <button
+                    onClick={() => handleEditClick(cat)}
+                    className="w-full inline-flex items-center justify-center gap-2
+                               px-3 py-2.5 text-[0.72rem] font-medium uppercase
+                               tracking-[0.16em] text-[var(--color-espresso)]
+                               hover:bg-[var(--color-cafe-dark)]
+                               transition-colors"
+                    style={{ border: "1px solid var(--color-border-line)" }}
+                  >
+                    <Pencil size={12} strokeWidth={1.8} />
+                    Éditer
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      handleDeleteClick(cat.id, cat.name, cat.productsCount)
+                    }
+                    className="w-full inline-flex items-center justify-center gap-2
+                               px-3 py-2.5 text-[0.72rem] font-medium uppercase
+                               tracking-[0.16em] text-red-700
+                               hover:bg-red-500/10
+                               transition-colors"
+                    style={{ border: "1px solid var(--color-border-line)" }}
+                  >
+                    <Trash2 size={12} strokeWidth={1.8} />
+                    Supprimer
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
       <ConfirmDialog

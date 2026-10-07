@@ -263,11 +263,8 @@ export default function UsersTable({
               MOBILE : Cartes empilées
               ============================================ */}
           <ul
-            className="md:hidden divide-y"
-            style={{
-              border: "1px solid var(--color-border-line)",
-              borderColor: "var(--color-border-line)",
-            }}
+            className="md:hidden"
+            style={{ border: "1px solid var(--color-border-line)" }}
           >
             {filtered.map((user) => {
               const isCurrent = user.id === currentUserId;
@@ -281,7 +278,9 @@ export default function UsersTable({
                 <li
                   key={user.id}
                   className="p-4 space-y-3"
-                  style={{ borderColor: "var(--color-border-line)" }}
+                  style={{
+                    borderTop: "1px solid var(--color-border-line)",
+                  }}
                 >
                   {/* Ligne 1 : Avatar + Nom + Badge */}
                   <div className="flex items-start gap-3">
@@ -316,7 +315,7 @@ export default function UsersTable({
                       </div>
 
                       <div className="flex items-center gap-1.5 mt-1
-                                      text-[0.78rem] text-[var(--color-espresso)]/60 truncate">
+                                      text-[0.78rem] text-[var(--color-espresso)]/60">
                         <Mail size={11} strokeWidth={1.5} className="shrink-0" />
                         <span className="truncate">{user.email}</span>
                       </div>
@@ -325,16 +324,16 @@ export default function UsersTable({
 
                   {/* Ligne 2 : Dernière connexion */}
                   <div className="flex items-center gap-1.5 text-[0.75rem]
-                                  text-[var(--color-espresso)]/55 pl-13">
+                                  text-[var(--color-espresso)]/55">
                     <Clock size={11} strokeWidth={1.5} />
                     Dernière connexion : {formatDate(user.last_sign_in_at)}
                   </div>
 
-                  {/* Ligne 3 : Actions */}
-                  <div className="flex items-center gap-2 pt-1">
+                  {/* Ligne 3 : Actions — empilées */}
+                  <div className="flex flex-col gap-2 pt-1">
                     <button
                       onClick={() => onEdit(user)}
-                      className="flex-1 inline-flex items-center justify-center gap-2
+                      className="w-full inline-flex items-center justify-center gap-2
                                  px-3 py-2.5 text-[0.72rem] font-medium uppercase
                                  tracking-[0.16em] text-[var(--color-espresso)]
                                  hover:bg-[var(--color-cafe-dark)]
@@ -349,7 +348,9 @@ export default function UsersTable({
                       onClick={() => handleDeleteClick(user)}
                       disabled={isCurrent}
                       className={cn(
-                        "inline-flex items-center justify-centerw-10 h-10 transition-colors",
+                        "w-full inline-flex items-center justify-center gap-2
+                         px-3 py-2.5 text-[0.72rem] font-medium uppercase
+                         tracking-[0.16em] transition-colors",
                         isCurrent
                           ? "text-[var(--color-espresso)]/20 cursor-not-allowed"
                           : "text-red-700 hover:bg-red-500/10"
@@ -357,7 +358,8 @@ export default function UsersTable({
                       style={{ border: "1px solid var(--color-border-line)" }}
                       aria-label="Supprimer"
                     >
-                      <Trash2 size={13} strokeWidth={1.8} />
+                      <Trash2 size={12} strokeWidth={1.8} />
+                      Supprimer
                     </button>
                   </div>
                 </li>
