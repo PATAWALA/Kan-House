@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   Search,
-  Bell,
   ChevronDown,
   LogOut,
   ExternalLink,
@@ -125,12 +124,12 @@ export default function AdminHeader() {
           {/* Actions */}
           <div className="flex items-center gap-1.5 ml-auto">
 
-            {/* Recherche desktop */}
+            {/* Recherche desktop — PLUS LARGE */}
             <button
               onClick={() => setSearchOpen(true)}
               className="hidden md:inline-flex items-center gap-3
-                         px-4 py-2.5 w-56 lg:w-72
-                         text-[0.82rem] text-[var(--color-espresso)]/55
+                         px-4 py-2.5 w-72 lg:w-96 xl:w-[28rem]
+                         text-[0.85rem] text-[var(--color-espresso)]/55
                          hover:text-[var(--color-espresso)]
                          hover:bg-[var(--color-cafe-dark)]
                          transition-colors"
@@ -156,20 +155,6 @@ export default function AdminHeader() {
                          transition-colors"
             >
               <Search size={18} strokeWidth={1.5} />
-            </button>
-
-            {/* Notifications */}
-            <button
-              aria-label="Notifications"
-              className="relative p-2.5
-                         text-[var(--color-espresso)]/65
-                         hover:text-[var(--color-espresso)]
-                         hover:bg-[var(--color-cafe-dark)]
-                         transition-colors"
-            >
-              <Bell size={18} strokeWidth={1.5} />
-              <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full
-                               bg-[var(--color-bordeaux)]" />
             </button>
 
             {/* Menu profil */}
