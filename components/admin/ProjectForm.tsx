@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import {
   ArrowLeft,
   Save,
@@ -12,10 +11,6 @@ import {
   FileText,
   Info,
   Sparkles,
-  MapPin,
-  Calendar,
-  Ruler,
-  Building2,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useToast } from "@/lib/store/toast";
@@ -317,17 +312,21 @@ export default function ProjectForm({
               </p>
 
               <div className="space-y-4">
+                {/* Image — utilise <img> au lieu de <Image> pour éviter la config domaine */}
                 <div
                   className="relative aspect-[4/3] bg-[var(--color-cafe-dark)] overflow-hidden"
                   style={{ border: "1px solid var(--color-border-line)" }}
                 >
                   {form.image ? (
-                    <Image
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
                       src={form.image}
                       alt={form.title || "Aperçu"}
-                      fill
-                      sizes="320px"
-                      className="object-cover"
+                      className="absolute inset-0 w-full h-full object-cover"
+                      onError={(e) => {
+                        // Cache l'image si elle ne charge pas
+                        (e.target as HTMLImageElement).style.display = "none";
+                      }}
                     />
                   ) : (
                     <div className="w-full h-full grid place-items-center">

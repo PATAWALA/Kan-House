@@ -3,19 +3,28 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
+      // Unsplash
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "plus.unsplash.com" },
+
+      // Supabase Storage — ton projet
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "ztvsmpquqtqzkjmburdr.supabase.co",
+        pathname: "/storage/v1/object/public/**",
       },
       {
         protocol: "https",
-        hostname: "plus.unsplash.com",
+        hostname: "zctchbacqywysbkwrzde.supabase.co",
+        pathname: "/storage/v1/object/public/**",
       },
-      // Ajoute ici tes futurs domaines (Cloudinary, Sanity, S3, etc.)
-      // {
-      //   protocol: "https",
-      //   hostname: "cdn.sanity.io",
-      // },
+
+      // Fallback générique (au cas où)
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
     ],
   },
 };
