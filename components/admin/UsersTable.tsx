@@ -9,6 +9,7 @@ import {
   User as UserIcon,
   Shield,
   Clock,
+  Mail,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useToast } from "@/lib/store/toast";
@@ -54,7 +55,9 @@ export default function UsersTable({
       const result = await deleteAdminUser(deleteDialog.user.id);
       if (!result.success) throw new Error(result.error);
 
-      setLocalUsers((prev) => prev.filter((u) => u.id !== deleteDialog.user!.id));
+      setLocalUsers((prev) =>
+        prev.filter((u) => u.id !== deleteDialog.user!.id)
+      );
       toast.success("Utilisateur supprimé", deleteDialog.user.email ?? "");
       setDeleteDialog({ open: false });
     } catch (err) {
@@ -78,7 +81,7 @@ export default function UsersTable({
   return (
     <>
       {/* Recherche */}
-      <div className="relative mb-4 max-w-md">
+      <div className="relative mb-4 w-full sm:max-w-md">
         <Search
           size={15}
           strokeWidth={1.5}
@@ -108,7 +111,7 @@ export default function UsersTable({
         )}
       </div>
 
-      {/* Table */}
+      {/* Liste vide */}
       {filtered.length === 0 ? (
         <div
           className="py-12 text-center"
@@ -124,128 +127,244 @@ export default function UsersTable({
           </p>
         </div>
       ) : (
-        <div
-          className="overflow-x-auto"
-          style={{ border: "1px solid var(--color-border-line)" }}
-        >
-          <table className="w-full min-w-[600px]">
-            <thead>
-              <tr style={{ backgroundColor: "var(--color-cafe-dark)" }}>
-                <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
-                               text-[var(--color-espresso)]/55 font-medium px-4 py-3">
-                  Utilisateur
-                </th>
-                <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
-                               text-[var(--color-espresso)]/55 font-medium px-4 py-3">
-                  Email
-                </th>
-                <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
-                               text-[var(--color-espresso)]/55 font-medium px-4 py-3">
-                  Dernière connexion
-                </th>
-                <th className="text-right text-[0.65rem] uppercase tracking-[0.2em]
-                               text-[var(--color-espresso)]/55 font-medium px-4 py-3">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((user) => {
-                const isCurrent = user.id === currentUserId;
-                const initial = (user.name?.[0] ?? user.email?.[0] ?? "?")
-                  .toUpperCase();
+        <>
+          {/* ============================================
+              DESKTOP : Table classique
+              ============================================ */}
+          <div
+            className="hidden md:block overflow-x-auto"
+            style={{ border: "1px solid var(--color-border-line)" }}
+          >
+            <table className="w-full">
+              <thead>
+                <tr style={{ backgroundColor: "var(--color-cafe-dark)" }}>
+                  <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
+                                 text-[var(--color-espresso)]/55 font-medium px-4 py-3">
+                    Utilisateur
+                  </th>
+                  <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
+                                 text-[var(--color-espresso)]/55 font-medium px-4 py-3">
+                    Email
+                  </th>
+                  <th className="text-left text-[0.65rem] uppercase tracking-[0.2em]
+                                 text-[var(--color-espresso)]/55 font-medium px-4 py-3">
+                    Dernière connexion
+                  </th>
+                  <th className="text-right text-[0.65rem] uppercase tracking-[0.2em]
+                                 text-[var(--color-espresso)]/55 font-medium px-4 py-3">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((user) => {
+                  const isCurrent = user.id === currentUserId;
+                  const initial = (
+                    user.name?.[0] ??
+                    user.email?.[0] ??
+                    "?"
+                  ).toUpperCase();
 
-                return (
-                  <tr
-                    key={user.id}
-                    className="hover:bg-[var(--color-cafe-dark)]/30 transition-colors"
-                    style={{ borderTop: "1px solid var(--color-border-line)" }}
-                  >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <span
-                          className={cn(
-                            "w-9 h-9 grid place-items-center rounded-full shrink-0",
-                            "text-[0.78rem] font-medium uppercase",
-                            isCurrent
-                              ? "bg-[var(--color-bordeaux)] text-[var(--color-cafe-light)]"
-                              : "bg-[var(--color-espresso)] text-[var(--color-cafe-light)]"
-                          )}
-                        >
-                          {initial}
-                        </span>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2">
-                            <p className="text-[0.88rem] font-medium
-                                          text-[var(--color-espresso)] truncate">
-                              {user.name || "Sans nom"}
-                            </p>
-                            {isCurrent && (
-                              <span className="inline-flex items-center gap-1
-                                               px-1.5 py-0.5 text-[0.55rem]
-                                               font-medium uppercase tracking-[0.14em]
-                                               bg-[var(--color-bordeaux)]/12
-                                               text-[var(--color-bordeaux)] shrink-0">
-                                <Shield size={9} strokeWidth={2.2} />
-                                Vous
-                              </span>
+                  return (
+                    <tr
+                      key={user.id}
+                      className="hover:bg-[var(--color-cafe-dark)]/30 transition-colors"
+                      style={{
+                        borderTop: "1px solid var(--color-border-line)",
+                      }}
+                    >
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={cn(
+                              "w-9 h-9 grid place-items-center rounded-full shrink-0",
+                              "text-[0.78rem] font-medium uppercase",
+                              isCurrent
+                                ? "bg-[var(--color-bordeaux)] text-[var(--color-cafe-light)]"
+                                : "bg-[var(--color-espresso)] text-[var(--color-cafe-light)]"
                             )}
+                          >
+                            {initial}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className="text-[0.88rem] font-medium
+                                            text-[var(--color-espresso)] truncate">
+                                {user.name || "Sans nom"}
+                              </p>
+                              {isCurrent && (
+                                <span className="inline-flex items-center gap-1
+                                                 px-1.5 py-0.5 text-[0.55rem]
+                                                 font-medium uppercase tracking-[0.14em]
+                                                 bg-[var(--color-bordeaux)]/12
+                                                 text-[var(--color-bordeaux)] shrink-0">
+                                  <Shield size={9} strokeWidth={2.2} />
+                                  Vous
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
+                      </td>
+
+                      <td className="px-4 py-3 text-[0.82rem]
+                                     text-[var(--color-espresso)]/70 truncate">
+                        {user.email}
+                      </td>
+
+                      <td className="px-4 py-3">
+                        <span className="inline-flex items-center gap-1.5
+                                         text-[0.78rem] text-[var(--color-espresso)]/55">
+                          <Clock size={11} strokeWidth={1.5} />
+                          {formatDate(user.last_sign_in_at)}
+                        </span>
+                      </td>
+
+                      <td className="px-4 py-3">
+                        <div className="flex items-center justify-end gap-1">
+                          <button
+                            onClick={() => onEdit(user)}
+                            aria-label="Éditer"
+                            className="p-2 text-[var(--color-espresso)]/45
+                                       hover:text-[var(--color-espresso)]
+                                       hover:bg-[var(--color-cafe-dark)]
+                                       transition-colors"
+                          >
+                            <Pencil size={14} strokeWidth={1.5} />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteClick(user)}
+                            disabled={isCurrent}
+                            aria-label="Supprimer"
+                            title={
+                              isCurrent
+                                ? "Vous ne pouvez pas supprimer votre propre compte"
+                                : "Supprimer"
+                            }
+                            className={cn(
+                              "p-2 transition-colors",
+                              isCurrent
+                                ? "text-[var(--color-espresso)]/20 cursor-not-allowed"
+                                : "text-[var(--color-espresso)]/45 hover:text-red-600 hover:bg-red-500/10"
+                            )}
+                          >
+                            <Trash2 size={14} strokeWidth={1.5} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* ============================================
+              MOBILE : Cartes empilées
+              ============================================ */}
+          <ul
+            className="md:hidden divide-y"
+            style={{
+              border: "1px solid var(--color-border-line)",
+              borderColor: "var(--color-border-line)",
+            }}
+          >
+            {filtered.map((user) => {
+              const isCurrent = user.id === currentUserId;
+              const initial = (
+                user.name?.[0] ??
+                user.email?.[0] ??
+                "?"
+              ).toUpperCase();
+
+              return (
+                <li
+                  key={user.id}
+                  className="p-4 space-y-3"
+                  style={{ borderColor: "var(--color-border-line)" }}
+                >
+                  {/* Ligne 1 : Avatar + Nom + Badge */}
+                  <div className="flex items-start gap-3">
+                    <span
+                      className={cn(
+                        "w-10 h-10 grid place-items-center rounded-full shrink-0",
+                        "text-[0.85rem] font-medium uppercase",
+                        isCurrent
+                          ? "bg-[var(--color-bordeaux)] text-[var(--color-cafe-light)]"
+                          : "bg-[var(--color-espresso)] text-[var(--color-cafe-light)]"
+                      )}
+                    >
+                      {initial}
+                    </span>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="text-[0.9rem] font-medium
+                                      text-[var(--color-espresso)] truncate">
+                          {user.name || "Sans nom"}
+                        </p>
+                        {isCurrent && (
+                          <span className="inline-flex items-center gap-1
+                                           px-1.5 py-0.5 text-[0.55rem]
+                                           font-medium uppercase tracking-[0.14em]
+                                           bg-[var(--color-bordeaux)]/12
+                                           text-[var(--color-bordeaux)]">
+                            <Shield size={9} strokeWidth={2.2} />
+                            Vous
+                          </span>
+                        )}
                       </div>
-                    </td>
 
-                    <td className="px-4 py-3 text-[0.82rem]
-                                   text-[var(--color-espresso)]/70 truncate">
-                      {user.email}
-                    </td>
-
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-1.5
-                                       text-[0.78rem] text-[var(--color-espresso)]/55">
-                        <Clock size={11} strokeWidth={1.5} />
-                        {formatDate(user.last_sign_in_at)}
-                      </span>
-                    </td>
-
-                    <td className="px-4 py-3">
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          onClick={() => onEdit(user)}
-                          aria-label="Éditer"
-                          className="p-2 text-[var(--color-espresso)]/45
-                                     hover:text-[var(--color-espresso)]
-                                     hover:bg-[var(--color-cafe-dark)]
-                                     transition-colors"
-                        >
-                          <Pencil size={14} strokeWidth={1.5} />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteClick(user)}
-                          disabled={isCurrent}
-                          aria-label="Supprimer"
-                          title={
-                            isCurrent
-                              ? "Vous ne pouvez pas supprimer votre propre compte"
-                              : "Supprimer"
-                          }
-                          className={cn(
-                            "p-2 transition-colors",
-                            isCurrent
-                              ? "text-[var(--color-espresso)]/20 cursor-not-allowed"
-                              : "text-[var(--color-espresso)]/45 hover:text-red-600 hover:bg-red-500/10"
-                          )}
-                        >
-                          <Trash2 size={14} strokeWidth={1.5} />
-                        </button>
+                      <div className="flex items-center gap-1.5 mt-1
+                                      text-[0.78rem] text-[var(--color-espresso)]/60 truncate">
+                        <Mail size={11} strokeWidth={1.5} className="shrink-0" />
+                        <span className="truncate">{user.email}</span>
                       </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                    </div>
+                  </div>
+
+                  {/* Ligne 2 : Dernière connexion */}
+                  <div className="flex items-center gap-1.5 text-[0.75rem]
+                                  text-[var(--color-espresso)]/55 pl-13">
+                    <Clock size={11} strokeWidth={1.5} />
+                    Dernière connexion : {formatDate(user.last_sign_in_at)}
+                  </div>
+
+                  {/* Ligne 3 : Actions */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <button
+                      onClick={() => onEdit(user)}
+                      className="flex-1 inline-flex items-center justify-center gap-2
+                                 px-3 py-2.5 text-[0.72rem] font-medium uppercase
+                                 tracking-[0.16em] text-[var(--color-espresso)]
+                                 hover:bg-[var(--color-cafe-dark)]
+                                 transition-colors"
+                      style={{ border: "1px solid var(--color-border-line)" }}
+                    >
+                      <Pencil size={12} strokeWidth={1.8} />
+                      Éditer
+                    </button>
+
+                    <button
+                      onClick={() => handleDeleteClick(user)}
+                      disabled={isCurrent}
+                      className={cn(
+                        "inline-flex items-center justify-centerw-10 h-10 transition-colors",
+                        isCurrent
+                          ? "text-[var(--color-espresso)]/20 cursor-not-allowed"
+                          : "text-red-700 hover:bg-red-500/10"
+                      )}
+                      style={{ border: "1px solid var(--color-border-line)" }}
+                      aria-label="Supprimer"
+                    >
+                      <Trash2 size={13} strokeWidth={1.8} />
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </>
       )}
 
       <ConfirmDialog

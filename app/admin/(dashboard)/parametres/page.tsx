@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { getAdminUsers } from "@/app/admin/actions";
 import SettingsForm from "@/components/admin/SettingsForm";
@@ -35,7 +34,7 @@ export default async function AdminParametresPage() {
   ]);
 
   return (
-    <div className="max-w-[1200px] space-y-8">
+    <div className="max-w-[1200px] space-y-5 lg:space-y-8">
 
       {/* Header */}
       <div>
@@ -49,22 +48,24 @@ export default async function AdminParametresPage() {
         </h1>
       </div>
 
-      {/* Utilisateurs admin — en haut */}
+      {/* Utilisateurs admin */}
       <UsersManager
         users={users}
         currentUserId={currentUser?.id ?? ""}
       />
 
-      {/* Informations de la marque */}
+      {/* Marque */}
       <section
-        className="p-5 lg:p-6 space-y-5"
+        className="p-4 lg:p-6 space-y-5"
         style={{ border: "1px solid var(--color-border-line)" }}
       >
         <header>
-          <h2 className="text-[1rem] font-medium text-[var(--color-espresso)]">
+          <h2 className="text-[0.95rem] lg:text-[1rem] font-medium
+                         text-[var(--color-espresso)]">
             Informations de la marque
           </h2>
-          <p className="text-[0.82rem] text-[var(--color-espresso)]/55 mt-0.5">
+          <p className="text-[0.78rem] lg:text-[0.82rem]
+                        text-[var(--color-espresso)]/55 mt-0.5">
             Affichées dans le footer et les pages publiques
           </p>
         </header>
@@ -93,14 +94,16 @@ export default async function AdminParametresPage() {
 
       {/* Contact */}
       <section
-        className="p-5 lg:p-6 space-y-5"
+        className="p-4 lg:p-6 space-y-5"
         style={{ border: "1px solid var(--color-border-line)" }}
       >
         <header>
-          <h2 className="text-[1rem] font-medium text-[var(--color-espresso)]">
+          <h2 className="text-[0.95rem] lg:text-[1rem] font-medium
+                         text-[var(--color-espresso)]">
             Contact
           </h2>
-          <p className="text-[0.82rem] text-[var(--color-espresso)]/55 mt-0.5">
+          <p className="text-[0.78rem] lg:text-[0.82rem]
+                        text-[var(--color-espresso)]/55 mt-0.5">
             Coordonnées affichées sur le site
           </p>
         </header>
@@ -129,16 +132,18 @@ export default async function AdminParametresPage() {
         </div>
       </section>
 
-      {/* Réseaux sociaux */}
+      {/* Réseaux */}
       <section
-        className="p-5 lg:p-6 space-y-5"
+        className="p-4 lg:p-6 space-y-5"
         style={{ border: "1px solid var(--color-border-line)" }}
       >
         <header>
-          <h2 className="text-[1rem] font-medium text-[var(--color-espresso)]">
+          <h2 className="text-[0.95rem] lg:text-[1rem] font-medium
+                         text-[var(--color-espresso)]">
             Réseaux sociaux
           </h2>
-          <p className="text-[0.82rem] text-[var(--color-espresso)]/55 mt-0.5">
+          <p className="text-[0.78rem] lg:text-[0.82rem]
+                        text-[var(--color-espresso)]/55 mt-0.5">
             Liens affichés dans le footer
           </p>
         </header>
