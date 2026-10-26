@@ -8,12 +8,11 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match toutes les routes sauf :
-     * - _next/static (fichiers statiques)
-     * - _next/image (optimisation d'images)
-     * - favicon.ico
-     * - fichiers avec extension (svg, png, jpg, etc.)
+     * Ne matche QUE :
+     * - /admin/*
+     * - /api/admin/*
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|otf)$).*)",
+    "/admin/:path*",
+    "/api/admin/:path*",
   ],
 };
