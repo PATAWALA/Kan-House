@@ -3,6 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "./types";
 
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // Sécurité : ne jamais exécuter pour /admin/login
+  if (pathname === "/admin/login") {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient<Database>(
@@ -26,25 +33,24 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const pathname = request.nextUrl.pathname;
-
-  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    if (!user) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/admin/login";
-      url.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(url);
-    }
+  // Appel Supabase — peut timeout, mais uniquement sur /admin/* (pas login)
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch (error) {
+    console.error("Auth check failed:", error);
+    // En cas de timeout, rediriger vers login par sécurité
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/login";
+    return NextResponse.redirect(url);
   }
 
-  if (pathname === "/admin/login" && user) {
+  // Protection /admin (déjà exclu login par le matcher)
+  if (pathname.startsWith("/admin") && !user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/admin";
-    url.search = "";
+    url.pathname = "/admin/login";
+    url.searchParams.set("redirect", pathname);
     return NextResponse.redirect(url);
   }
 
